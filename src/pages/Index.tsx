@@ -6,6 +6,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { Badge } from '@/components/ui/badge';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { toast } from '@/hooks/use-toast';
 import { Search, ChevronDown, ChevronUp, MessageSquare, Hash, Users, Camera, Globe } from 'lucide-react';
 
 interface Platform {
@@ -28,35 +30,35 @@ const platforms: Platform[] = [
     name: 'Reddit',
     site: 'site:reddit.com',
     icon: <MessageSquare className="w-4 h-4" />,
-    color: 'text-orange-500'
+    color: 'text-research-blue-dark'
   },
   {
     id: 'discord',
     name: 'Discord',
     site: 'site:discord.gg',
     icon: <Hash className="w-4 h-4" />,
-    color: 'text-purple-500'
+    color: 'text-research-blue-dark'
   },
   {
     id: 'twitter',
     name: 'Twitter',
     site: 'site:twitter.com OR site:x.com',
     icon: <Globe className="w-4 h-4" />,
-    color: 'text-blue-500'
+    color: 'text-research-blue-dark'
   },
   {
     id: 'instagram',
     name: 'Instagram',
     site: 'site:instagram.com',
     icon: <Camera className="w-4 h-4" />,
-    color: 'text-pink-500'
+    color: 'text-research-blue-dark'
   },
   {
     id: 'facebook',
     name: 'Facebook',
     site: 'site:facebook.com',
     icon: <Users className="w-4 h-4" />,
-    color: 'text-blue-600'
+    color: 'text-research-blue-dark'
   }
 ];
 
@@ -102,11 +104,36 @@ const Index = () => {
   const [mainTopic, setMainTopic] = useState('');
   const [additionalKeywords, setAdditionalKeywords] = useState('');
   const [generatedQuery, setGeneratedQuery] = useState('');
+  const [searchEngine, setSearchEngine] = useState<'google' | 'duckduckgo' | 'bing'>('google');
+  const [lastLinks, setLastLinks] = useState<{ name: string; url: string }[]>([]);
 
   // Update query whenever inputs change
   useEffect(() => {
     generateQuery();
-  }, [selectedPlatforms, selectedPhrases, mainTopic, additionalKeywords]);
+  }, [selectedPlatforms, selectedPhrases, mainTopic, additionalKeywords, searchEngine]);
+
+  // Basic SEO for the tool
+  useEffect(() => {
+    const title = 'Customer Pain Point Research Tool | Social Research Query Builder';
+    document.title = title;
+
+    const desc = 'Build advanced social research queries across Reddit, Discord, Twitter, Instagram, and Facebook.';
+    let meta = document.querySelector('meta[name="description"]');
+    if (!meta) {
+      meta = document.createElement('meta');
+      meta.setAttribute('name', 'description');
+      document.head.appendChild(meta);
+    }
+    meta.setAttribute('content', desc);
+
+    let canonical = document.querySelector('link[rel="canonical"]');
+    if (!canonical) {
+      canonical = document.createElement('link');
+      canonical.setAttribute('rel', 'canonical');
+      document.head.appendChild(canonical);
+    }
+    canonical.setAttribute('href', window.location.href);
+  }, []);
 
   const generateQuery = () => {
     if (!mainTopic.trim()) {
@@ -116,15 +143,16 @@ const Index = () => {
 
     const topicPart = `"${mainTopic.trim()}"`;
     const keywordsPart = additionalKeywords.trim() ? ` AND "${additionalKeywords.trim()}"` : '';
-    
+
     const platformParts = selectedPlatforms
       .map(platformId => platforms.find(p => p.id === platformId)?.site)
-      .filter(Boolean);
-    
+      .filter(Boolean) as string[];
+
     const platformQuery = platformParts.length > 0 ? ` (${platformParts.join(' OR ')})` : '';
-    
-    const phraseQuery = selectedPhrases.length > 0 
-      ? ` (${selectedPhrases.map(phrase => `"${phrase}"`).join('|')})`
+
+    const phraseJoiner = searchEngine === 'google' ? '|' : ' OR ';
+    const phraseQuery = selectedPhrases.length > 0
+      ? ` (${selectedPhrases.map(phrase => `"${phrase}"`).join(phraseJoiner)})`
       : '';
 
     const query = `${topicPart}${keywordsPart}${platformQuery}${phraseQuery}`;
@@ -159,14 +187,51 @@ const Index = () => {
 
   const handleSearch = () => {
     if (!mainTopic.trim() || selectedPlatforms.length === 0) {
-      alert('Please enter a main topic and select at least one platform');
+      toast({ title: 'Missing info', description: 'Please enter a main topic and select at least one platform.' });
       return;
     }
 
-    const searchUrl = `https://www.google.com/search?q=${encodeURIComponent(generatedQuery)}`;
-    window.open(searchUrl, '_blank');
-  };
+    const phraseJoiner = searchEngine === 'google' ? '|' : ' OR ';
+    const topicPart = `"${mainTopic.trim()}"`;
+    const keywordsPart = additionalKeywords.trim() ? ` AND "${additionalKeywords.trim()}"` : '';
+    const phrasePart = selectedPhrases.length > 0
+      ? ` (${selectedPhrases.map(p => `"${p}"`).join(phraseJoiner)})`
+      : '';
 
+    const links: { name: string; url: string }[] = [];
+
+    const engineBase = {
+      google: 'https://www.google.com/search?q=',
+      duckduckgo: 'https://duckduckgo.com/?q=',
+      bing: 'https://www.bing.com/search?q=',
+    }[searchEngine];
+
+    // Open one tab per selected platform
+    selectedPlatforms.forEach((platformId) => {
+      const platform = platforms.find(p => p.id === platformId);
+      if (!platform) return;
+      const perPlatformQuery = `${topicPart}${keywordsPart} (${platform.site})${phrasePart}`;
+      const url = `${engineBase}${encodeURIComponent(perPlatformQuery)}`;
+      links.push({ name: platform.name, url });
+      try {
+        const w = window.open(url, '_blank', 'noopener,noreferrer');
+        if (!w) {
+          // Popup blocked
+          console.warn('Popup blocked for', url);
+        }
+      } catch (e) {
+        console.error('Failed to open window', e);
+      }
+    });
+
+    setLastLinks(links);
+
+    // If running in sandbox where Google is blocked, guide the user
+    toast({
+      title: 'Links ready',
+      description: `If new tabs didn\'t open, use the quick links below or switch engine to DuckDuckGo/Bing.`,
+    });
+  };
   const clearAllPhrases = () => {
     setSelectedPhrases([]);
   };
@@ -304,6 +369,20 @@ const Index = () => {
                     className="w-full"
                   />
                 </div>
+                <div>
+                  <Label className="text-sm font-medium mb-2 block">Search Engine</Label>
+                  <Select value={searchEngine} onValueChange={(v) => setSearchEngine(v as 'google' | 'duckduckgo' | 'bing')}>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Google" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="google">Google</SelectItem>
+                      <SelectItem value="duckduckgo">DuckDuckGo</SelectItem>
+                      <SelectItem value="bing">Bing</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <p className="text-xs text-muted-foreground mt-1">If Google is blocked, choose DuckDuckGo or Bing.</p>
+                </div>
               </CardContent>
             </Card>
           </div>
@@ -323,7 +402,20 @@ const Index = () => {
                   {generatedQuery || 'Enter a main topic to see the generated query...'}
                 </div>
                 <div className="mt-4 text-xs text-muted-foreground">
-                  This query will be used to search Google for relevant discussions
+                  This query will be used to search {searchEngine === 'google' ? 'Google' : searchEngine === 'duckduckgo' ? 'DuckDuckGo' : 'Bing'} for relevant discussions
+                </div>
+                <div className="mt-4 flex items-center gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      if (!generatedQuery) return;
+                      navigator.clipboard.writeText(generatedQuery);
+                      toast({ title: 'Copied', description: 'Search query copied to clipboard.' });
+                    }}
+                  >
+                    Copy Query
+                  </Button>
                 </div>
               </CardContent>
             </Card>
@@ -342,8 +434,20 @@ const Index = () => {
                   Search Now
                 </Button>
                 <p className="text-xs text-muted-foreground text-center mt-3">
-                  Opens Google search in a new tab
+                  Opens {searchEngine === 'google' ? 'Google' : searchEngine === 'duckduckgo' ? 'DuckDuckGo' : 'Bing'} results in new tabs — one per platform
                 </p>
+                {lastLinks.length > 0 && (
+                  <div className="mt-4">
+                    <p className="text-xs text-muted-foreground mb-2">Quick links (use if pop-ups or Google are blocked):</p>
+                    <div className="flex flex-col gap-2">
+                      {lastLinks.map(link => (
+                        <a key={link.url} href={link.url} target="_blank" rel="noopener noreferrer" className="text-sm underline text-foreground/80 hover:text-foreground">
+                          {link.name} — open search
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </CardContent>
             </Card>
 
