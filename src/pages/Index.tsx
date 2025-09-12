@@ -105,7 +105,7 @@ const Index = () => {
   const [additionalKeywords, setAdditionalKeywords] = useState('');
   const [generatedQuery, setGeneratedQuery] = useState('');
   const [searchEngine, setSearchEngine] = useState<'google' | 'duckduckgo' | 'bing'>('google');
-  const [lastLinks, setLastLinks] = useState<{ name: string; url: string }[]>([]);
+  const [lastLinks, setLastLinks] = useState<{ name: string; url: string; display: string }[]>([]);
 
   // Update query whenever inputs change
   useEffect(() => {
@@ -205,13 +205,15 @@ const Index = () => {
       return;
     }
 
-    const links: { name: string; url: string }[] = [];
+    const links: { name: string; url: string; display: string }[] = [];
 
     const engineBase = {
       google: 'https://www.google.com/search?q=',
       duckduckgo: 'https://duckduckgo.com/?q=',
       bing: 'https://www.bing.com/search?q=',
     }[searchEngine];
+
+    const engineBaseDisplay = engineBase; // display human-readable query
 
     // Create one search per platform using the properly formatted query
     selectedPlatforms.forEach((platformId) => {
@@ -228,8 +230,9 @@ const Index = () => {
       
       const platformSpecificQuery = `${topicPart}${keywordsPart} (${platform.site})${phrasePart}`;
       const url = `${engineBase}${encodeURIComponent(platformSpecificQuery)}`;
+      const display = `${engineBaseDisplay}${platformSpecificQuery}`;
       
-      links.push({ name: platform.name, url });
+      links.push({ name: platform.name, url, display });
       
       try {
         const w = window.open(url, '_blank', 'noopener,noreferrer');
@@ -458,7 +461,7 @@ const Index = () => {
                     <div className="flex flex-col gap-2">
                       {lastLinks.map(link => (
                         <a key={link.url} href={link.url} target="_blank" rel="noopener noreferrer" className="text-sm underline text-foreground/80 hover:text-foreground">
-                          {link.name} — open search
+                          {link.display}
                         </a>
                       ))}
                     </div>
