@@ -257,23 +257,23 @@ const Index = () => {
     <div className="min-h-screen bg-gradient-subtle">
       {/* Header */}
       <header className="bg-white shadow-sm border-b border-border">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="text-center">
-            <h1 className="text-3xl font-bold text-foreground mb-2">
+            <h1 className="text-2xl font-bold text-foreground mb-1">
               Customer Pain Point Research Tool
             </h1>
-            <p className="text-muted-foreground text-lg">
-              Build advanced Google search queries to discover customer insights across social platforms
+            <p className="text-muted-foreground">
+              Build advanced search queries to discover customer insights across social platforms
             </p>
           </div>
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           {/* Left Column - Platform Selection & Phrases */}
-          <div className="lg:col-span-2 space-y-6">
+          <div className="lg:col-span-3 space-y-4">
             {/* Platform Selection */}
             <Card className="shadow-card">
               <CardHeader>
@@ -283,24 +283,24 @@ const Index = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
                   {platforms.map((platform) => (
                     <label
                       key={platform.id}
-                      className="flex items-center space-x-3 p-3 rounded-lg border border-border hover:bg-research-blue-light cursor-pointer transition-all duration-200"
+                      className="flex items-center space-x-2 p-2 rounded-lg border border-border hover:bg-research-blue-light cursor-pointer transition-all duration-200"
                     >
                       <Checkbox
                         checked={selectedPlatforms.includes(platform.id)}
                         onCheckedChange={() => togglePlatform(platform.id)}
                       />
-                      <div className="flex items-center space-x-2">
+                      <div className="flex items-center space-x-1">
                         <span className={platform.color}>{platform.icon}</span>
-                        <span className="font-medium">{platform.name}</span>
+                        <span className="font-medium text-sm">{platform.name}</span>
                       </div>
                     </label>
                   ))}
                 </div>
-                <div className="mt-4 text-sm text-muted-foreground">
+                <div className="mt-3 text-sm text-muted-foreground">
                   Selected: {selectedPlatforms.length} platform{selectedPlatforms.length !== 1 ? 's' : ''}
                 </div>
               </CardContent>
@@ -321,7 +321,7 @@ const Index = () => {
                   )}
                 </div>
               </CardHeader>
-              <CardContent className="space-y-4">
+              <CardContent className="space-y-3">
                 {phraseCategories.map((category, categoryIndex) => (
                   <Collapsible
                     key={category.title}
@@ -329,18 +329,18 @@ const Index = () => {
                     onOpenChange={() => toggleCategory(categoryIndex)}
                   >
                     <CollapsibleTrigger className="w-full">
-                      <div className="flex items-center justify-between p-3 bg-research-gray rounded-lg hover:bg-research-blue-light transition-colors">
-                        <h3 className="font-semibold text-left">{category.title}</h3>
+                      <div className="flex items-center justify-between p-2 bg-research-gray rounded-lg hover:bg-research-blue-light transition-colors">
+                        <h3 className="font-semibold text-left text-sm">{category.title}</h3>
                         {category.isOpen ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
                       </div>
                     </CollapsibleTrigger>
                     <CollapsibleContent className="mt-2">
-                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 p-3 bg-white rounded-lg border border-border">
+                      <div className="grid grid-cols-3 sm:grid-cols-4 gap-2 p-2 bg-white rounded-lg border border-border">
                         {category.phrases.map((phrase) => (
                           <Badge
                             key={phrase}
                             variant={selectedPhrases.includes(phrase) ? "default" : "secondary"}
-                            className="cursor-pointer justify-center py-2 px-3 hover:scale-105 transition-transform"
+                            className="cursor-pointer justify-center py-1 px-2 hover:scale-105 transition-transform text-xs"
                             onClick={() => togglePhrase(phrase)}
                           >
                             {phrase}
@@ -356,12 +356,12 @@ const Index = () => {
             {/* Custom Input Section */}
             <Card className="shadow-card">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
+                <CardTitle className="flex items-center gap-2 text-lg">
                   <Hash className="w-5 h-5 text-research-blue" />
                   Research Parameters
                 </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4">
+              <CardContent className="space-y-3">
                 <div>
                   <Label htmlFor="mainTopic" className="text-sm font-medium mb-2 block">
                     Main Topic <span className="text-destructive">*</span>
@@ -405,10 +405,10 @@ const Index = () => {
           </div>
 
           {/* Right Column - Search */}
-          <div className="space-y-6">
+          <div className="space-y-4">
             {/* Search Button */}
             <Card className="shadow-card">
-              <CardContent className="pt-6">
+              <CardContent className="pt-4">
                 <Button
                   variant="research"
                   size="lg"
@@ -419,15 +419,15 @@ const Index = () => {
                   <Search className="w-5 h-5 mr-2" />
                   Search Now
                 </Button>
-                <p className="text-xs text-muted-foreground text-center mt-3">
+                <p className="text-xs text-muted-foreground text-center mt-2">
                   Opens {selectedPlatforms.length} separate {searchEngine === 'google' ? 'Google' : searchEngine === 'duckduckgo' ? 'DuckDuckGo' : 'Bing'} tab{selectedPlatforms.length !== 1 ? 's' : ''} — one per platform
                 </p>
                 {lastLinks.length > 0 && (
-                  <div className="mt-4">
+                  <div className="mt-3">
                     <p className="text-xs text-muted-foreground mb-2">Quick links (use if pop-ups or Google are blocked):</p>
-                    <div className="flex flex-col gap-2">
+                    <div className="flex flex-col gap-1">
                       {lastLinks.map(link => (
-                        <a key={link.url} href={link.url} target="_blank" rel="noopener noreferrer" className="text-sm underline text-foreground/80 hover:text-foreground">
+                        <a key={link.url} href={link.url} target="_blank" rel="noopener noreferrer" className="text-xs underline text-foreground/80 hover:text-foreground">
                           {link.display}
                         </a>
                       ))}
@@ -440,9 +440,9 @@ const Index = () => {
             {/* Selected Summary */}
             <Card className="shadow-card">
               <CardHeader>
-                <CardTitle className="text-lg">Search Summary</CardTitle>
+                <CardTitle className="text-base">Search Summary</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-3">
+              <CardContent className="space-y-2">
                 <div>
                   <span className="text-sm font-medium text-muted-foreground">Platforms:</span>
                   <div className="mt-1">
@@ -479,8 +479,8 @@ const Index = () => {
       </main>
 
       {/* Footer */}
-      <footer className="bg-white border-t border-border mt-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <footer className="bg-white border-t border-border mt-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="text-center">
             <p className="text-muted-foreground text-sm">
               © 2024 Customer Pain Point Research Tool. Built for researchers, marketers, and founders.
