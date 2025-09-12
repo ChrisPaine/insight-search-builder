@@ -404,39 +404,8 @@ const Index = () => {
             </Card>
           </div>
 
-          {/* Right Column - Query Preview & Search */}
+          {/* Right Column - Search */}
           <div className="space-y-6">
-            {/* Query Preview */}
-            <Card className="shadow-card">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Search className="w-5 h-5 text-research-blue" />
-                  Generated Query
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="bg-research-gray p-4 rounded-lg font-mono text-sm break-all border border-border">
-                  {generatedQuery || 'Enter a main topic to see the generated query...'}
-                </div>
-                <div className="mt-4 text-xs text-muted-foreground">
-                  This query will be used to search {searchEngine === 'google' ? 'Google' : searchEngine === 'duckduckgo' ? 'DuckDuckGo' : 'Bing'} for relevant discussions
-                </div>
-                <div className="mt-4 flex items-center gap-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => {
-                      if (!generatedQuery) return;
-                      navigator.clipboard.writeText(generatedQuery);
-                      toast({ title: 'Copied', description: 'Search query copied to clipboard.' });
-                    }}
-                  >
-                    Copy Query
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-
             {/* Search Button */}
             <Card className="shadow-card">
               <CardContent className="pt-6">
