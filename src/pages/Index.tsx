@@ -144,18 +144,24 @@ const Index = () => {
     const topicPart = `"${mainTopic.trim()}"`;
     const keywordsPart = additionalKeywords.trim() ? ` AND "${additionalKeywords.trim()}"` : '';
 
-    const platformParts = selectedPlatforms
-      .map(platformId => platforms.find(p => p.id === platformId)?.site)
+    // sites group
+    const siteParts = selectedPlatforms
+      .map((platformId) => platforms.find((p) => p.id === platformId)?.site)
       .filter(Boolean) as string[];
+    const sitesGroup = siteParts.length > 0 ? `(${siteParts.join(' OR ')})` : '';
 
-    const platformQuery = platformParts.length > 0 ? ` (${platformParts.join(' OR ')})` : '';
+    // reddit-specific inurl filter if reddit selected
+    const includeReddit = selectedPlatforms.includes('reddit');
+    const inurlGroup = includeReddit ? `(inurl:comments OR inurl:thread)` : '';
 
-    const phraseJoiner = searchEngine === 'google' ? '|' : ' OR ';
-    const phraseQuery = selectedPhrases.length > 0
-      ? ` (${selectedPhrases.map(phrase => `"${phrase}"`).join(phraseJoiner)})`
-      : '';
+    // phrases as intext for better Google matching
+    const phraseTokens = selectedPhrases.length > 0 ? selectedPhrases.map((p) => `intext:"${p}"`) : [];
+    const phrasesGroup = phraseTokens.length > 0 ? `(${phraseTokens.join(' OR ')})` : '';
 
-    const query = `${topicPart}${keywordsPart}${platformQuery}${phraseQuery}`;
+    // Assemble combined query with clear spacing
+    const parts = [topicPart + keywordsPart, sitesGroup, inurlGroup, phrasesGroup].filter(Boolean);
+    const query = parts.join(' ');
+
     setGeneratedQuery(query);
   };
 
