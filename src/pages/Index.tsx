@@ -42,7 +42,7 @@ const platforms: Platform[] = [
   {
     id: 'twitter',
     name: 'Twitter',
-    site: 'site:twitter.com OR site:x.com',
+    site: 'site:twitter.com|site:x.com',
     icon: <Globe className="w-4 h-4" />,
     color: 'text-research-blue-dark'
   },
@@ -144,23 +144,21 @@ const Index = () => {
     const topicPart = `"${mainTopic.trim()}"`;
     const keywordsPart = additionalKeywords.trim() ? ` AND "${additionalKeywords.trim()}"` : '';
 
-    // sites group
-    const siteParts = selectedPlatforms
-      .map((platformId) => platforms.find((p) => p.id === platformId)?.site)
+    // Build the single grouped query with pipes
+    const platformTokens = selectedPlatforms
+      .map((platformId) => {
+        if (platformId === 'reddit') return 'site:reddit.com inurl:comments|inurl:thread';
+        const siteStr = platforms.find((p) => p.id === platformId)?.site ?? '';
+        return siteStr.replace(/\s+OR\s+/g, '|');
+      })
       .filter(Boolean) as string[];
-    const sitesGroup = siteParts.length > 0 ? `(${siteParts.join(' OR ')})` : '';
 
-    // reddit-specific inurl filter if reddit selected
-    const includeReddit = selectedPlatforms.includes('reddit');
-    const inurlGroup = includeReddit ? `(inurl:comments OR inurl:thread)` : '';
+    // phrases with single intext prefix
+    const phrasesToken = selectedPhrases.length > 0 ? `intext:"${selectedPhrases.join('"|"')}"` : '';
 
-    // phrases as intext for better Google matching
-    const phraseTokens = selectedPhrases.length > 0 ? selectedPhrases.map((p) => `intext:"${p}"`) : [];
-    const phrasesGroup = phraseTokens.length > 0 ? `(${phraseTokens.join(' OR ')})` : '';
+    const groupedContent = [platformTokens.join(' | '), phrasesToken].filter(Boolean).join(' | ');
 
-    // Assemble combined query with clear spacing
-    const parts = [topicPart + keywordsPart, sitesGroup, inurlGroup, phrasesGroup].filter(Boolean);
-    const query = parts.join(' ');
+    const query = groupedContent ? `${topicPart}${keywordsPart} (${groupedContent})` : `${topicPart}${keywordsPart}`;
 
     setGeneratedQuery(query);
   };
