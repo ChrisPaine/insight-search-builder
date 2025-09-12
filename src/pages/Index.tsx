@@ -198,8 +198,12 @@ const Index = () => {
     }[searchEngine];
 
     // Use the already generated query from generateQuery function
-    const url = `${engineBase}${encodeURIComponent(generatedQuery)}`;
-    const display = `${engineBase}${generatedQuery}`;
+    const qRaw = generatedQuery;
+    const url =
+      searchEngine === 'google'
+        ? `${engineBase}${qRaw.replace(/\s/g, '+')}` // preserve quotes/parens/pipes, use + for spaces
+        : `${engineBase}${encodeURIComponent(qRaw)}`;
+    const display = `${engineBase}${qRaw}`;
     
     setLastLinks([{ name: 'Combined Search', url, display }]);
     
