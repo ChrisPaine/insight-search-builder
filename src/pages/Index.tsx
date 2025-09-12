@@ -35,7 +35,7 @@ const platforms: Platform[] = [
   {
     id: 'discord',
     name: 'Discord',
-    site: 'site:discord.gg',
+    site: 'site:discord.com OR site:discord.gg OR site:disboard.org',
     icon: <Hash className="w-4 h-4" />,
     color: 'text-research-blue-dark'
   },
@@ -215,12 +215,14 @@ const Index = () => {
       let platformToken = '';
       if (platformId === 'reddit') {
         platformToken = 'site:reddit.com inurl:comments|inurl:thread';
+      } else if (platformId === 'discord') {
+        platformToken = 'site:discord.com OR site:discord.gg OR site:disboard.org';
       } else {
         platformToken = platform.site.replace(/\s+OR\s+/g, '|');
       }
 
       const phrasesToken = selectedPhrases.length > 0 ? `intext:"${selectedPhrases.join('"|"')}"` : '';
-      const groupedContent = [platformToken, phrasesToken].filter(Boolean).join(' | ');
+      const groupedContent = [platformToken, phrasesToken].filter(Boolean).join(' ');
       const platformQuery = groupedContent ? `${topicPart}${keywordsPart} (${groupedContent})` : `${topicPart}${keywordsPart}`;
 
       const url = searchEngine === 'google'
