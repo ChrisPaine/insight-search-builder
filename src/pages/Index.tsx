@@ -205,50 +205,30 @@ const Index = () => {
       return;
     }
 
-    const links: { name: string; url: string; display: string }[] = [];
-
     const engineBase = {
       google: 'https://www.google.com/search?q=',
       duckduckgo: 'https://duckduckgo.com/?q=',
       bing: 'https://www.bing.com/search?q=',
     }[searchEngine];
 
-    const engineBaseDisplay = engineBase; // display human-readable query
-
-    // Create one search per platform using the properly formatted query
-    selectedPlatforms.forEach((platformId) => {
-      const platform = platforms.find(p => p.id === platformId);
-      if (!platform) return;
-      
-      // Build platform-specific query using the same logic as generateQuery
-      const topicPart = `"${mainTopic.trim()}"`;
-      const keywordsPart = additionalKeywords.trim() ? ` AND "${additionalKeywords.trim()}"` : '';
-      const phraseJoiner = searchEngine === 'google' ? '|' : ' OR ';
-      const phrasePart = selectedPhrases.length > 0
-        ? ` (${selectedPhrases.map(p => `"${p}"`).join(phraseJoiner)})`
-        : '';
-      
-      const platformSpecificQuery = `${topicPart}${keywordsPart} (${platform.site})${phrasePart}`;
-      const url = `${engineBase}${encodeURIComponent(platformSpecificQuery)}`;
-      const display = `${engineBaseDisplay}${platformSpecificQuery}`;
-      
-      links.push({ name: platform.name, url, display });
-      
-      try {
-        const w = window.open(url, '_blank', 'noopener,noreferrer');
-        if (!w) {
-          console.warn('Popup blocked for', url);
-        }
-      } catch (e) {
-        console.error('Failed to open window', e);
+    // Use the already generated query from generateQuery function
+    const url = `${engineBase}${encodeURIComponent(generatedQuery)}`;
+    const display = `${engineBase}${generatedQuery}`;
+    
+    setLastLinks([{ name: 'Combined Search', url, display }]);
+    
+    try {
+      const w = window.open(url, '_blank', 'noopener,noreferrer');
+      if (!w) {
+        console.warn('Popup blocked for', url);
       }
-    });
-
-    setLastLinks(links);
+    } catch (e) {
+      console.error('Failed to open window', e);
+    }
 
     toast({
       title: 'Search initiated',
-      description: `Opening ${selectedPlatforms.length} ${searchEngine} search tab${selectedPlatforms.length > 1 ? 's' : ''}`,
+      description: `Opening ${searchEngine} search with combined query`,
     });
   };
   const clearAllPhrases = () => {
@@ -453,7 +433,7 @@ const Index = () => {
                   Search Now
                 </Button>
                 <p className="text-xs text-muted-foreground text-center mt-3">
-                  Opens {searchEngine === 'google' ? 'Google' : searchEngine === 'duckduckgo' ? 'DuckDuckGo' : 'Bing'} results in new tabs — one per platform
+                  Opens {searchEngine === 'google' ? 'Google' : searchEngine === 'duckduckgo' ? 'DuckDuckGo' : 'Bing'} search with combined query
                 </p>
                 {lastLinks.length > 0 && (
                   <div className="mt-4">
