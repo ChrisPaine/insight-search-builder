@@ -205,13 +205,6 @@ const Index = () => {
       return;
     }
 
-    const phraseJoiner = searchEngine === 'google' ? '|' : ' OR ';
-    const topicPart = `"${mainTopic.trim()}"`;
-    const keywordsPart = additionalKeywords.trim() ? ` AND "${additionalKeywords.trim()}"` : '';
-    const phrasePart = selectedPhrases.length > 0
-      ? ` (${selectedPhrases.map(p => `"${p}"`).join(phraseJoiner)})`
-      : '';
-
     const links: { name: string; url: string }[] = [];
 
     const engineBase = {
@@ -220,17 +213,27 @@ const Index = () => {
       bing: 'https://www.bing.com/search?q=',
     }[searchEngine];
 
-    // Open one tab per selected platform
+    // Create one search per platform using the properly formatted query
     selectedPlatforms.forEach((platformId) => {
       const platform = platforms.find(p => p.id === platformId);
       if (!platform) return;
-      const perPlatformQuery = `${topicPart}${keywordsPart} (${platform.site})${phrasePart}`;
-      const url = `${engineBase}${encodeURIComponent(perPlatformQuery)}`;
+      
+      // Build platform-specific query using the same logic as generateQuery
+      const topicPart = `"${mainTopic.trim()}"`;
+      const keywordsPart = additionalKeywords.trim() ? ` AND "${additionalKeywords.trim()}"` : '';
+      const phraseJoiner = searchEngine === 'google' ? '|' : ' OR ';
+      const phrasePart = selectedPhrases.length > 0
+        ? ` (${selectedPhrases.map(p => `"${p}"`).join(phraseJoiner)})`
+        : '';
+      
+      const platformSpecificQuery = `${topicPart}${keywordsPart} (${platform.site})${phrasePart}`;
+      const url = `${engineBase}${encodeURIComponent(platformSpecificQuery)}`;
+      
       links.push({ name: platform.name, url });
+      
       try {
         const w = window.open(url, '_blank', 'noopener,noreferrer');
         if (!w) {
-          // Popup blocked
           console.warn('Popup blocked for', url);
         }
       } catch (e) {
@@ -240,10 +243,9 @@ const Index = () => {
 
     setLastLinks(links);
 
-    // If running in sandbox where Google is blocked, guide the user
     toast({
-      title: 'Links ready',
-      description: `If new tabs didn\'t open, use the quick links below or switch engine to DuckDuckGo/Bing.`,
+      title: 'Search initiated',
+      description: `Opening ${selectedPlatforms.length} ${searchEngine} search tab${selectedPlatforms.length > 1 ? 's' : ''}`,
     });
   };
   const clearAllPhrases = () => {
