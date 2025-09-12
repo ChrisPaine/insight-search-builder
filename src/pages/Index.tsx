@@ -217,9 +217,19 @@ const Index = () => {
       const w = window.open(url, '_blank', 'noopener,noreferrer');
       if (!w) {
         console.warn('Popup blocked for', url);
+        // Fallbacks when popups are blocked
+        try {
+          // Try to navigate current/top window
+          (window.top ?? window).location.assign(url);
+        } catch (err) {
+          // As final fallback, keep quick link visible and copy to clipboard
+          navigator.clipboard?.writeText(display).catch(() => {});
+          toast({ title: 'Popup blocked', description: 'Click the Quick Link below to open your search.' });
+        }
       }
     } catch (e) {
       console.error('Failed to open window', e);
+      toast({ title: 'Could not open search', description: 'Use the Quick Link below to open it manually.' });
     }
 
     toast({
