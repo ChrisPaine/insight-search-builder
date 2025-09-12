@@ -104,13 +104,27 @@ const Index = () => {
   const [mainTopic, setMainTopic] = useState('');
   const [additionalKeywords, setAdditionalKeywords] = useState('');
   const [generatedQuery, setGeneratedQuery] = useState('');
-  const [searchEngine, setSearchEngine] = useState<'google' | 'duckduckgo' | 'bing'>('google');
+  const [searchEngine, setSearchEngine] = useState<'google' | 'duckduckgo' | 'bing'>('duckduckgo');
   const [lastLinks, setLastLinks] = useState<{ name: string; url: string }[]>([]);
 
   // Update query whenever inputs change
   useEffect(() => {
     generateQuery();
   }, [selectedPlatforms, selectedPhrases, mainTopic, additionalKeywords, searchEngine]);
+
+  // Persist search engine preference
+  useEffect(() => {
+    try {
+      localStorage.setItem('cpprt_engine', searchEngine);
+    } catch {}
+  }, [searchEngine]);
+
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem('cpprt_engine') as 'google' | 'duckduckgo' | 'bing' | null;
+      if (saved) setSearchEngine(saved);
+    } catch {}
+  }, []);
 
   // Basic SEO for the tool
   useEffect(() => {
