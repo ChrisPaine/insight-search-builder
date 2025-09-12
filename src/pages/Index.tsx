@@ -144,7 +144,7 @@ const Index = () => {
     const topicPart = `"${mainTopic.trim()}"`;
     const keywordsPart = additionalKeywords.trim() ? ` AND "${additionalKeywords.trim()}"` : '';
 
-    // Build the single grouped query with pipes
+    // Keep the combined query for preview, but build individual platform queries for search
     const platformTokens = selectedPlatforms
       .map((platformId) => {
         if (platformId === 'reddit') return 'site:reddit.com inurl:comments|inurl:thread';
@@ -201,38 +201,50 @@ const Index = () => {
       bing: 'https://www.bing.com/search?q=',
     }[searchEngine];
 
-    // Use the already generated query from generateQuery function
-    const qRaw = generatedQuery;
-    const url =
-      searchEngine === 'google'
-        ? `${engineBase}${qRaw.replace(/\s/g, '+')}` // preserve quotes/parens/pipes, use + for spaces
-        : `${engineBase}${encodeURIComponent(qRaw)}`;
-    const display = `${engineBase}${qRaw}`;
-    
-    setLastLinks([{ name: 'Combined Search', url, display }]);
-    
-    try {
-      const w = window.open(url, '_blank', 'noopener,noreferrer');
-      if (!w) {
-        console.warn('Popup blocked for', url);
-        // Fallbacks when popups are blocked
-        try {
-          // Try to navigate current/top window
-          (window.top ?? window).location.assign(url);
-        } catch (err) {
-          // As final fallback, keep quick link visible and copy to clipboard
-          navigator.clipboard?.writeText(display).catch(() => {});
-          toast({ title: 'Popup blocked', description: 'Click the Quick Link below to open your search.' });
-        }
+    const links: { name: string; url: string; display: string }[] = [];
+
+    // Open one tab per platform with individual platform queries
+    selectedPlatforms.forEach((platformId) => {
+      const platform = platforms.find(p => p.id === platformId);
+      if (!platform) return;
+
+      const topicPart = `"${mainTopic.trim()}"`;
+      const keywordsPart = additionalKeywords.trim() ? ` AND "${additionalKeywords.trim()}"` : '';
+      
+      // Build platform-specific query
+      let platformToken = '';
+      if (platformId === 'reddit') {
+        platformToken = 'site:reddit.com inurl:comments|inurl:thread';
+      } else {
+        platformToken = platform.site.replace(/\s+OR\s+/g, '|');
       }
-    } catch (e) {
-      console.error('Failed to open window', e);
-      toast({ title: 'Could not open search', description: 'Use the Quick Link below to open it manually.' });
-    }
+
+      const phrasesToken = selectedPhrases.length > 0 ? `intext:"${selectedPhrases.join('"|"')}"` : '';
+      const groupedContent = [platformToken, phrasesToken].filter(Boolean).join(' | ');
+      const platformQuery = groupedContent ? `${topicPart}${keywordsPart} (${groupedContent})` : `${topicPart}${keywordsPart}`;
+
+      const url = searchEngine === 'google'
+        ? `${engineBase}${platformQuery.replace(/\s/g, '+')}`
+        : `${engineBase}${encodeURIComponent(platformQuery)}`;
+      const display = `${engineBase}${platformQuery}`;
+
+      links.push({ name: platform.name, url, display });
+
+      try {
+        const w = window.open(url, '_blank', 'noopener,noreferrer');
+        if (!w) {
+          console.warn('Popup blocked for', url);
+        }
+      } catch (e) {
+        console.error('Failed to open window', e);
+      }
+    });
+
+    setLastLinks(links);
 
     toast({
       title: 'Search initiated',
-      description: `Opening ${searchEngine} search with combined query`,
+      description: `Opening ${selectedPlatforms.length} ${searchEngine} tab${selectedPlatforms.length !== 1 ? 's' : ''}`,
     });
   };
   const clearAllPhrases = () => {
@@ -437,7 +449,7 @@ const Index = () => {
                   Search Now
                 </Button>
                 <p className="text-xs text-muted-foreground text-center mt-3">
-                  Opens {searchEngine === 'google' ? 'Google' : searchEngine === 'duckduckgo' ? 'DuckDuckGo' : 'Bing'} search with combined query
+                  Opens {selectedPlatforms.length} separate {searchEngine === 'google' ? 'Google' : searchEngine === 'duckduckgo' ? 'DuckDuckGo' : 'Bing'} tab{selectedPlatforms.length !== 1 ? 's' : ''} — one per platform
                 </p>
                 {lastLinks.length > 0 && (
                   <div className="mt-4">
