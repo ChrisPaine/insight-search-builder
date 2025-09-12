@@ -272,40 +272,8 @@ const Index = () => {
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-          {/* Left Column - Platform Selection & Phrases */}
+          {/* Left Column - Phrases & Research Parameters */}
           <div className="lg:col-span-3 space-y-4">
-            {/* Platform Selection */}
-            <Card className="shadow-card">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Globe className="w-5 h-5 text-research-blue" />
-                  Select Platforms
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
-                  {platforms.map((platform) => (
-                    <label
-                      key={platform.id}
-                      className="flex items-center space-x-2 p-2 rounded-lg border border-border hover:bg-research-blue-light cursor-pointer transition-all duration-200"
-                    >
-                      <Checkbox
-                        checked={selectedPlatforms.includes(platform.id)}
-                        onCheckedChange={() => togglePlatform(platform.id)}
-                      />
-                      <div className="flex items-center space-x-1">
-                        <span className={platform.color}>{platform.icon}</span>
-                        <span className="font-medium text-sm">{platform.name}</span>
-                      </div>
-                    </label>
-                  ))}
-                </div>
-                <div className="mt-3 text-sm text-muted-foreground">
-                  Selected: {selectedPlatforms.length} platform{selectedPlatforms.length !== 1 ? 's' : ''}
-                </div>
-              </CardContent>
-            </Card>
-
             {/* Search Phrase Builder */}
             <Card className="shadow-card">
               <CardHeader>
@@ -404,8 +372,40 @@ const Index = () => {
             </Card>
           </div>
 
-          {/* Right Column - Search */}
+          {/* Right Column - Platform Selection & Search */}
           <div className="space-y-4">
+            {/* Platform Selection */}
+            <Card className="shadow-card">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Globe className="w-5 h-5 text-research-blue" />
+                  Select Platforms
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 gap-3">
+                  {platforms.map((platform) => (
+                    <label
+                      key={platform.id}
+                      className="flex items-center space-x-2 p-2 rounded-lg border border-border hover:bg-research-blue-light cursor-pointer transition-all duration-200"
+                    >
+                      <Checkbox
+                        checked={selectedPlatforms.includes(platform.id)}
+                        onCheckedChange={() => togglePlatform(platform.id)}
+                      />
+                      <div className="flex items-center space-x-1">
+                        <span className={platform.color}>{platform.icon}</span>
+                        <span className="font-medium text-sm">{platform.name}</span>
+                      </div>
+                    </label>
+                  ))}
+                </div>
+                <div className="mt-3 text-sm text-muted-foreground">
+                  Selected: {selectedPlatforms.length} platform{selectedPlatforms.length !== 1 ? 's' : ''}
+                </div>
+              </CardContent>
+            </Card>
+
             {/* Search Button */}
             <Card className="shadow-card">
               <CardContent className="pt-4">
