@@ -112,20 +112,6 @@ const Index = () => {
     generateQuery();
   }, [selectedPlatforms, selectedPhrases, mainTopic, additionalKeywords, searchEngine]);
 
-  // Persist search engine preference
-  useEffect(() => {
-    try {
-      localStorage.setItem('cpprt_engine', searchEngine);
-    } catch {}
-  }, [searchEngine]);
-
-  useEffect(() => {
-    try {
-      const saved = localStorage.getItem('cpprt_engine') as 'google' | 'duckduckgo' | 'bing' | null;
-      if (saved) setSearchEngine(saved);
-    } catch {}
-  }, []);
-
   // Basic SEO for the tool
   useEffect(() => {
     const title = 'Customer Pain Point Research Tool | Social Research Query Builder';
