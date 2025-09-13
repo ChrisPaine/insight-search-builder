@@ -372,36 +372,38 @@ const Index = () => {
                     className="w-full"
                   />
                 </div>
-                <div>
-                  <Label className="text-sm font-medium mb-2 block">Search Engine</Label>
-                  <Select value={searchEngine} onValueChange={(v) => setSearchEngine(v as 'google' | 'duckduckgo' | 'bing')}>
-                    <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Google" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="google">Google</SelectItem>
-                      <SelectItem value="duckduckgo">DuckDuckGo</SelectItem>
-                      <SelectItem value="bing">Bing</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <p className="text-xs text-muted-foreground mt-1">If Google is blocked, choose DuckDuckGo or Bing.</p>
-                </div>
-                <div>
-                  <Label className="text-sm font-medium mb-2 block">Time Filter</Label>
-                  <Select value={timeFilter} onValueChange={(v) => setTimeFilter(v as typeof timeFilter)}>
-                    <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Any time" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="any">Any time</SelectItem>
-                      <SelectItem value="hour">Past hour</SelectItem>
-                      <SelectItem value="day">Past 24 hours</SelectItem>
-                      <SelectItem value="week">Past week</SelectItem>
-                      <SelectItem value="month">Past month</SelectItem>
-                      <SelectItem value="year">Past year</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <p className="text-xs text-muted-foreground mt-1">Filter results by time (Google only).</p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <Label className="text-sm font-medium mb-2 block">Search Engine</Label>
+                    <Select value={searchEngine} onValueChange={(v) => setSearchEngine(v as 'google' | 'duckduckgo' | 'bing')}>
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Google" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="google">Google</SelectItem>
+                        <SelectItem value="duckduckgo">DuckDuckGo</SelectItem>
+                        <SelectItem value="bing">Bing</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <p className="text-xs text-muted-foreground mt-1">If Google is blocked, choose DuckDuckGo or Bing.</p>
+                  </div>
+                  <div>
+                    <Label className="text-sm font-medium mb-2 block">Time Filter</Label>
+                    <Select value={timeFilter} onValueChange={(v) => setTimeFilter(v as typeof timeFilter)}>
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Any time" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="any">Any time</SelectItem>
+                        <SelectItem value="hour">Past hour</SelectItem>
+                        <SelectItem value="day">Past 24 hours</SelectItem>
+                        <SelectItem value="week">Past week</SelectItem>
+                        <SelectItem value="month">Past month</SelectItem>
+                        <SelectItem value="year">Past year</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <p className="text-xs text-muted-foreground mt-1">Filter results by time (Google only).</p>
+                  </div>
                 </div>
               </CardContent>
             </Card>
