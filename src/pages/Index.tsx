@@ -308,8 +308,8 @@ const Index = () => {
             {/* Main Topic and Keywords */}
             <Card className="shadow-card">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-lg">
-                  <Hash className="w-5 h-5 text-research-blue" />
+                <CardTitle className="flex items-center gap-2 text-xl">
+                  <Hash className="w-6 h-6 text-research-blue" />
                   Research Topic
                 </CardTitle>
               </CardHeader>
