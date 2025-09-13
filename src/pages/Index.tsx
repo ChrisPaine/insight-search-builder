@@ -599,40 +599,50 @@ const Index = () => {
                 </div>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-1 gap-3">
-                  {platforms.map((platform) => {
-                    const platformElement = (
-                      <label
-                        key={platform.id}
-                        className="flex items-center space-x-2 p-2 rounded-lg border border-border hover:bg-research-blue-light cursor-pointer transition-all duration-200"
-                      >
-                        <Checkbox
-                          checked={selectedPlatforms.includes(platform.id)}
-                          onCheckedChange={() => togglePlatform(platform.id)}
-                        />
-                        <div className="flex items-center space-x-1">
-                          <span className={platform.color}>{platform.icon}</span>
-                          <span className="font-medium text-sm">{platform.name}</span>
-                        </div>
-                      </label>
-                    );
+                <Collapsible defaultOpen={true}>
+                  <CollapsibleTrigger className="w-full">
+                    <div className="flex items-center justify-between p-2 bg-research-gray rounded-lg hover:bg-research-blue-light transition-colors">
+                      <h3 className="font-semibold text-left text-sm">Available Platforms</h3>
+                      <ChevronDown className="w-4 h-4" />
+                    </div>
+                  </CollapsibleTrigger>
+                  <CollapsibleContent className="mt-2">
+                    <div className="p-2 bg-white rounded-lg border border-border space-y-2">
+                      {platforms.map((platform) => {
+                        const platformElement = (
+                          <label
+                            key={platform.id}
+                            className="flex items-center space-x-2 p-2 rounded-lg border border-border hover:bg-research-blue-light cursor-pointer transition-all duration-200"
+                          >
+                            <Checkbox
+                              checked={selectedPlatforms.includes(platform.id)}
+                              onCheckedChange={() => togglePlatform(platform.id)}
+                            />
+                            <div className="flex items-center space-x-1">
+                              <span className={platform.color}>{platform.icon}</span>
+                              <span className="font-medium text-sm">{platform.name}</span>
+                            </div>
+                          </label>
+                        );
 
-                    if (platform.id === 'google-trends') {
-                      return (
-                        <Tooltip key={platform.id}>
-                          <TooltipTrigger asChild>
-                            {platformElement}
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <p>Uses Main Topic only! You'll have to change on Google Trends tab to Topic not Search term.</p>
-                          </TooltipContent>
-                        </Tooltip>
-                      );
-                    }
+                        if (platform.id === 'google-trends') {
+                          return (
+                            <Tooltip key={platform.id}>
+                              <TooltipTrigger asChild>
+                                {platformElement}
+                              </TooltipTrigger>
+                              <TooltipContent>
+                                <p>Uses Main Topic only! You'll have to change on Google Trends tab to Topic not Search term.</p>
+                              </TooltipContent>
+                            </Tooltip>
+                          );
+                        }
 
-                    return platformElement;
-                  })}
-                </div>
+                        return platformElement;
+                      })}
+                    </div>
+                  </CollapsibleContent>
+                </Collapsible>
               </CardContent>
             </Card>
 
