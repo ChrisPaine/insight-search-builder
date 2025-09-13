@@ -190,6 +190,7 @@ const Index = () => {
   const [showTutorial, setShowTutorial] = useState(false);
   const [tutorialStep, setTutorialStep] = useState(0);
   const [redditAdvancedOpen, setRedditAdvancedOpen] = useState(false);
+  const [spotlightTick, setSpotlightTick] = useState(0);
 
   const tutorialSteps = [
     {
@@ -206,6 +207,8 @@ const Index = () => {
       action: () => {
         setSelectedPlatforms(['reddit']);
         setPlatformSelectorOpen(true);
+        // Recalculate spotlight after expansion so the whole card is highlighted
+        setTimeout(() => setSpotlightTick((t) => t + 1), 400);
       }
     },
     {
