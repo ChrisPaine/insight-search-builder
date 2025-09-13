@@ -12,7 +12,6 @@ import { Label } from '@/components/ui/label'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useAuth } from './AuthProvider'
 import { useToast } from '@/hooks/use-toast'
-import { supabase } from '@/lib/supabase'
 
 interface AuthDialogProps {
   open: boolean
@@ -23,11 +22,11 @@ export const AuthDialog: React.FC<AuthDialogProps> = ({ open, onOpenChange }) =>
   const [isLoading, setIsLoading] = useState(false)
   const [signInData, setSignInData] = useState({ email: '', password: '' })
   const [signUpData, setSignUpData] = useState({ email: '', password: '', fullName: '' })
-  const { signIn, signUp } = useAuth()
+  const { signIn, signUp, isSupabaseConnected } = useAuth()
   const { toast } = useToast()
 
   // Check if Supabase is connected
-  if (!supabase) {
+  if (!isSupabaseConnected) {
     return (
       <Dialog open={open} onOpenChange={onOpenChange}>
         <DialogContent className="sm:max-w-[425px]">

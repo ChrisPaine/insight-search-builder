@@ -27,9 +27,13 @@ export const SavedQueriesDialog: React.FC<SavedQueriesDialogProps> = ({
   onLoadQuery 
 }) => {
   const { queries, loading, deleteQuery } = useQueries()
-  const { user } = useAuth()
+  const { user, isSupabaseConnected } = useAuth()
   const { toast } = useToast()
   const [deletingId, setDeletingId] = useState<string | null>(null)
+
+  if (!user || !isSupabaseConnected) {
+    return null
+  }
 
   const handleDelete = async (queryId: string) => {
     setDeletingId(queryId)
@@ -66,10 +70,6 @@ export const SavedQueriesDialog: React.FC<SavedQueriesDialogProps> = ({
       month: 'short',
       day: 'numeric',
     })
-  }
-
-  if (!user) {
-    return null
   }
 
   return (

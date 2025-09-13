@@ -11,7 +11,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge'
 import { Check, Star } from 'lucide-react'
 import { useAuth } from '@/components/auth/AuthProvider'
-import { supabase } from '@/lib/supabase'
 
 interface PaywallDialogProps {
   open: boolean
@@ -21,10 +20,10 @@ interface PaywallDialogProps {
 
 export const PaywallDialog: React.FC<PaywallDialogProps> = ({ open, onOpenChange, feature }) => {
   const [isLoading, setIsLoading] = useState(false)
-  const { user } = useAuth()
+  const { user, isSupabaseConnected } = useAuth()
 
   // Check if Supabase is connected
-  if (!supabase) {
+  if (!isSupabaseConnected) {
     return (
       <Dialog open={open} onOpenChange={onOpenChange}>
         <DialogContent className="sm:max-w-[425px]">

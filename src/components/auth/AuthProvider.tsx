@@ -12,6 +12,7 @@ interface AuthContextType {
   signOut: () => Promise<void>
   isPro: boolean
   isPremium: boolean
+  isSupabaseConnected: boolean
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
@@ -29,6 +30,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [profile, setProfile] = useState<Profile | null>(null)
   const [session, setSession] = useState<Session | null>(null)
   const [loading, setLoading] = useState(true)
+  
+  const isSupabaseConnected = !!supabase
 
   useEffect(() => {
     // Only initialize auth if Supabase is connected
@@ -63,7 +66,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     })
 
     return () => subscription.unsubscribe()
-  }, [])
+  }, [isSupabaseConnected])
 
   const fetchProfile = async (userId: string) => {
     if (!supabase) {
@@ -137,6 +140,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     signOut,
     isPro,
     isPremium,
+    isSupabaseConnected,
   }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
