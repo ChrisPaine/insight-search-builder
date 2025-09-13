@@ -102,6 +102,14 @@ All colors MUST be HSL.
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
     --ring: 212.7 26.8% 83.9%;
+    
+    /* Research tool specific tokens - dark mode */
+    --research-blue: 212 85% 65%;
+    --research-blue-light: 212 45% 25%;
+    --research-blue-dark: 212 85% 75%;
+    --research-gray: 217.2 32.6% 17.5%;
+    --research-gray-dark: 215 20.2% 65.1%;
+    
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
