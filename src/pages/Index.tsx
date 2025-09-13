@@ -105,12 +105,13 @@ const Index = () => {
   const [additionalKeywords, setAdditionalKeywords] = useState('');
   const [generatedQuery, setGeneratedQuery] = useState('');
   const [searchEngine, setSearchEngine] = useState<'google' | 'duckduckgo' | 'bing'>('google');
+  const [timeFilter, setTimeFilter] = useState<'any' | 'hour' | 'day' | 'week' | 'month' | 'year'>('any');
   const [lastLinks, setLastLinks] = useState<{ name: string; url: string; display: string }[]>([]);
 
   // Update query whenever inputs change
   useEffect(() => {
     generateQuery();
-  }, [selectedPlatforms, selectedPhrases, mainTopic, additionalKeywords, searchEngine]);
+  }, [selectedPlatforms, selectedPhrases, mainTopic, additionalKeywords, searchEngine, timeFilter]);
 
   // Basic SEO for the tool
   useEffect(() => {
@@ -227,9 +228,24 @@ const Index = () => {
       const groupedContent = [platformToken, phrasesToken].filter(Boolean).join(' ');
       const platformQuery = groupedContent ? `${topicPart}${keywordsPart} (${groupedContent})` : `${topicPart}${keywordsPart}`;
 
-      const url = searchEngine === 'google'
+      // Build URL with time filter for Google
+      let baseUrl = searchEngine === 'google'
         ? `${engineBase}${platformQuery.replace(/\s/g, '+')}`
         : `${engineBase}${encodeURIComponent(platformQuery)}`;
+      
+      // Add time filter parameter for Google
+      if (searchEngine === 'google' && timeFilter !== 'any') {
+        const timeParams = {
+          hour: 'qdr:h',
+          day: 'qdr:d', 
+          week: 'qdr:w',
+          month: 'qdr:m',
+          year: 'qdr:y'
+        };
+        baseUrl += `&tbs=${timeParams[timeFilter]}`;
+      }
+
+      const url = baseUrl;
       const display = `${engineBase}${platformQuery}`;
 
       links.push({ name: platform.name, url, display });
@@ -369,6 +385,23 @@ const Index = () => {
                     </SelectContent>
                   </Select>
                   <p className="text-xs text-muted-foreground mt-1">If Google is blocked, choose DuckDuckGo or Bing.</p>
+                </div>
+                <div>
+                  <Label className="text-sm font-medium mb-2 block">Time Filter</Label>
+                  <Select value={timeFilter} onValueChange={(v) => setTimeFilter(v as typeof timeFilter)}>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Any time" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="any">Any time</SelectItem>
+                      <SelectItem value="hour">Past hour</SelectItem>
+                      <SelectItem value="day">Past 24 hours</SelectItem>
+                      <SelectItem value="week">Past week</SelectItem>
+                      <SelectItem value="month">Past month</SelectItem>
+                      <SelectItem value="year">Past year</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <p className="text-xs text-muted-foreground mt-1">Filter results by time (Google only).</p>
                 </div>
               </CardContent>
             </Card>
