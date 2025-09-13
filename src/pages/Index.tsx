@@ -42,7 +42,7 @@ const platforms: Platform[] = [
   {
     id: 'twitter',
     name: 'Twitter',
-    site: 'site:twitter.com|site:x.com',
+    site: 'site:twitter.com',
     icon: <Globe className="w-4 h-4" />,
     color: 'text-research-blue-dark'
   },
@@ -217,6 +217,8 @@ const Index = () => {
         platformToken = 'site:reddit.com inurl:comments|inurl:thread';
       } else if (platformId === 'discord') {
         platformToken = 'site:discord.com OR site:discord.gg OR site:disboard.org';
+      } else if (platformId === 'twitter') {
+        platformToken = 'site:twitter.com';
       } else {
         platformToken = platform.site.replace(/\s+OR\s+/g, '|');
       }
