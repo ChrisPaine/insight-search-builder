@@ -540,71 +540,6 @@ const Index = () => {
                 ))}
               </CardContent>
             </Card>
-
-            {/* Search Settings */}
-            <Card className="shadow-card">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-lg">
-                  <Search className="w-5 h-5 text-research-blue" />
-                  Search Settings
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div>
-                    <Label className="text-sm font-medium mb-2 block">Search Engine</Label>
-                    <Select value={searchEngine} onValueChange={(v) => setSearchEngine(v as 'google' | 'duckduckgo' | 'bing')}>
-                      <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Google" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="google">Google</SelectItem>
-                        <SelectItem value="duckduckgo">DuckDuckGo</SelectItem>
-                        <SelectItem value="bing">Bing</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <p className="text-xs text-muted-foreground mt-1">If Google is blocked, choose DuckDuckGo or Bing.</p>
-                  </div>
-                  <div>
-                    <Label className="text-sm font-medium mb-2 block">Time Filter</Label>
-                    <Select value={timeFilter} onValueChange={(v) => setTimeFilter(v as typeof timeFilter)}>
-                      <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Any time" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="any">Any time</SelectItem>
-                        <SelectItem value="hour">Past hour</SelectItem>
-                        <SelectItem value="day">Past 24 hours</SelectItem>
-                        <SelectItem value="week">Past week</SelectItem>
-                        <SelectItem value="month">Past month</SelectItem>
-                        <SelectItem value="year">Past year</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <p className="text-xs text-muted-foreground mt-1">Filter results by time (Google only).</p>
-                  </div>
-                </div>
-                
-                {/* Google Trends Category Selection - only show when Google Trends is selected */}
-                {selectedPlatforms.includes('google-trends') && (
-                  <div className="pt-3 border-t border-border">
-                    <Label className="text-sm font-medium mb-2 block">Google Trends Category</Label>
-                    <Select value={googleTrendsCategory} onValueChange={setGoogleTrendsCategory}>
-                      <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Select category" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {googleTrendsCategories.map((category) => (
-                          <SelectItem key={category.id} value={category.id}>
-                            {category.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <p className="text-xs text-muted-foreground mt-1">Choose a category to get more targeted trends data for your topic.</p>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
           </div>
 
           {/* Right Column - Platform Selection & Search */}
@@ -658,76 +593,66 @@ const Index = () => {
               </CardContent>
             </Card>
 
-            {/* Search Summary */}
+            {/* Search Settings */}
             <Card className="shadow-card">
               <CardHeader>
-                <CardTitle className="text-base">Search Summary</CardTitle>
+                <CardTitle className="flex items-center gap-2 text-lg">
+                  <Search className="w-5 h-5 text-research-blue" />
+                  Search Settings
+                </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-2">
-                <div>
-                  <span className="text-sm font-medium text-muted-foreground">Platforms:</span>
-                  <div className="mt-1">
-                    {selectedPlatforms.length > 0 ? (
-                      <div className="flex flex-wrap gap-1">
-                        {selectedPlatforms.map(platformId => {
-                          const platform = platforms.find(p => p.id === platformId);
-                          return platform ? (
-                            <Badge key={platformId} variant="secondary" className="text-xs">
-                              {platform.name}
-                            </Badge>
-                          ) : null;
-                        })}
-                      </div>
-                    ) : (
-                      <span className="text-xs text-muted-foreground">None selected</span>
-                    )}
-                  </div>
-                </div>
-                <div>
-                  <span className="text-sm font-medium text-muted-foreground">Phrases:</span>
-                  <div className="mt-1">
-                    {selectedPhrases.length > 0 ? (
-                      <div className="flex flex-wrap gap-1">
-                        {selectedPhrases.map(phrase => (
-                          <Badge key={phrase} variant="outline" className="text-xs">
-                            {phrase}
-                          </Badge>
-                        ))}
-                      </div>
-                    ) : (
-                      <span className="text-xs text-muted-foreground">None selected</span>
-                    )}
-                  </div>
-                </div>
-                <div>
-                  <span className="text-sm font-medium text-muted-foreground">Generated Query:</span>
-                  <div className="mt-1 p-2 bg-muted rounded text-xs font-mono break-words">
-                    {generatedQuery || "Enter a main topic to generate a query"}
-                  </div>
-                </div>
-                {lastLinks.length > 0 && (
+              <CardContent className="space-y-3">
+                <div className="grid grid-cols-1 gap-3">
                   <div>
-                    <span className="text-sm font-medium text-muted-foreground">Quick Links:</span>
-                    <p className="text-xs text-muted-foreground mb-2">Use if pop-ups are blocked:</p>
-                     <div className="flex flex-col gap-1">
-                       {lastLinks.map(link => {
-                         // Create abbreviated display URL
-                         let abbreviatedUrl = '';
-                         if (searchEngine === 'google') {
-                           abbreviatedUrl = `www.google.com/${link.name.toLowerCase()}...`;
-                         } else if (searchEngine === 'bing') {
-                           abbreviatedUrl = `www.bing.com/${link.name.toLowerCase()}...`;
-                         } else if (searchEngine === 'duckduckgo') {
-                           abbreviatedUrl = `duckduckgo.com/${link.name.toLowerCase()}...`;
-                         }
-                         
-                         return (
-                           <a key={link.url} href={link.url} target="_blank" rel="noopener noreferrer" className="text-xs underline text-foreground/80 hover:text-foreground">
-                             {link.name}: {abbreviatedUrl}
-                           </a>
-                         );
-                       })}
-                     </div>
+                    <Label className="text-sm font-medium mb-2 block">Search Engine</Label>
+                    <Select value={searchEngine} onValueChange={(v) => setSearchEngine(v as 'google' | 'duckduckgo' | 'bing')}>
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Google" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="google">Google</SelectItem>
+                        <SelectItem value="duckduckgo">DuckDuckGo</SelectItem>
+                        <SelectItem value="bing">Bing</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <p className="text-xs text-muted-foreground mt-1">If Google is blocked, choose DuckDuckGo or Bing.</p>
+                  </div>
+                  <div>
+                    <Label className="text-sm font-medium mb-2 block">Time Filter</Label>
+                    <Select value={timeFilter} onValueChange={(v) => setTimeFilter(v as typeof timeFilter)}>
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Any time" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="any">Any time</SelectItem>
+                        <SelectItem value="hour">Past hour</SelectItem>
+                        <SelectItem value="day">Past 24 hours</SelectItem>
+                        <SelectItem value="week">Past week</SelectItem>
+                        <SelectItem value="month">Past month</SelectItem>
+                        <SelectItem value="year">Past year</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <p className="text-xs text-muted-foreground mt-1">Filter results by time (Google only).</p>
+                  </div>
+                </div>
+                
+                {/* Google Trends Category Selection - only show when Google Trends is selected */}
+                {selectedPlatforms.includes('google-trends') && (
+                  <div className="pt-3 border-t border-border">
+                    <Label className="text-sm font-medium mb-2 block">Google Trends Category</Label>
+                    <Select value={googleTrendsCategory} onValueChange={setGoogleTrendsCategory}>
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Select category" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {googleTrendsCategories.map((category) => (
+                          <SelectItem key={category.id} value={category.id}>
+                            {category.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <p className="text-xs text-muted-foreground mt-1">Choose a category to get more targeted trends data for your topic.</p>
                   </div>
                 )}
               </CardContent>
