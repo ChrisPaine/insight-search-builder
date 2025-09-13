@@ -221,6 +221,16 @@ const Index = () => {
       industrySpecific: false,
       roleBased: false,
       targetRole: 'CEO'
+    },
+    youtube: {
+      commentsSearch: false,
+      videoContent: false,
+      channelSpecific: false,
+      videoReactions: false,
+      tutorialFeedback: false,
+      productReviews: false,
+      timeBased: false,
+      longTermReviews: false
     }
   });
 
@@ -443,6 +453,35 @@ const Index = () => {
         if (igOptions.reelsOnly) {
           platformToken = 'site:instagram.com/reel ("anyone else"|"am I the only one"|"struggle")';
         }
+      } else if (platformId === 'youtube') {
+        platformToken = 'site:youtube.com';
+        
+        // Add YouTube advanced options
+        const youtubeOptions = advancedOptions.youtube;
+        if (youtubeOptions.commentsSearch) {
+          platformToken += ' intext:("I tried this"|"this helped me"|"I struggled with"|"my experience")';
+        }
+        if (youtubeOptions.videoContent) {
+          platformToken = 'site:youtube.com/watch ("review"|"experience"|"problems"|"issues"|"struggles")';
+        }
+        if (youtubeOptions.channelSpecific) {
+          platformToken = 'site:youtube.com site:youtube.com/c/ ("honest review"|"my thoughts"|"problems with")';
+        }
+        if (youtubeOptions.videoReactions) {
+          platformToken += ' ("this saved my life"|"game changer"|"waste of money"|"don\'t buy this"|"total scam")';
+        }
+        if (youtubeOptions.tutorialFeedback) {
+          platformToken += ' ("this didn\'t work for me"|"finally something that works"|"I tried everything"|"this is the only thing")';
+        }
+        if (youtubeOptions.productReviews) {
+          platformToken += ' ("after 6 months of using"|"honest opinion"|"pros and cons"|"before you buy")';
+        }
+        if (youtubeOptions.timeBased) {
+          platformToken += ' after:2023 ("review"|"experience")';
+        }
+        if (youtubeOptions.longTermReviews) {
+          platformToken += ' ("long term review"|"6 month update"|"1 year later")';
+        }
       } else {
         platformToken = platform.site.replace(/\s+OR\s+/g, '|');
       }
@@ -581,6 +620,16 @@ const Index = () => {
         industrySpecific: false,
         roleBased: false,
         targetRole: 'CEO'
+      },
+      youtube: {
+        commentsSearch: false,
+        videoContent: false,
+        channelSpecific: false,
+        videoReactions: false,
+        tutorialFeedback: false,
+        productReviews: false,
+        timeBased: false,
+        longTermReviews: false
       }
     });
     
@@ -1241,6 +1290,118 @@ const Index = () => {
                               </Select>
                             </div>
                           )}
+                        </div>
+                      </CollapsibleContent>
+                    </Collapsible>
+                  )}
+
+                  {/* YouTube Advanced Options */}
+                  {selectedPlatforms.includes('youtube') && (
+                    <Collapsible>
+                      <CollapsibleTrigger className="flex items-center justify-between w-full p-2 rounded-lg border border-border hover:bg-research-blue-light">
+                        <div className="flex items-center gap-2">
+                          <Play className="w-4 h-4 text-research-blue" />
+                          <span className="font-medium">YouTube Options</span>
+                        </div>
+                        <ChevronDown className="w-4 h-4" />
+                      </CollapsibleTrigger>
+                      <CollapsibleContent className="mt-3 space-y-3 pl-4">
+                        <div className="grid grid-cols-1 gap-3">
+                          <div className="flex items-center space-x-2">
+                            <Checkbox
+                              id="youtube-comments"
+                              checked={advancedOptions.youtube.commentsSearch}
+                              onCheckedChange={(checked) => setAdvancedOptions(prev => ({
+                                ...prev,
+                                youtube: { ...prev.youtube, commentsSearch: !!checked }
+                              }))}
+                            />
+                            <Label htmlFor="youtube-comments" className="text-sm">Comments with experience language</Label>
+                          </div>
+                          
+                          <div className="flex items-center space-x-2">
+                            <Checkbox
+                              id="youtube-video"
+                              checked={advancedOptions.youtube.videoContent}
+                              onCheckedChange={(checked) => setAdvancedOptions(prev => ({
+                                ...prev,
+                                youtube: { ...prev.youtube, videoContent: !!checked }
+                              }))}
+                            />
+                            <Label htmlFor="youtube-video" className="text-sm">Video titles/descriptions with problems</Label>
+                          </div>
+                          
+                          <div className="flex items-center space-x-2">
+                            <Checkbox
+                              id="youtube-channel"
+                              checked={advancedOptions.youtube.channelSpecific}
+                              onCheckedChange={(checked) => setAdvancedOptions(prev => ({
+                                ...prev,
+                                youtube: { ...prev.youtube, channelSpecific: !!checked }
+                              }))}
+                            />
+                            <Label htmlFor="youtube-channel" className="text-sm">Channel-specific honest reviews</Label>
+                          </div>
+                          
+                          <div className="flex items-center space-x-2">
+                            <Checkbox
+                              id="youtube-reactions"
+                              checked={advancedOptions.youtube.videoReactions}
+                              onCheckedChange={(checked) => setAdvancedOptions(prev => ({
+                                ...prev,
+                                youtube: { ...prev.youtube, videoReactions: !!checked }
+                              }))}
+                            />
+                            <Label htmlFor="youtube-reactions" className="text-sm">Strong video reactions (game changer, scam, etc.)</Label>
+                          </div>
+                          
+                          <div className="flex items-center space-x-2">
+                            <Checkbox
+                              id="youtube-tutorial"
+                              checked={advancedOptions.youtube.tutorialFeedback}
+                              onCheckedChange={(checked) => setAdvancedOptions(prev => ({
+                                ...prev,
+                                youtube: { ...prev.youtube, tutorialFeedback: !!checked }
+                              }))}
+                            />
+                            <Label htmlFor="youtube-tutorial" className="text-sm">Tutorial feedback (worked/didn't work)</Label>
+                          </div>
+                          
+                          <div className="flex items-center space-x-2">
+                            <Checkbox
+                              id="youtube-reviews"
+                              checked={advancedOptions.youtube.productReviews}
+                              onCheckedChange={(checked) => setAdvancedOptions(prev => ({
+                                ...prev,
+                                youtube: { ...prev.youtube, productReviews: !!checked }
+                              }))}
+                            />
+                            <Label htmlFor="youtube-reviews" className="text-sm">Product reviews with time usage</Label>
+                          </div>
+                          
+                          <div className="flex items-center space-x-2">
+                            <Checkbox
+                              id="youtube-timebased"
+                              checked={advancedOptions.youtube.timeBased}
+                              onCheckedChange={(checked) => setAdvancedOptions(prev => ({
+                                ...prev,
+                                youtube: { ...prev.youtube, timeBased: !!checked }
+                              }))}
+                            />
+                            <Label htmlFor="youtube-timebased" className="text-sm">Recent content (after 2023)</Label>
+                          </div>
+                          
+                          <div className="flex items-center space-x-2">
+                            <Checkbox
+                              id="youtube-longterm"
+                              checked={advancedOptions.youtube.longTermReviews}
+                              onCheckedChange={(checked) => setAdvancedOptions(prev => ({
+                                ...prev,
+                                youtube: { ...prev.youtube, longTermReviews: !!checked }
+                              }))}
+                            />
+                            <Label htmlFor="youtube-longterm" className="text-sm">Long-term reviews (6 months, 1 year later)</Label>
+                          </div>
                         </div>
                       </CollapsibleContent>
                     </Collapsible>
