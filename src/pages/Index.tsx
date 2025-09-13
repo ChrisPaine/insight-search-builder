@@ -562,7 +562,7 @@ const Index = () => {
                             {platformElement}
                           </TooltipTrigger>
                           <TooltipContent>
-                            <p>Uses Main Topic only! You can select a category below for more targeted results.</p>
+                            <p>Uses Main Topic only! You'll have to change on Google Trends tab to Topic not Search term.</p>
                           </TooltipContent>
                         </Tooltip>
                       );
