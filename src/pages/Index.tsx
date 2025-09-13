@@ -229,7 +229,6 @@ const Index = () => {
       videoReactions: false,
       tutorialFeedback: false,
       productReviews: false,
-      timeBased: false,
       longTermReviews: false
     }
   });
@@ -476,9 +475,6 @@ const Index = () => {
         if (youtubeOptions.productReviews) {
           platformToken += ' ("after 6 months of using"|"honest opinion"|"pros and cons"|"before you buy")';
         }
-        if (youtubeOptions.timeBased) {
-          platformToken += ' after:2023 ("review"|"experience")';
-        }
         if (youtubeOptions.longTermReviews) {
           platformToken += ' ("long term review"|"6 month update"|"1 year later")';
         }
@@ -628,7 +624,6 @@ const Index = () => {
         videoReactions: false,
         tutorialFeedback: false,
         productReviews: false,
-        timeBased: false,
         longTermReviews: false
       }
     });
@@ -1377,18 +1372,6 @@ const Index = () => {
                               }))}
                             />
                             <Label htmlFor="youtube-reviews" className="text-sm">Product reviews with time usage</Label>
-                          </div>
-                          
-                          <div className="flex items-center space-x-2">
-                            <Checkbox
-                              id="youtube-timebased"
-                              checked={advancedOptions.youtube.timeBased}
-                              onCheckedChange={(checked) => setAdvancedOptions(prev => ({
-                                ...prev,
-                                youtube: { ...prev.youtube, timeBased: !!checked }
-                              }))}
-                            />
-                            <Label htmlFor="youtube-timebased" className="text-sm">Recent content (after 2023)</Label>
                           </div>
                           
                           <div className="flex items-center space-x-2">
