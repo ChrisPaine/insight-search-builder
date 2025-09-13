@@ -8,8 +8,9 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/component
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { toast } from '@/hooks/use-toast';
-import { Search, ChevronDown, ChevronUp, MessageSquare, Hash, Users, Camera, Globe, Briefcase, Play } from 'lucide-react';
+import { Search, ChevronDown, ChevronUp, MessageSquare, Hash, Users, Camera, Globe, Briefcase, Play, TrendingUp } from 'lucide-react';
 import { ThemeToggle } from '@/components/theme-toggle';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 
 interface Platform {
   id: string;
@@ -67,6 +68,13 @@ const platforms: Platform[] = [
     site: 'site:youtube.com',
     icon: <Play className="w-4 h-4" />,
     color: 'text-research-accent'
+  },
+  {
+    id: 'google-trends',
+    name: 'Google Trends',
+    site: '', // Special handling in search function
+    icon: <TrendingUp className="w-4 h-4" />,
+    color: 'text-research-blue-dark'
   }
 ];
 
@@ -216,6 +224,25 @@ const Index = () => {
     selectedPlatforms.forEach((platformId) => {
       const platform = platforms.find(p => p.id === platformId);
       if (!platform) return;
+
+      // Special handling for Google Trends
+      if (platformId === 'google-trends') {
+        const trendsQuery = encodeURIComponent(mainTopic.trim());
+        const trendsUrl = `https://trends.google.com/trends/explore?q=${trendsQuery}`;
+        const display = `Google Trends: ${mainTopic.trim()}`;
+        
+        links.push({ name: platform.name, url: trendsUrl, display });
+
+        try {
+          const w = window.open(trendsUrl, '_blank', 'noopener,noreferrer');
+          if (!w) {
+            console.warn('Popup blocked for', trendsUrl);
+          }
+        } catch (e) {
+          console.error('Failed to open window', e);
+        }
+        return;
+      }
 
       const topicPart = `"${mainTopic.trim()}"`;
       const keywordsPart = additionalKeywords.trim() ? ` AND "${additionalKeywords.trim()}"` : '';
@@ -464,21 +491,38 @@ const Index = () => {
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 gap-3">
-                  {platforms.map((platform) => (
-                    <label
-                      key={platform.id}
-                      className="flex items-center space-x-2 p-2 rounded-lg border border-border hover:bg-research-blue-light cursor-pointer transition-all duration-200"
-                    >
-                      <Checkbox
-                        checked={selectedPlatforms.includes(platform.id)}
-                        onCheckedChange={() => togglePlatform(platform.id)}
-                      />
-                      <div className="flex items-center space-x-1">
-                        <span className={platform.color}>{platform.icon}</span>
-                        <span className="font-medium text-sm">{platform.name}</span>
-                      </div>
-                    </label>
-                  ))}
+                  {platforms.map((platform) => {
+                    const platformElement = (
+                      <label
+                        key={platform.id}
+                        className="flex items-center space-x-2 p-2 rounded-lg border border-border hover:bg-research-blue-light cursor-pointer transition-all duration-200"
+                      >
+                        <Checkbox
+                          checked={selectedPlatforms.includes(platform.id)}
+                          onCheckedChange={() => togglePlatform(platform.id)}
+                        />
+                        <div className="flex items-center space-x-1">
+                          <span className={platform.color}>{platform.icon}</span>
+                          <span className="font-medium text-sm">{platform.name}</span>
+                        </div>
+                      </label>
+                    );
+
+                    if (platform.id === 'google-trends') {
+                      return (
+                        <Tooltip key={platform.id}>
+                          <TooltipTrigger asChild>
+                            {platformElement}
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>Uses Main Topic only!</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      );
+                    }
+
+                    return platformElement;
+                  })}
                 </div>
                 <div className="mt-3 text-sm text-muted-foreground">
                   Selected: {selectedPlatforms.length} platform{selectedPlatforms.length !== 1 ? 's' : ''}
