@@ -332,10 +332,46 @@ const Index = () => {
       let platformToken = '';
       if (platformId === 'reddit') {
         platformToken = 'site:reddit.com inurl:comments|inurl:thread';
-      } else if (platformId === 'discord') {
-        platformToken = 'site:discord.com OR site:discord.gg OR site:disboard.org';
+        
+        // Add Reddit advanced options
+        const redditOptions = advancedOptions.reddit;
+        if (redditOptions.selfPostsOnly) {
+          platformToken += ' inurl:selfserve';
+        }
+        if (redditOptions.minScore) {
+          platformToken += ` score:>${redditOptions.scoreThreshold}`;
+        }
+        if (redditOptions.author) {
+          platformToken += ` author:${redditOptions.author}`;
+        }
+      } else if (platformId === 'facebook') {
+        platformToken = 'site:facebook.com';
+        
+        // Add Facebook advanced options
+        const fbOptions = advancedOptions.facebook;
+        if (fbOptions.groupId) {
+          platformToken += ` inurl:groups/${fbOptions.groupId}`;
+        }
+        if (fbOptions.publicPostsOnly) {
+          platformToken += ' inurl:posts';
+        }
+        if (fbOptions.communityType.length > 0) {
+          const communityTerms = fbOptions.communityType.map(type => `"${type}"`).join(' OR ');
+          platformToken += ` (${communityTerms})`;
+        }
       } else if (platformId === 'twitter') {
         platformToken = 'site:twitter.com';
+        
+        // Add Twitter advanced options
+        const twitterOptions = advancedOptions.twitter;
+        if (twitterOptions.verifiedOnly) {
+          platformToken += ' filter:verified';
+        }
+        if (twitterOptions.hasMedia) {
+          platformToken += ' filter:media';
+        }
+      } else if (platformId === 'discord') {
+        platformToken = 'site:discord.com OR site:discord.gg OR site:disboard.org';
       } else if (platformId === 'linkedin') {
         platformToken = 'site:linkedin.com';
       } else {
