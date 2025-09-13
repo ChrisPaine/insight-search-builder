@@ -596,8 +596,8 @@ const Index = () => {
             {/* Search Settings */}
             <Card className="shadow-card">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-lg">
-                  <Search className="w-5 h-5 text-research-blue" />
+                <CardTitle className="flex items-center gap-2 text-base">
+                  <Search className="w-4 h-4 text-research-blue" />
                   Search Settings
                 </CardTitle>
               </CardHeader>
@@ -615,7 +615,7 @@ const Index = () => {
                         <SelectItem value="bing">Bing</SelectItem>
                       </SelectContent>
                     </Select>
-                    <p className="text-xs text-muted-foreground mt-1">If Google is blocked, choose DuckDuckGo or Bing.</p>
+                    <p className="text-xs text-muted-foreground mt-1">If Google is blocked, choose another engine.</p>
                   </div>
                   <div>
                     <Label className="text-sm font-medium mb-2 block">Time Filter</Label>
