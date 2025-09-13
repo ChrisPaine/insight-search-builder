@@ -200,7 +200,14 @@ const Index = () => {
     },
     twitter: {
       verifiedOnly: false,
-      hasMedia: false
+      hasMedia: false,
+      emotionalContent: false,
+      communityValidation: false,
+      opinions: false,
+      rants: false,
+      experiences: false,
+      searchLists: false,
+      searchCommunities: false
     },
     instagram: {
       linkInBio: false,
@@ -370,12 +377,32 @@ const Index = () => {
         
         // Add Twitter advanced options
         const twitterOptions = advancedOptions.twitter;
+        
+        // Add sophisticated search patterns
+        if (twitterOptions.emotionalContent) {
+          platformToken += ' (struggling OR frustrated OR "wish I knew" OR "biggest mistake")';
+        }
+        if (twitterOptions.communityValidation) {
+          platformToken += ' ("anyone else" OR "am I the only one") min_retweets:5';
+        }
+        if (twitterOptions.opinions) {
+          platformToken += ' ("unpopular opinion" OR "hot take") min_faves:10';
+        }
+        if (twitterOptions.rants) {
+          platformToken += ' (rant OR vent OR frustrated) -filter:links';
+        }
+        if (twitterOptions.experiences) {
+          platformToken += ' ("my experience" OR "my journey") filter:native_video';
+        }
         if (twitterOptions.verifiedOnly) {
           platformToken += ' filter:verified';
         }
         if (twitterOptions.hasMedia) {
           platformToken += ' filter:media';
         }
+        
+        // Add quality filters for engagement
+        platformToken += ' lang:en -filter:retweets min_replies:3';
       } else if (platformId === 'discord') {
         platformToken = 'site:discord.com OR site:discord.gg OR site:disboard.org';
       } else if (platformId === 'linkedin') {
@@ -511,7 +538,14 @@ const Index = () => {
       },
       twitter: {
         verifiedOnly: false,
-        hasMedia: false
+        hasMedia: false,
+        emotionalContent: false,
+        communityValidation: false,
+        opinions: false,
+        rants: false,
+        experiences: false,
+        searchLists: false,
+        searchCommunities: false
       },
       instagram: {
         linkInBio: false,
@@ -941,30 +975,92 @@ const Index = () => {
                         <ChevronDown className="w-4 h-4" />
                       </CollapsibleTrigger>
                       <CollapsibleContent className="mt-3 space-y-3 pl-4">
-                        <div className="flex items-center space-x-2">
-                          <Checkbox
-                            id="twitter-verified"
-                            checked={advancedOptions.twitter.verifiedOnly}
-                            onCheckedChange={(checked) => setAdvancedOptions(prev => ({
-                              ...prev,
-                              twitter: { ...prev.twitter, verifiedOnly: !!checked }
-                            }))}
-                          />
-                          <Label htmlFor="twitter-verified" className="text-sm">Verified accounts only</Label>
+                        <div className="grid grid-cols-1 gap-3">
+                          <div className="flex items-center space-x-2">
+                            <Checkbox
+                              id="twitter-emotional"
+                              checked={advancedOptions.twitter.emotionalContent}
+                              onCheckedChange={(checked) => setAdvancedOptions(prev => ({
+                                ...prev,
+                                twitter: { ...prev.twitter, emotionalContent: !!checked }
+                              }))}
+                            />
+                            <Label htmlFor="twitter-emotional" className="text-sm">Emotional content (struggling, frustrated, wish I knew)</Label>
+                          </div>
+                          
+                          <div className="flex items-center space-x-2">
+                            <Checkbox
+                              id="twitter-community"
+                              checked={advancedOptions.twitter.communityValidation}
+                              onCheckedChange={(checked) => setAdvancedOptions(prev => ({
+                                ...prev,
+                                twitter: { ...prev.twitter, communityValidation: !!checked }
+                              }))}
+                            />
+                            <Label htmlFor="twitter-community" className="text-sm">Community validation (anyone else, am I the only one)</Label>
+                          </div>
+                          
+                          <div className="flex items-center space-x-2">
+                            <Checkbox
+                              id="twitter-opinions"
+                              checked={advancedOptions.twitter.opinions}
+                              onCheckedChange={(checked) => setAdvancedOptions(prev => ({
+                                ...prev,
+                                twitter: { ...prev.twitter, opinions: !!checked }
+                              }))}
+                            />
+                            <Label htmlFor="twitter-opinions" className="text-sm">Opinions & hot takes (unpopular opinion, hot take)</Label>
+                          </div>
+                          
+                          <div className="flex items-center space-x-2">
+                            <Checkbox
+                              id="twitter-rants"
+                              checked={advancedOptions.twitter.rants}
+                              onCheckedChange={(checked) => setAdvancedOptions(prev => ({
+                                ...prev,
+                                twitter: { ...prev.twitter, rants: !!checked }
+                              }))}
+                            />
+                            <Label htmlFor="twitter-rants" className="text-sm">Rants & venting (no links)</Label>
+                          </div>
+                          
+                          <div className="flex items-center space-x-2">
+                            <Checkbox
+                              id="twitter-experiences"
+                              checked={advancedOptions.twitter.experiences}
+                              onCheckedChange={(checked) => setAdvancedOptions(prev => ({
+                                ...prev,
+                                twitter: { ...prev.twitter, experiences: !!checked }
+                              }))}
+                            />
+                            <Label htmlFor="twitter-experiences" className="text-sm">Experience sharing (with native video)</Label>
+                          </div>
+                          
+                          <div className="flex items-center space-x-2">
+                            <Checkbox
+                              id="twitter-verified"
+                              checked={advancedOptions.twitter.verifiedOnly}
+                              onCheckedChange={(checked) => setAdvancedOptions(prev => ({
+                                ...prev,
+                                twitter: { ...prev.twitter, verifiedOnly: !!checked }
+                              }))}
+                            />
+                            <Label htmlFor="twitter-verified" className="text-sm">Verified accounts only</Label>
+                          </div>
+                          
+                          <div className="flex items-center space-x-2">
+                            <Checkbox
+                              id="twitter-media"
+                              checked={advancedOptions.twitter.hasMedia}
+                              onCheckedChange={(checked) => setAdvancedOptions(prev => ({
+                                ...prev,
+                                twitter: { ...prev.twitter, hasMedia: !!checked }
+                              }))}
+                            />
+                            <Label htmlFor="twitter-media" className="text-sm">Posts with media only</Label>
+                          </div>
                         </div>
-                        
-                        <div className="flex items-center space-x-2">
-                          <Checkbox
-                            id="twitter-media"
-                            checked={advancedOptions.twitter.hasMedia}
-                            onCheckedChange={(checked) => setAdvancedOptions(prev => ({
-                              ...prev,
-                              twitter: { ...prev.twitter, hasMedia: !!checked }
-                            }))}
-                          />
-                          <Label htmlFor="twitter-media" className="text-sm">Posts with media only</Label>
-                        </div>
-                       </CollapsibleContent>
+                      </CollapsibleContent>
                     </Collapsible>
                   )}
 
