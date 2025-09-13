@@ -11,6 +11,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge'
 import { Check, Star } from 'lucide-react'
 import { useAuth } from '@/components/auth/AuthProvider'
+import { supabase } from '@/lib/supabase'
 
 interface PaywallDialogProps {
   open: boolean
@@ -21,6 +22,23 @@ interface PaywallDialogProps {
 export const PaywallDialog: React.FC<PaywallDialogProps> = ({ open, onOpenChange, feature }) => {
   const [isLoading, setIsLoading] = useState(false)
   const { user } = useAuth()
+
+  // Check if Supabase is connected
+  if (!supabase) {
+    return (
+      <Dialog open={open} onOpenChange={onOpenChange}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Supabase Connection Required</DialogTitle>
+            <DialogDescription>
+              To use premium features, you need to connect to Supabase first.
+              Click the green Supabase button in the top right to get started.
+            </DialogDescription>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
+    )
+  }
 
   const plans = [
     {

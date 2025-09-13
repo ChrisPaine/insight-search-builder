@@ -12,6 +12,7 @@ import { Label } from '@/components/ui/label'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useAuth } from './AuthProvider'
 import { useToast } from '@/hooks/use-toast'
+import { supabase } from '@/lib/supabase'
 
 interface AuthDialogProps {
   open: boolean
@@ -24,6 +25,23 @@ export const AuthDialog: React.FC<AuthDialogProps> = ({ open, onOpenChange }) =>
   const [signUpData, setSignUpData] = useState({ email: '', password: '', fullName: '' })
   const { signIn, signUp } = useAuth()
   const { toast } = useToast()
+
+  // Check if Supabase is connected
+  if (!supabase) {
+    return (
+      <Dialog open={open} onOpenChange={onOpenChange}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Supabase Connection Required</DialogTitle>
+            <DialogDescription>
+              To use authentication and save queries, you need to connect to Supabase first.
+              Click the green Supabase button in the top right to get started.
+            </DialogDescription>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
+    )
+  }
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault()

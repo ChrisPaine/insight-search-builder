@@ -17,7 +17,7 @@ export const useQueries = () => {
   }, [user])
 
   const fetchQueries = async () => {
-    if (!user) return
+    if (!user || !supabase) return
 
     try {
       const { data, error } = await supabase
@@ -39,7 +39,7 @@ export const useQueries = () => {
   }
 
   const saveQuery = async (title: string, queryData: any, platforms: string[]) => {
-    if (!user) return null
+    if (!user || !supabase) return null
 
     try {
       const { data, error } = await supabase
@@ -67,7 +67,7 @@ export const useQueries = () => {
   }
 
   const deleteQuery = async (queryId: string) => {
-    if (!user) return false
+    if (!user || !supabase) return false
 
     try {
       const { error } = await supabase
