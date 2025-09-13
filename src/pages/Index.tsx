@@ -189,6 +189,7 @@ const Index = () => {
   // Tutorial state
   const [showTutorial, setShowTutorial] = useState(false);
   const [tutorialStep, setTutorialStep] = useState(0);
+  const [redditAdvancedOpen, setRedditAdvancedOpen] = useState(false);
 
   const tutorialSteps = [
     {
@@ -214,6 +215,7 @@ const Index = () => {
       position: 'left',
       action: () => {
         setPlatformSelectorOpen(false);
+        setRedditAdvancedOpen(true);
       }
     },
     {
@@ -1065,7 +1067,7 @@ const Index = () => {
 
                   {/* Reddit Advanced Options */}
                   {selectedPlatforms.includes('reddit') && (
-                    <Collapsible className="reddit-advanced-options">
+                    <Collapsible className="reddit-advanced-options" open={redditAdvancedOpen} onOpenChange={setRedditAdvancedOpen}>
                       <CollapsibleTrigger className="flex items-center justify-between w-full p-2 rounded-lg border border-border hover:bg-research-blue-light">
                         <div className="flex items-center gap-2">
                           <MessageSquare className="w-4 h-4 text-research-blue" />
