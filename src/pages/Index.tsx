@@ -198,21 +198,25 @@ const Index = () => {
       position: 'bottom'
     },
     {
+      target: '#platform-selector',
+      title: 'Step 2: Choose Platforms',
+      content: 'Select which social media platforms to search. Each platform has unique advanced options for better targeting. Let me show you Reddit\'s advanced features!',
+      position: 'right',
+      action: () => {
+        setSelectedPlatforms(['reddit']);
+        setPlatformSelectorOpen(true);
+      }
+    },
+    {
       target: '#additional-keywords',  
-      title: 'Step 2: Add Keywords (Optional)',
+      title: 'Step 3: Add Keywords (Optional)',
       content: 'Add specific keywords to narrow down your search. This helps find more targeted pain points.',
       position: 'bottom'
     },
     {
       target: '#phrase-builder',
-      title: 'Step 3: Select Pain Point Phrases',
+      title: 'Step 4: Select Pain Point Phrases',
       content: 'Choose from pre-built phrase categories that help identify customer pain points, or select a preset for quick setup.',
-      position: 'right'
-    },
-    {
-      target: '#platform-selector',
-      title: 'Step 4: Choose Platforms',
-      content: 'Select which social media platforms to search. Each platform has unique advanced options for better targeting.',
       position: 'right'
     },
     {
@@ -229,6 +233,13 @@ const Index = () => {
     }
   ];
   const nextStep = () => {
+    const currentStep = tutorialSteps[tutorialStep];
+    
+    // Execute step action if it exists
+    if (currentStep.action) {
+      currentStep.action();
+    }
+    
     if (tutorialStep < tutorialSteps.length - 1) {
       setTutorialStep(tutorialStep + 1);
     } else {
