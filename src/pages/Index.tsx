@@ -318,25 +318,13 @@ const Index = () => {
                   <Label htmlFor="mainTopic" className="text-sm font-medium mb-2 block">
                     Main Topic <span className="text-destructive">*</span>
                   </Label>
-                  <div className="flex gap-2">
-                    <Input
-                      id="mainTopic"
-                      value={mainTopic}
-                      onChange={(e) => setMainTopic(e.target.value)}
-                      placeholder="e.g., project management software, meal planning apps, fitness tracking..."
-                      className="flex-1"
-                    />
-                    <Button
-                      variant="research"
-                      size="sm"
-                      onClick={handleSearch}
-                      disabled={!mainTopic.trim() || selectedPlatforms.length === 0}
-                      className="px-4"
-                    >
-                      <Search className="w-4 h-4 mr-1" />
-                      Search
-                    </Button>
-                  </div>
+                  <Input
+                    id="mainTopic"
+                    value={mainTopic}
+                    onChange={(e) => setMainTopic(e.target.value)}
+                    placeholder="e.g., project management software, meal planning apps, fitness tracking..."
+                    className="w-full"
+                  />
                 </div>
                 <div>
                   <Label htmlFor="additionalKeywords" className="text-sm font-medium mb-2 block">
@@ -476,6 +464,21 @@ const Index = () => {
                 </div>
                 <div className="mt-3 text-sm text-muted-foreground">
                   Selected: {selectedPlatforms.length} platform{selectedPlatforms.length !== 1 ? 's' : ''}
+                </div>
+                <div className="mt-4">
+                  <Button
+                    variant="research"
+                    size="lg"
+                    className="w-full"
+                    onClick={handleSearch}
+                    disabled={!mainTopic.trim() || selectedPlatforms.length === 0}
+                  >
+                    <Search className="w-5 h-5 mr-2" />
+                    Open {selectedPlatforms.length} Tab{selectedPlatforms.length !== 1 ? 's' : ''}
+                  </Button>
+                  <p className="text-xs text-muted-foreground text-center mt-2">
+                    Opens separate {searchEngine === 'google' ? 'Google' : searchEngine === 'duckduckgo' ? 'DuckDuckGo' : 'Bing'} tab{selectedPlatforms.length !== 1 ? 's' : ''} — one per platform
+                  </p>
                 </div>
               </CardContent>
             </Card>
