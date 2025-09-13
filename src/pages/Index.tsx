@@ -278,6 +278,10 @@ const Index = () => {
   };
   const clearAllPhrases = () => {
     setSelectedPhrases([]);
+    // Close all dropdowns when clearing
+    setPhraseCategories(prev => 
+      prev.map(category => ({ ...category, isOpen: false }))
+    );
   };
 
   return (
