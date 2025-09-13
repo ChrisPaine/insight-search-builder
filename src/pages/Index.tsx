@@ -7,6 +7,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { toast } from '@/hooks/use-toast';
 import { Search, ChevronDown, ChevronUp, MessageSquare, Hash, Users, Camera, Globe, Briefcase, Play, TrendingUp, Settings } from 'lucide-react';
 import { ThemeToggle } from '@/components/theme-toggle';
@@ -184,7 +185,69 @@ const Index = () => {
   const [selectedPreset, setSelectedPreset] = useState<string>('');
   const [lastLinks, setLastLinks] = useState<{ name: string; url: string; display: string }[]>([]);
   const [platformSelectorOpen, setPlatformSelectorOpen] = useState(false);
-  
+
+  // Tutorial state
+  const [showTutorial, setShowTutorial] = useState(false);
+  const [tutorialStep, setTutorialStep] = useState(0);
+
+  const tutorialSteps = [
+    {
+      target: '#main-topic',
+      title: 'Step 1: Enter Your Research Topic',
+      content: 'Start by entering the main topic or market you want to research. For example: "SaaS tools", "fitness apps", or "productivity software".',
+      position: 'bottom'
+    },
+    {
+      target: '#additional-keywords',  
+      title: 'Step 2: Add Keywords (Optional)',
+      content: 'Add specific keywords to narrow down your search. This helps find more targeted pain points.',
+      position: 'bottom'
+    },
+    {
+      target: '#phrase-builder',
+      title: 'Step 3: Select Pain Point Phrases',
+      content: 'Choose from pre-built phrase categories that help identify customer pain points, or select a preset for quick setup.',
+      position: 'right'
+    },
+    {
+      target: '#platform-selector',
+      title: 'Step 4: Choose Platforms',
+      content: 'Select which social media platforms to search. Each platform has unique advanced options for better targeting.',
+      position: 'right'
+    },
+    {
+      target: '#search-settings',
+      title: 'Step 5: Configure Search Settings',
+      content: 'Choose your search engine, time filter, and access advanced options for each selected platform.',
+      position: 'left'
+    },
+    {
+      target: '#search-button',
+      title: 'Step 6: Start Your Research',
+      content: 'Click to open search tabs for each selected platform. Your query will be automatically optimized for each platform.',
+      position: 'top'
+    }
+  ];
+  const nextStep = () => {
+    if (tutorialStep < tutorialSteps.length - 1) {
+      setTutorialStep(tutorialStep + 1);
+    } else {
+      setShowTutorial(false);
+      setTutorialStep(0);
+    }
+  };
+
+  const prevStep = () => {
+    if (tutorialStep > 0) {
+      setTutorialStep(tutorialStep - 1);
+    }
+  };
+
+  const skipTutorial = () => {
+    setShowTutorial(false);
+    setTutorialStep(0);
+  };
+
   // Advanced platform options
   const [advancedOptions, setAdvancedOptions] = useState({
     facebook: {
@@ -648,7 +711,15 @@ const Index = () => {
                 Build advanced search queries to discover customer insights across social platforms
               </p>
             </div>
-            <div className="flex-shrink-0">
+            <div className="flex-shrink-0 flex items-center gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setShowTutorial(true)}
+                className="text-muted-foreground hover:text-foreground"
+              >
+                Help Tour
+              </Button>
               <ThemeToggle />
             </div>
           </div>
@@ -685,13 +756,14 @@ const Index = () => {
                   </Label>
                   <div className="flex gap-2">
                     <Input
-                      id="mainTopic"
+                      id="main-topic"
                       value={mainTopic}
                       onChange={(e) => setMainTopic(e.target.value)}
                       placeholder="e.g., project management software, meal planning apps, fitness tracking..."
                       className="flex-1"
                     />
                     <Button
+                      id="search-button"
                       variant="research"
                       size="sm"
                       onClick={handleSearch}
@@ -708,7 +780,7 @@ const Index = () => {
                     Additional Keywords <span className="text-muted-foreground">(optional)</span>
                   </Label>
                   <Input
-                    id="additionalKeywords"
+                    id="additional-keywords"
                     value={additionalKeywords}
                     onChange={(e) => setAdditionalKeywords(e.target.value)}
                     placeholder="e.g., small business, beginners, affordable..."
@@ -719,7 +791,7 @@ const Index = () => {
             </Card>
 
             {/* Platform Selection */}
-            <Card className="shadow-card">
+            <Card id="platform-selector" className="shadow-card">
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <CardTitle className="flex items-center gap-2 text-lg">
@@ -785,7 +857,7 @@ const Index = () => {
             </Card>
 
             {/* Search Phrase Builder */}
-            <Card className="shadow-card">
+            <Card id="phrase-builder" className="shadow-card">
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <CardTitle className="flex items-center gap-2 text-lg">
@@ -852,7 +924,7 @@ const Index = () => {
           {/* Right Column - Search Settings & Advanced Options */}
           <div className="space-y-4">
             {/* Search Settings */}
-            <Card className="shadow-card">
+            <Card id="search-settings" className="shadow-card">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-base">
                   <Search className="w-4 h-4 text-research-blue" />
@@ -1396,6 +1468,142 @@ const Index = () => {
           </div>
         </div>
       </main>
+
+      {/* Tutorial Overlay */}
+      {showTutorial && (
+        <>
+          {/* Dark overlay */}
+          <div className="fixed inset-0 bg-black/60 z-40" onClick={skipTutorial} />
+          
+          {/* Tutorial spotlight and tooltip */}
+          <div className="fixed inset-0 z-50 pointer-events-none">
+            {(() => {
+              const currentStep = tutorialSteps[tutorialStep];
+              const targetElement = document.querySelector(currentStep.target);
+              
+              if (!targetElement) return null;
+              
+              const rect = targetElement.getBoundingClientRect();
+              const isLeft = currentStep.position === 'left';
+              const isRight = currentStep.position === 'right';
+              const isTop = currentStep.position === 'top';
+              const isBottom = currentStep.position === 'bottom';
+              
+              // Calculate tooltip position
+              let tooltipStyle: React.CSSProperties = {};
+              let arrowClass = '';
+              
+              if (isLeft) {
+                tooltipStyle = {
+                  right: window.innerWidth - rect.left + 20,
+                  top: rect.top + rect.height / 2,
+                  transform: 'translateY(-50%)'
+                };
+                arrowClass = 'border-l-0 border-r-8 border-r-background left-full top-1/2 -translate-y-1/2';
+              } else if (isRight) {
+                tooltipStyle = {
+                  left: rect.right + 20,
+                  top: rect.top + rect.height / 2,
+                  transform: 'translateY(-50%)'
+                };
+                arrowClass = 'border-r-0 border-l-8 border-l-background right-full top-1/2 -translate-y-1/2';
+              } else if (isTop) {
+                tooltipStyle = {
+                  left: rect.left + rect.width / 2,
+                  bottom: window.innerHeight - rect.top + 20,
+                  transform: 'translateX(-50%)'
+                };
+                arrowClass = 'border-t-0 border-b-8 border-b-background top-full left-1/2 -translate-x-1/2';
+              } else {
+                tooltipStyle = {
+                  left: rect.left + rect.width / 2,
+                  top: rect.bottom + 20,
+                  transform: 'translateX(-50%)'
+                };
+                arrowClass = 'border-b-0 border-t-8 border-t-background bottom-full left-1/2 -translate-x-1/2';
+              }
+              
+              return (
+                <>
+                  {/* Spotlight highlight */}
+                  <div 
+                    className="absolute border-2 border-primary rounded-lg animate-pulse"
+                    style={{
+                      left: rect.left - 4,
+                      top: rect.top - 4,
+                      width: rect.width + 8,
+                      height: rect.height + 8,
+                      boxShadow: '0 0 0 9999px rgba(0,0,0,0.6)'
+                    }}
+                  />
+                  
+                  {/* Tutorial tooltip */}
+                  <div 
+                    className="absolute pointer-events-auto bg-background border border-border rounded-lg shadow-lg p-4 max-w-sm animate-fade-in"
+                    style={tooltipStyle}
+                  >
+                    {/* Arrow */}
+                    <div className={`absolute w-0 h-0 border-transparent border-8 ${arrowClass}`} />
+                    
+                    <div className="space-y-3">
+                      <div>
+                        <h3 className="font-semibold text-sm text-foreground mb-1">
+                          {currentStep.title}
+                        </h3>
+                        <p className="text-sm text-muted-foreground">
+                          {currentStep.content}
+                        </p>
+                      </div>
+                      
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-1">
+                          {tutorialSteps.map((_, index) => (
+                            <div
+                              key={index}
+                              className={`w-2 h-2 rounded-full ${
+                                index === tutorialStep ? 'bg-primary' : 'bg-muted'
+                              }`}
+                            />
+                          ))}
+                        </div>
+                        
+                        <div className="flex items-center gap-2">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={skipTutorial}
+                            className="text-xs"
+                          >
+                            Skip
+                          </Button>
+                          {tutorialStep > 0 && (
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={prevStep}
+                              className="text-xs"
+                            >
+                              Back
+                            </Button>
+                          )}
+                          <Button
+                            variant="default"
+                            size="sm"
+                            onClick={nextStep}
+                            className="text-xs"
+                          >
+                            {tutorialStep === tutorialSteps.length - 1 ? 'Finish' : 'Next'}
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </>
+              );
+            })()}
+          </div>
+        </>
+      )}
 
       {/* Footer */}
       <footer className="bg-white border-t border-border mt-8">
