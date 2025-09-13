@@ -183,7 +183,7 @@ const Index = () => {
   const [googleTrendsCategory, setGoogleTrendsCategory] = useState<string>('0');
   const [selectedPreset, setSelectedPreset] = useState<string>('');
   const [lastLinks, setLastLinks] = useState<{ name: string; url: string; display: string }[]>([]);
-  const [platformSelectorOpen, setPlatformSelectorOpen] = useState(true);
+  const [platformSelectorOpen, setPlatformSelectorOpen] = useState(false);
   
   // Advanced platform options
   const [advancedOptions, setAdvancedOptions] = useState({
