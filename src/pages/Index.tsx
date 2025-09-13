@@ -181,6 +181,7 @@ const Index = () => {
   const [searchEngine, setSearchEngine] = useState<'google' | 'duckduckgo' | 'bing'>('google');
   const [timeFilter, setTimeFilter] = useState<'any' | 'hour' | 'day' | 'week' | 'month' | 'year'>('any');
   const [googleTrendsCategory, setGoogleTrendsCategory] = useState<string>('0');
+  const [selectedPreset, setSelectedPreset] = useState<string>('');
   const [lastLinks, setLastLinks] = useState<{ name: string; url: string; display: string }[]>([]);
 
   // Update query whenever inputs change
@@ -367,6 +368,7 @@ const Index = () => {
   };
   const clearAllPhrases = () => {
     setSelectedPhrases([]);
+    setSelectedPreset(''); // Reset preset dropdown
     // Close all dropdowns when clearing
     setPhraseCategories(prev => 
       prev.map(category => ({ ...category, isOpen: false }))
@@ -376,6 +378,8 @@ const Index = () => {
   const applyPreset = (presetId: string) => {
     const preset = phrasePresets.find(p => p.id === presetId);
     if (!preset) return;
+
+    setSelectedPreset(presetId); // Track selected preset
 
     // Clear existing selections first
     setSelectedPhrases([]);
@@ -482,7 +486,7 @@ const Index = () => {
                     Search Phrase Builder
                   </CardTitle>
                   <div className="flex items-center gap-2">
-                    <Select onValueChange={applyPreset}>
+                    <Select value={selectedPreset} onValueChange={applyPreset}>
                       <SelectTrigger className="w-48">
                         <SelectValue placeholder="Choose preset..." />
                       </SelectTrigger>
