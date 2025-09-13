@@ -604,20 +604,6 @@ const Index = () => {
               <CardContent className="space-y-3">
                 <div className="grid grid-cols-1 gap-3">
                   <div>
-                    <Label className="text-sm font-medium mb-2 block">Search Engine</Label>
-                    <Select value={searchEngine} onValueChange={(v) => setSearchEngine(v as 'google' | 'duckduckgo' | 'bing')}>
-                      <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Google" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="google">Google</SelectItem>
-                        <SelectItem value="duckduckgo">DuckDuckGo</SelectItem>
-                        <SelectItem value="bing">Bing</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <p className="text-xs text-muted-foreground mt-1">If Google is blocked, choose another engine.</p>
-                  </div>
-                  <div>
                     <Label className="text-sm font-medium mb-2 block">Time Filter</Label>
                     <Select value={timeFilter} onValueChange={(v) => setTimeFilter(v as typeof timeFilter)}>
                       <SelectTrigger className="w-full">
@@ -633,6 +619,20 @@ const Index = () => {
                       </SelectContent>
                     </Select>
                     <p className="text-xs text-muted-foreground mt-1">Filter results by time (Google only).</p>
+                  </div>
+                  <div>
+                    <Label className="text-sm font-medium mb-2 block">Search Engine</Label>
+                    <Select value={searchEngine} onValueChange={(v) => setSearchEngine(v as 'google' | 'duckduckgo' | 'bing')}>
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Google" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="google">Google</SelectItem>
+                        <SelectItem value="duckduckgo">DuckDuckGo</SelectItem>
+                        <SelectItem value="bing">Bing</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <p className="text-xs text-muted-foreground mt-1">If Google is blocked, choose another engine.</p>
                   </div>
                 </div>
               </CardContent>
