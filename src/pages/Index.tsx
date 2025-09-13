@@ -671,6 +671,7 @@ const Index = () => {
     
     // Reset platforms
     setSelectedPlatforms([]);
+    setPlatformSelectorOpen(false);
     
     // Reset search settings
     setSearchEngine('google');
