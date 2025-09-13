@@ -213,6 +213,14 @@ const Index = () => {
       linkInBio: false,
       swipeUp: false,
       reelsOnly: false
+    },
+    linkedin: {
+      publicPosts: false,
+      pulseArticles: false,
+      companyPosts: false,
+      industrySpecific: false,
+      roleBased: false,
+      targetRole: 'CEO'
     }
   });
 
@@ -407,6 +415,20 @@ const Index = () => {
         platformToken = 'site:discord.com OR site:discord.gg OR site:disboard.org';
       } else if (platformId === 'linkedin') {
         platformToken = 'site:linkedin.com';
+        
+        // Add LinkedIn advanced options
+        const linkedinOptions = advancedOptions.linkedin;
+        if (linkedinOptions.publicPosts) {
+          platformToken = 'site:linkedin.com/posts ("I struggled with"|"my experience"|"I learned"|"pain point"|"challenge")';
+        } else if (linkedinOptions.pulseArticles) {
+          platformToken = 'site:linkedin.com/pulse ("I think"|"my opinion"|"I found that"|"biggest challenge")';
+        } else if (linkedinOptions.companyPosts) {
+          platformToken = 'site:linkedin.com/company ("feedback"|"review"|"experience"|"struggled")';
+        } else if (linkedinOptions.industrySpecific) {
+          platformToken = 'site:linkedin.com ("I wish"|"frustration"|"pain point"|"challenge"|"struggled")';
+        } else if (linkedinOptions.roleBased) {
+          platformToken = `site:linkedin.com ("${linkedinOptions.targetRole}"|"founder"|"marketing manager") "biggest challenge"`;
+        }
       } else if (platformId === 'instagram') {
         platformToken = 'site:instagram.com';
         
@@ -551,6 +573,14 @@ const Index = () => {
         linkInBio: false,
         swipeUp: false,
         reelsOnly: false
+      },
+      linkedin: {
+        publicPosts: false,
+        pulseArticles: false,
+        companyPosts: false,
+        industrySpecific: false,
+        roleBased: false,
+        targetRole: 'CEO'
       }
     });
     
@@ -1109,6 +1139,108 @@ const Index = () => {
                             }))}
                           />
                           <Label htmlFor="ig-reels" className="text-sm">Reels only with relatable phrases</Label>
+                        </div>
+                      </CollapsibleContent>
+                    </Collapsible>
+                  )}
+
+                  {/* LinkedIn Advanced Options */}
+                  {selectedPlatforms.includes('linkedin') && (
+                    <Collapsible>
+                      <CollapsibleTrigger className="flex items-center justify-between w-full p-2 rounded-lg border border-border hover:bg-research-blue-light">
+                        <div className="flex items-center gap-2">
+                          <Briefcase className="w-4 h-4 text-research-blue" />
+                          <span className="font-medium">LinkedIn Options</span>
+                        </div>
+                        <ChevronDown className="w-4 h-4" />
+                      </CollapsibleTrigger>
+                      <CollapsibleContent className="mt-3 space-y-3 pl-4">
+                        <div className="grid grid-cols-1 gap-3">
+                          <div className="flex items-center space-x-2">
+                            <Checkbox
+                              id="linkedin-posts"
+                              checked={advancedOptions.linkedin.publicPosts}
+                              onCheckedChange={(checked) => setAdvancedOptions(prev => ({
+                                ...prev,
+                                linkedin: { ...prev.linkedin, publicPosts: !!checked }
+                              }))}
+                            />
+                            <Label htmlFor="linkedin-posts" className="text-sm">Public posts with struggle language</Label>
+                          </div>
+                          
+                          <div className="flex items-center space-x-2">
+                            <Checkbox
+                              id="linkedin-pulse"
+                              checked={advancedOptions.linkedin.pulseArticles}
+                              onCheckedChange={(checked) => setAdvancedOptions(prev => ({
+                                ...prev,
+                                linkedin: { ...prev.linkedin, pulseArticles: !!checked }
+                              }))}
+                            />
+                            <Label htmlFor="linkedin-pulse" className="text-sm">Pulse articles with opinions</Label>
+                          </div>
+                          
+                          <div className="flex items-center space-x-2">
+                            <Checkbox
+                              id="linkedin-company"
+                              checked={advancedOptions.linkedin.companyPosts}
+                              onCheckedChange={(checked) => setAdvancedOptions(prev => ({
+                                ...prev,
+                                linkedin: { ...prev.linkedin, companyPosts: !!checked }
+                              }))}
+                            />
+                            <Label htmlFor="linkedin-company" className="text-sm">Company page feedback & reviews</Label>
+                          </div>
+                          
+                          <div className="flex items-center space-x-2">
+                            <Checkbox
+                              id="linkedin-industry"
+                              checked={advancedOptions.linkedin.industrySpecific}
+                              onCheckedChange={(checked) => setAdvancedOptions(prev => ({
+                                ...prev,
+                                linkedin: { ...prev.linkedin, industrySpecific: !!checked }
+                              }))}
+                            />
+                            <Label htmlFor="linkedin-industry" className="text-sm">Industry-specific pain points</Label>
+                          </div>
+                          
+                          <div className="flex items-center space-x-2">
+                            <Checkbox
+                              id="linkedin-role"
+                              checked={advancedOptions.linkedin.roleBased}
+                              onCheckedChange={(checked) => setAdvancedOptions(prev => ({
+                                ...prev,
+                                linkedin: { ...prev.linkedin, roleBased: !!checked }
+                              }))}
+                            />
+                            <Label htmlFor="linkedin-role" className="text-sm">Role-based research</Label>
+                          </div>
+                          
+                          {advancedOptions.linkedin.roleBased && (
+                            <div className="ml-6">
+                              <Label className="text-sm font-medium">Target Role</Label>
+                              <Select 
+                                value={advancedOptions.linkedin.targetRole} 
+                                onValueChange={(value) => setAdvancedOptions(prev => ({
+                                  ...prev,
+                                  linkedin: { ...prev.linkedin, targetRole: value }
+                                }))}
+                              >
+                                <SelectTrigger className="mt-1">
+                                  <SelectValue />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="CEO">CEO</SelectItem>
+                                  <SelectItem value="founder">Founder</SelectItem>
+                                  <SelectItem value="marketing manager">Marketing Manager</SelectItem>
+                                  <SelectItem value="product manager">Product Manager</SelectItem>
+                                  <SelectItem value="sales manager">Sales Manager</SelectItem>
+                                  <SelectItem value="CTO">CTO</SelectItem>
+                                  <SelectItem value="CMO">CMO</SelectItem>
+                                </SelectContent>
+                              </Select>
+                            </div>
+                          )}
                         </div>
                       </CollapsibleContent>
                     </Collapsible>
