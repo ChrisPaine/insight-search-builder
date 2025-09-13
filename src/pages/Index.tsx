@@ -303,8 +303,44 @@ const Index = () => {
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-          {/* Left Column - Phrases & Research Parameters */}
+          {/* Left Column - Topic, Phrases & Filters */}
           <div className="lg:col-span-3 space-y-4">
+            {/* Main Topic and Keywords */}
+            <Card className="shadow-card">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-lg">
+                  <Hash className="w-5 h-5 text-research-blue" />
+                  Research Topic
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <div>
+                  <Label htmlFor="mainTopic" className="text-sm font-medium mb-2 block">
+                    Main Topic <span className="text-destructive">*</span>
+                  </Label>
+                  <Input
+                    id="mainTopic"
+                    value={mainTopic}
+                    onChange={(e) => setMainTopic(e.target.value)}
+                    placeholder="e.g., project management software, meal planning apps, fitness tracking..."
+                    className="w-full"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="additionalKeywords" className="text-sm font-medium mb-2 block">
+                    Additional Keywords <span className="text-muted-foreground">(optional)</span>
+                  </Label>
+                  <Input
+                    id="additionalKeywords"
+                    value={additionalKeywords}
+                    onChange={(e) => setAdditionalKeywords(e.target.value)}
+                    placeholder="e.g., small business, beginners, affordable..."
+                    className="w-full"
+                  />
+                </div>
+              </CardContent>
+            </Card>
+
             {/* Search Phrase Builder */}
             <Card className="shadow-card">
               <CardHeader>
@@ -352,39 +388,15 @@ const Index = () => {
               </CardContent>
             </Card>
 
-            {/* Custom Input Section */}
+            {/* Search Settings */}
             <Card className="shadow-card">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-lg">
-                  <Hash className="w-5 h-5 text-research-blue" />
-                  Research Parameters
+                  <Search className="w-5 h-5 text-research-blue" />
+                  Search Settings
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
-                <div>
-                  <Label htmlFor="mainTopic" className="text-sm font-medium mb-2 block">
-                    Main Topic <span className="text-destructive">*</span>
-                  </Label>
-                  <Input
-                    id="mainTopic"
-                    value={mainTopic}
-                    onChange={(e) => setMainTopic(e.target.value)}
-                    placeholder="e.g., project management software, meal planning apps, fitness tracking..."
-                    className="w-full"
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="additionalKeywords" className="text-sm font-medium mb-2 block">
-                    Additional Keywords <span className="text-muted-foreground">(optional)</span>
-                  </Label>
-                  <Input
-                    id="additionalKeywords"
-                    value={additionalKeywords}
-                    onChange={(e) => setAdditionalKeywords(e.target.value)}
-                    placeholder="e.g., small business, beginners, affordable..."
-                    className="w-full"
-                  />
-                </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
                     <Label className="text-sm font-medium mb-2 block">Search Engine</Label>
