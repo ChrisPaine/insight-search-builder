@@ -8,7 +8,7 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/component
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { toast } from '@/hooks/use-toast';
-import { Search, ChevronDown, ChevronUp, MessageSquare, Hash, Users, Camera, Globe, Briefcase } from 'lucide-react';
+import { Search, ChevronDown, ChevronUp, MessageSquare, Hash, Users, Camera, Globe, Briefcase, Play } from 'lucide-react';
 
 interface Platform {
   id: string;
@@ -33,11 +33,11 @@ const platforms: Platform[] = [
     color: 'text-research-blue-dark'
   },
   {
-    id: 'discord',
-    name: 'Discord',
-    site: 'site:discord.com OR site:discord.gg OR site:disboard.org',
-    icon: <Hash className="w-4 h-4" />,
-    color: 'text-research-blue-dark'
+    id: 'youtube',
+    name: 'YouTube',
+    site: 'site:youtube.com',
+    icon: <Play className="w-4 h-4" />,
+    color: 'text-research-accent'
   },
   {
     id: 'twitter',
@@ -125,7 +125,7 @@ const Index = () => {
     const title = 'Customer Pain Point Research Tool | Social Research Query Builder';
     document.title = title;
 
-    const desc = 'Build advanced social research queries across Reddit, Discord, Twitter, Instagram, Facebook, and LinkedIn.';
+    const desc = 'Build advanced social research queries across Reddit, YouTube, Twitter, Instagram, Facebook, and LinkedIn.';
     let meta = document.querySelector('meta[name="description"]');
     if (!meta) {
       meta = document.createElement('meta');
