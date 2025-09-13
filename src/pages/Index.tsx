@@ -612,58 +612,6 @@ const Index = () => {
                 ))}
               </CardContent>
             </Card>
-          </div>
-
-          {/* Right Column - Platform Selection & Search */}
-          <div className="space-y-4">
-            {/* Platform Selection */}
-            <Card className="shadow-card">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Globe className="w-5 h-5 text-research-blue" />
-                  Select Platforms
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-1 gap-3">
-                  {platforms.map((platform) => {
-                    const platformElement = (
-                      <label
-                        key={platform.id}
-                        className="flex items-center space-x-2 p-2 rounded-lg border border-border hover:bg-research-blue-light cursor-pointer transition-all duration-200"
-                      >
-                        <Checkbox
-                          checked={selectedPlatforms.includes(platform.id)}
-                          onCheckedChange={() => togglePlatform(platform.id)}
-                        />
-                        <div className="flex items-center space-x-1">
-                          <span className={platform.color}>{platform.icon}</span>
-                          <span className="font-medium text-sm">{platform.name}</span>
-                        </div>
-                      </label>
-                    );
-
-                    if (platform.id === 'google-trends') {
-                      return (
-                        <Tooltip key={platform.id}>
-                          <TooltipTrigger asChild>
-                            {platformElement}
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <p>Uses Main Topic only! You'll have to change on Google Trends tab to Topic not Search term.</p>
-                          </TooltipContent>
-                        </Tooltip>
-                      );
-                    }
-
-                    return platformElement;
-                  })}
-                </div>
-                <div className="mt-3 text-sm text-muted-foreground">
-                  Selected: {selectedPlatforms.length} platform{selectedPlatforms.length !== 1 ? 's' : ''}
-                </div>
-              </CardContent>
-            </Card>
 
             {/* Advanced Platform Options */}
             {selectedPlatforms.length > 0 && (
@@ -848,6 +796,58 @@ const Index = () => {
                 </CardContent>
               </Card>
             )}
+          </div>
+
+          {/* Right Column - Platform Selection & Search */}
+          <div className="space-y-4">
+            {/* Platform Selection */}
+            <Card className="shadow-card">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Globe className="w-5 h-5 text-research-blue" />
+                  Select Platforms
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 gap-3">
+                  {platforms.map((platform) => {
+                    const platformElement = (
+                      <label
+                        key={platform.id}
+                        className="flex items-center space-x-2 p-2 rounded-lg border border-border hover:bg-research-blue-light cursor-pointer transition-all duration-200"
+                      >
+                        <Checkbox
+                          checked={selectedPlatforms.includes(platform.id)}
+                          onCheckedChange={() => togglePlatform(platform.id)}
+                        />
+                        <div className="flex items-center space-x-1">
+                          <span className={platform.color}>{platform.icon}</span>
+                          <span className="font-medium text-sm">{platform.name}</span>
+                        </div>
+                      </label>
+                    );
+
+                    if (platform.id === 'google-trends') {
+                      return (
+                        <Tooltip key={platform.id}>
+                          <TooltipTrigger asChild>
+                            {platformElement}
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>Uses Main Topic only! You'll have to change on Google Trends tab to Topic not Search term.</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      );
+                    }
+
+                    return platformElement;
+                  })}
+                </div>
+                <div className="mt-3 text-sm text-muted-foreground">
+                  Selected: {selectedPlatforms.length} platform{selectedPlatforms.length !== 1 ? 's' : ''}
+                </div>
+              </CardContent>
+            </Card>
 
             {/* Search Settings */}
             <Card className="shadow-card">
