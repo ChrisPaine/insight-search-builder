@@ -81,7 +81,7 @@ const platforms: Platform[] = [
 const initialPhraseCategories: PhraseCategory[] = [
   {
     title: 'Personal Expressions',
-    isOpen: true,
+    isOpen: false,
     phrases: [
       'I think', 'I feel', 'I was', 'I have been', 'I experienced',
       'my experience', 'in my opinion', 'IMO', 'my advice'
