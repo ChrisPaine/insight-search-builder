@@ -9,6 +9,7 @@ import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { toast } from '@/hooks/use-toast';
 import { Search, ChevronDown, ChevronUp, MessageSquare, Hash, Users, Camera, Globe, Briefcase, Play } from 'lucide-react';
+import { ThemeToggle } from '@/components/theme-toggle';
 
 interface Platform {
   id: string;
@@ -287,15 +288,20 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-gradient-subtle">
       {/* Header */}
-      <header className="bg-white shadow-sm border-b border-border">
+      <header className="bg-background shadow-sm border-b border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="text-center">
-            <h1 className="text-2xl font-bold text-foreground mb-1">
-              Customer Pain Point Research Tool
-            </h1>
-            <p className="text-muted-foreground">
-              Build advanced search queries to discover customer insights across social platforms
-            </p>
+          <div className="flex items-center justify-between">
+            <div className="flex-1 text-center">
+              <h1 className="text-2xl font-bold text-foreground mb-1">
+                Customer Pain Point Research Tool
+              </h1>
+              <p className="text-muted-foreground">
+                Build advanced search queries to discover customer insights across social platforms
+              </p>
+            </div>
+            <div className="flex-shrink-0">
+              <ThemeToggle />
+            </div>
           </div>
         </div>
       </header>
