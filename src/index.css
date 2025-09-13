@@ -27,8 +27,8 @@ All colors MUST be HSL.
     --muted: 220 15% 96%;
     --muted-foreground: 220 15% 50%;
 
-    --accent: 212 100% 92%;
-    --accent-foreground: 212 85% 35%;
+    --accent: 220 15% 85%;
+    --accent-foreground: 220 40% 25%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
@@ -93,7 +93,7 @@ All colors MUST be HSL.
     --muted: 217.2 32.6% 17.5%;
     --muted-foreground: 215 20.2% 65.1%;
 
-    --accent: 217.2 32.6% 17.5%;
+    --accent: 217.2 32.6% 12%;
     --accent-foreground: 210 40% 98%;
 
     --destructive: 0 62.8% 30.6%;
