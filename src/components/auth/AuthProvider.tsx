@@ -110,10 +110,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       return { data: null, error: { message: 'Supabase not connected' } }
     }
 
+    const redirectUrl = `${window.location.origin}/`;
+    
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
+        emailRedirectTo: redirectUrl,
         data: {
           full_name: fullName,
         },

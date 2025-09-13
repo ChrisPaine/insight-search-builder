@@ -18,6 +18,7 @@ import { PaywallDialog } from '@/components/paywall/PaywallDialog';
 import { SavedQueriesDialog } from '@/components/queries/SavedQueriesDialog';
 import { useQueries } from '@/hooks/useQueries';
 import { useToast } from '@/hooks/use-toast';
+import { useNavigate } from 'react-router-dom';
 import researchMascot from '@/assets/research-mascot.png';
 
 interface Platform {
@@ -204,6 +205,7 @@ const Index = () => {
   const { user, signOut, isPro, isPremium, isSupabaseConnected } = useAuth();
   const { saveQuery } = useQueries();
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   // Tutorial state
   const [showTutorial, setShowTutorial] = useState(false);
@@ -911,7 +913,7 @@ const Index = () => {
                   </Button>
                 </div>
               ) : (
-                <Button variant="outline" size="sm" onClick={() => setAuthDialogOpen(true)}>
+                <Button variant="outline" size="sm" onClick={() => navigate('/auth')}>
                   <User className="w-4 h-4 mr-2" />
                   Sign In
                 </Button>

@@ -1,205 +1,61 @@
-import React, { useState } from 'react'
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { useAuth } from './AuthProvider'
-import { useToast } from '@/hooks/use-toast'
+import React from 'react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import { useNavigate } from 'react-router-dom';
+import { LogIn, UserPlus } from 'lucide-react';
 
 interface AuthDialogProps {
-  open: boolean
-  onOpenChange: (open: boolean) => void
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
 }
 
 export const AuthDialog: React.FC<AuthDialogProps> = ({ open, onOpenChange }) => {
-  const [isLoading, setIsLoading] = useState(false)
-  const [signInData, setSignInData] = useState({ email: '', password: '' })
-  const [signUpData, setSignUpData] = useState({ email: '', password: '', fullName: '' })
-  const { signIn, signUp, isSupabaseConnected } = useAuth()
-  const { toast } = useToast()
+  const navigate = useNavigate();
 
-  // Check if Supabase is connected - for demo, show as feature preview
-  if (!isSupabaseConnected) {
-    return (
-      <Dialog open={open} onOpenChange={onOpenChange}>
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle>Authentication Demo</DialogTitle>
-            <DialogDescription>
-              This is a demo of the authentication feature. In a real deployment, 
-              you would connect to Supabase to enable user accounts and query saving.
-            </DialogDescription>
-          </DialogHeader>
-          <div className="mt-4 p-4 bg-muted rounded-lg">
-            <p className="text-sm text-muted-foreground">
-              Demo features available:
-            </p>
-            <ul className="text-sm mt-2 space-y-1">
-              <li>• User registration and login</li>
-              <li>• Save and manage search queries</li>
-              <li>• Premium subscription tiers</li>
-            </ul>
-          </div>
-          <Button 
-            onClick={() => onOpenChange(false)} 
-            className="mt-4 w-full"
-          >
-            Close Demo Preview
-          </Button>
-        </DialogContent>
-      </Dialog>
-    )
-  }
-
-  const handleSignIn = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsLoading(true)
-
-    try {
-      const { error } = await signIn(signInData.email, signInData.password)
-      if (error) {
-        toast({
-          title: 'Sign in failed',
-          description: error.message,
-          variant: 'destructive',
-        })
-      } else {
-        toast({
-          title: 'Welcome back!',
-          description: 'You have successfully signed in.',
-        })
-        onOpenChange(false)
-      }
-    } catch (error) {
-      toast({
-        title: 'Sign in failed',
-        description: 'An unexpected error occurred.',
-        variant: 'destructive',
-      })
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
-  const handleSignUp = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsLoading(true)
-
-    try {
-      const { error } = await signUp(signUpData.email, signUpData.password, signUpData.fullName)
-      if (error) {
-        toast({
-          title: 'Sign up failed',
-          description: error.message,
-          variant: 'destructive',
-        })
-      } else {
-        toast({
-          title: 'Welcome!',
-          description: 'Please check your email to verify your account.',
-        })
-        onOpenChange(false)
-      }
-    } catch (error) {
-      toast({
-        title: 'Sign up failed',
-        description: 'An unexpected error occurred.',
-        variant: 'destructive',
-      })
-    } finally {
-      setIsLoading(false)
-    }
-  }
+  const handleAuthRedirect = () => {
+    onOpenChange(false);
+    navigate('/auth');
+  };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Sign in to your account</DialogTitle>
-          <DialogDescription>
-            Sign in to save your queries and access premium features.
-          </DialogDescription>
+          <DialogTitle>Authentication Required</DialogTitle>
         </DialogHeader>
         
-        <Tabs defaultValue="signin" className="w-full">
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="signin">Sign In</TabsTrigger>
-            <TabsTrigger value="signup">Sign Up</TabsTrigger>
-          </TabsList>
+        <div className="space-y-4">
+          <p className="text-muted-foreground">
+            Please sign in or create an account to access this feature.
+          </p>
           
-          <TabsContent value="signin">
-            <form onSubmit={handleSignIn} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="signin-email">Email</Label>
-                <Input
-                  id="signin-email"
-                  type="email"
-                  value={signInData.email}
-                  onChange={(e) => setSignInData({ ...signInData, email: e.target.value })}
-                  required
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="signin-password">Password</Label>
-                <Input
-                  id="signin-password"
-                  type="password"
-                  value={signInData.password}
-                  onChange={(e) => setSignInData({ ...signInData, password: e.target.value })}
-                  required
-                />
-              </div>
-              <Button type="submit" className="w-full" disabled={isLoading}>
-                {isLoading ? 'Signing in...' : 'Sign In'}
-              </Button>
-            </form>
-          </TabsContent>
+          <div className="flex gap-2">
+            <Button 
+              onClick={handleAuthRedirect}
+              className="flex-1 gap-2"
+            >
+              <LogIn className="w-4 h-4" />
+              Sign In
+            </Button>
+            <Button 
+              onClick={handleAuthRedirect}
+              variant="outline" 
+              className="flex-1 gap-2"
+            >
+              <UserPlus className="w-4 h-4" />
+              Sign Up
+            </Button>
+          </div>
           
-          <TabsContent value="signup">
-            <form onSubmit={handleSignUp} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="signup-name">Full Name</Label>
-                <Input
-                  id="signup-name"
-                  type="text"
-                  value={signUpData.fullName}
-                  onChange={(e) => setSignUpData({ ...signUpData, fullName: e.target.value })}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="signup-email">Email</Label>
-                <Input
-                  id="signup-email"
-                  type="email"
-                  value={signUpData.email}
-                  onChange={(e) => setSignUpData({ ...signUpData, email: e.target.value })}
-                  required
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="signup-password">Password</Label>
-                <Input
-                  id="signup-password"
-                  type="password"
-                  value={signUpData.password}
-                  onChange={(e) => setSignUpData({ ...signUpData, password: e.target.value })}
-                  required
-                />
-              </div>
-              <Button type="submit" className="w-full" disabled={isLoading}>
-                {isLoading ? 'Creating account...' : 'Sign Up'}
-              </Button>
-            </form>
-          </TabsContent>
-        </Tabs>
+          <Button 
+            variant="ghost"
+            onClick={() => onOpenChange(false)}
+            className="w-full"
+          >
+            Continue without account
+          </Button>
+        </div>
       </DialogContent>
     </Dialog>
-  )
-}
+  );
+};
