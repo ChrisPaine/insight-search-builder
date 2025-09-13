@@ -105,7 +105,7 @@ const initialPhraseCategories: PhraseCategory[] = [
 ];
 
 const Index = () => {
-  const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>(['reddit', 'discord']);
+  const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([]);
   const [phraseCategories, setPhraseCategories] = useState<PhraseCategory[]>(initialPhraseCategories);
   const [selectedPhrases, setSelectedPhrases] = useState<string[]>([]);
   const [mainTopic, setMainTopic] = useState('');
