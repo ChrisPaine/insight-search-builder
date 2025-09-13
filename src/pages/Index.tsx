@@ -228,7 +228,7 @@ const Index = () => {
       // Special handling for Google Trends
       if (platformId === 'google-trends') {
         const trendsQuery = encodeURIComponent(mainTopic.trim());
-        const trendsUrl = `https://trends.google.com/trends/explore?q=${trendsQuery}`;
+        const trendsUrl = `https://trends.google.com/trends/explore?date=all&q=${trendsQuery}&hl=en`;
         const display = `Google Trends: ${mainTopic.trim()}`;
         
         links.push({ name: platform.name, url: trendsUrl, display });
