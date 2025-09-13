@@ -113,6 +113,40 @@ const initialPhraseCategories: PhraseCategory[] = [
   }
 ];
 
+// Preset configurations for different research goals
+const phrasePresets = [
+  {
+    id: 'customer-feedback',
+    name: 'Customer Feedback',
+    description: 'Personal opinions and emotional responses',
+    categories: [0, 3] // Personal Expressions + Emotions & Concerns
+  },
+  {
+    id: 'user-research',
+    name: 'User Research', 
+    description: 'Learning experiences and challenges',
+    categories: [1, 2] // Learning Moments + Problems & Struggles
+  },
+  {
+    id: 'pain-discovery',
+    name: 'Pain Point Discovery',
+    description: 'Problems and emotional concerns',
+    categories: [2, 3] // Problems & Struggles + Emotions & Concerns
+  },
+  {
+    id: 'experience-insights',
+    name: 'Experience Insights',
+    description: 'Personal experiences and learnings',
+    categories: [0, 1] // Personal Expressions + Learning Moments
+  },
+  {
+    id: 'complete-research',
+    name: 'Complete Research',
+    description: 'All phrase categories',
+    categories: [0, 1, 2, 3] // All categories
+  }
+];
+
 // Google Trends categories for targeted search
 const googleTrendsCategories = [
   { id: '0', name: 'All Categories' },
@@ -339,6 +373,32 @@ const Index = () => {
     );
   };
 
+  const applyPreset = (presetId: string) => {
+    const preset = phrasePresets.find(p => p.id === presetId);
+    if (!preset) return;
+
+    // Clear existing selections first
+    setSelectedPhrases([]);
+    
+    // Open selected categories and select all their phrases
+    setPhraseCategories(prev => 
+      prev.map((category, index) => ({
+        ...category,
+        isOpen: preset.categories.includes(index)
+      }))
+    );
+
+    // Select all phrases from the preset categories
+    const newSelectedPhrases: string[] = [];
+    preset.categories.forEach(categoryIndex => {
+      if (initialPhraseCategories[categoryIndex]) {
+        newSelectedPhrases.push(...initialPhraseCategories[categoryIndex].phrases);
+      }
+    });
+    
+    setSelectedPhrases(newSelectedPhrases);
+  };
+
   return (
     <div className="min-h-screen bg-gradient-subtle">
       {/* Header */}
@@ -421,11 +481,28 @@ const Index = () => {
                     <MessageSquare className="w-5 h-5 text-research-blue" />
                     Search Phrase Builder
                   </CardTitle>
-                  {selectedPhrases.length > 0 && (
-                    <Button variant="outline" size="sm" onClick={clearAllPhrases}>
-                      Clear All ({selectedPhrases.length})
-                    </Button>
-                  )}
+                  <div className="flex items-center gap-2">
+                    <Select onValueChange={applyPreset}>
+                      <SelectTrigger className="w-48">
+                        <SelectValue placeholder="Choose preset..." />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {phrasePresets.map((preset) => (
+                          <SelectItem key={preset.id} value={preset.id}>
+                            <div className="flex flex-col">
+                              <span className="font-medium">{preset.name}</span>
+                              <span className="text-xs text-muted-foreground">{preset.description}</span>
+                            </div>
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    {selectedPhrases.length > 0 && (
+                      <Button variant="outline" size="sm" onClick={clearAllPhrases}>
+                        Clear All ({selectedPhrases.length})
+                      </Button>
+                    )}
+                  </div>
                 </div>
               </CardHeader>
               <CardContent className="space-y-3">
