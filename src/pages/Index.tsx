@@ -508,34 +508,37 @@ const Index = () => {
       } else if (platformId === 'twitter') {
         platformToken = 'site:twitter.com';
         
-        // Add Twitter advanced options
+        // Add Twitter advanced options using Google-compatible syntax
         const twitterOptions = advancedOptions.twitter;
         
-        // Add sophisticated search patterns
+        let twitterTerms = [];
+        
         if (twitterOptions.emotionalContent) {
-          platformToken += ' (struggling OR frustrated OR "wish I knew" OR "biggest mistake")';
+          twitterTerms.push('(struggling OR frustrated OR "wish I knew" OR "biggest mistake")');
         }
         if (twitterOptions.communityValidation) {
-          platformToken += ' ("anyone else" OR "am I the only one") min_retweets:5';
+          twitterTerms.push('("anyone else" OR "am I the only one" OR "does anyone")');
         }
         if (twitterOptions.opinions) {
-          platformToken += ' ("unpopular opinion" OR "hot take") min_faves:10';
+          twitterTerms.push('("unpopular opinion" OR "hot take" OR "controversial" OR "I think")');
         }
         if (twitterOptions.rants) {
-          platformToken += ' (rant OR vent OR frustrated) -filter:links';
+          twitterTerms.push('(rant OR vent OR frustrated OR angry OR "I hate")');
         }
         if (twitterOptions.experiences) {
-          platformToken += ' ("my experience" OR "my journey") filter:native_video';
+          twitterTerms.push('("my experience" OR "my journey" OR "I tried" OR "I learned")');
         }
         if (twitterOptions.verifiedOnly) {
-          platformToken += ' filter:verified';
+          twitterTerms.push('(verified OR checkmark OR "blue tick")');
         }
         if (twitterOptions.hasMedia) {
-          platformToken += ' filter:media';
+          twitterTerms.push('(photo OR image OR video OR pic OR "attached")');
         }
         
-        // Add quality filters for engagement
-        platformToken += ' lang:en -filter:retweets min_replies:3';
+        // Combine terms if any are selected
+        if (twitterTerms.length > 0) {
+          platformToken += ' ' + twitterTerms.join(' ');
+        }
       } else if (platformId === 'discord') {
         platformToken = 'site:discord.com OR site:discord.gg OR site:disboard.org';
       } else if (platformId === 'linkedin') {
