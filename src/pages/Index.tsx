@@ -208,26 +208,35 @@ const Index = () => {
       }
     },
     {
+      target: '.reddit-advanced-options',
+      title: 'Step 3: Platform Advanced Features',
+      content: 'Each platform offers powerful advanced options! Reddit lets you target self-posts, high-engagement content, specific users, and more. These help find the most relevant pain points.',
+      position: 'left',
+      action: () => {
+        setPlatformSelectorOpen(false);
+      }
+    },
+    {
       target: '#additional-keywords',  
-      title: 'Step 3: Add Keywords (Optional)',
+      title: 'Step 4: Add Keywords (Optional)',
       content: 'Add specific keywords to narrow down your search. This helps find more targeted pain points.',
       position: 'bottom'
     },
     {
       target: '#phrase-builder',
-      title: 'Step 4: Select Pain Point Phrases',
+      title: 'Step 5: Select Pain Point Phrases',
       content: 'Choose from pre-built phrase categories that help identify customer pain points, or select a preset for quick setup.',
       position: 'right'
     },
     {
       target: '#search-settings',
-      title: 'Step 5: Configure Search Settings',
+      title: 'Step 6: Configure Search Settings',
       content: 'Choose your search engine, time filter, and access advanced options for each selected platform.',
       position: 'left'
     },
     {
       target: '#search-button',
-      title: 'Step 6: Start Your Research',
+      title: 'Step 7: Start Your Research',
       content: 'Click to open search tabs for each selected platform. Your query will be automatically optimized for each platform.',
       position: 'top'
     }
@@ -1056,7 +1065,7 @@ const Index = () => {
 
                   {/* Reddit Advanced Options */}
                   {selectedPlatforms.includes('reddit') && (
-                    <Collapsible>
+                    <Collapsible className="reddit-advanced-options">
                       <CollapsibleTrigger className="flex items-center justify-between w-full p-2 rounded-lg border border-border hover:bg-research-blue-light">
                         <div className="flex items-center gap-2">
                           <MessageSquare className="w-4 h-4 text-research-blue" />
