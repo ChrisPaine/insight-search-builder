@@ -8,7 +8,7 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/component
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { toast } from '@/hooks/use-toast';
-import { Search, ChevronDown, ChevronUp, MessageSquare, Hash, Users, Camera, Globe } from 'lucide-react';
+import { Search, ChevronDown, ChevronUp, MessageSquare, Hash, Users, Camera, Globe, Briefcase } from 'lucide-react';
 
 interface Platform {
   id: string;
@@ -58,6 +58,13 @@ const platforms: Platform[] = [
     name: 'Facebook',
     site: 'site:facebook.com',
     icon: <Users className="w-4 h-4" />,
+    color: 'text-research-blue-dark'
+  },
+  {
+    id: 'linkedin',
+    name: 'LinkedIn',
+    site: 'site:linkedin.com',
+    icon: <Briefcase className="w-4 h-4" />,
     color: 'text-research-blue-dark'
   }
 ];
@@ -118,7 +125,7 @@ const Index = () => {
     const title = 'Customer Pain Point Research Tool | Social Research Query Builder';
     document.title = title;
 
-    const desc = 'Build advanced social research queries across Reddit, Discord, Twitter, Instagram, and Facebook.';
+    const desc = 'Build advanced social research queries across Reddit, Discord, Twitter, Instagram, Facebook, and LinkedIn.';
     let meta = document.querySelector('meta[name="description"]');
     if (!meta) {
       meta = document.createElement('meta');
@@ -220,6 +227,8 @@ const Index = () => {
         platformToken = 'site:discord.com OR site:discord.gg OR site:disboard.org';
       } else if (platformId === 'twitter') {
         platformToken = 'site:twitter.com';
+      } else if (platformId === 'linkedin') {
+        platformToken = 'site:linkedin.com';
       } else {
         platformToken = platform.site.replace(/\s+OR\s+/g, '|');
       }
