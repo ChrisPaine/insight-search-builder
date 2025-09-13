@@ -201,6 +201,11 @@ const Index = () => {
     twitter: {
       verifiedOnly: false,
       hasMedia: false
+    },
+    instagram: {
+      linkInBio: false,
+      swipeUp: false,
+      reelsOnly: false
     }
   });
 
@@ -375,6 +380,20 @@ const Index = () => {
         platformToken = 'site:discord.com OR site:discord.gg OR site:disboard.org';
       } else if (platformId === 'linkedin') {
         platformToken = 'site:linkedin.com';
+      } else if (platformId === 'instagram') {
+        platformToken = 'site:instagram.com';
+        
+        // Add Instagram advanced options
+        const igOptions = advancedOptions.instagram;
+        if (igOptions.linkInBio) {
+          platformToken += ' intext:"link in bio" ("struggling"|"journey"|"help")';
+        }
+        if (igOptions.swipeUp) {
+          platformToken += ' intext:"swipe up" ("honest"|"real"|"truth")';
+        }
+        if (igOptions.reelsOnly) {
+          platformToken = 'site:instagram.com/reel ("anyone else"|"am I the only one"|"struggle")';
+        }
       } else {
         platformToken = platform.site.replace(/\s+OR\s+/g, '|');
       }
@@ -493,6 +512,11 @@ const Index = () => {
       twitter: {
         verifiedOnly: false,
         hasMedia: false
+      },
+      instagram: {
+        linkInBio: false,
+        swipeUp: false,
+        reelsOnly: false
       }
     });
     
@@ -939,6 +963,56 @@ const Index = () => {
                             }))}
                           />
                           <Label htmlFor="twitter-media" className="text-sm">Posts with media only</Label>
+                        </div>
+                       </CollapsibleContent>
+                    </Collapsible>
+                  )}
+
+                  {/* Instagram Advanced Options */}
+                  {selectedPlatforms.includes('instagram') && (
+                    <Collapsible>
+                      <CollapsibleTrigger className="flex items-center justify-between w-full p-2 rounded-lg border border-border hover:bg-research-blue-light">
+                        <div className="flex items-center gap-2">
+                          <Camera className="w-4 h-4 text-research-blue" />
+                          <span className="font-medium">Instagram Options</span>
+                        </div>
+                        <ChevronDown className="w-4 h-4" />
+                      </CollapsibleTrigger>
+                      <CollapsibleContent className="mt-3 space-y-3 pl-4">
+                        <div className="flex items-center space-x-2">
+                          <Checkbox
+                            id="ig-link-bio"
+                            checked={advancedOptions.instagram.linkInBio}
+                            onCheckedChange={(checked) => setAdvancedOptions(prev => ({
+                              ...prev,
+                              instagram: { ...prev.instagram, linkInBio: !!checked }
+                            }))}
+                          />
+                          <Label htmlFor="ig-link-bio" className="text-sm">Link in bio posts with struggle keywords</Label>
+                        </div>
+                        
+                        <div className="flex items-center space-x-2">
+                          <Checkbox
+                            id="ig-swipe-up"
+                            checked={advancedOptions.instagram.swipeUp}
+                            onCheckedChange={(checked) => setAdvancedOptions(prev => ({
+                              ...prev,
+                              instagram: { ...prev.instagram, swipeUp: !!checked }
+                            }))}
+                          />
+                          <Label htmlFor="ig-swipe-up" className="text-sm">Swipe up posts with authenticity keywords</Label>
+                        </div>
+                        
+                        <div className="flex items-center space-x-2">
+                          <Checkbox
+                            id="ig-reels"
+                            checked={advancedOptions.instagram.reelsOnly}
+                            onCheckedChange={(checked) => setAdvancedOptions(prev => ({
+                              ...prev,
+                              instagram: { ...prev.instagram, reelsOnly: !!checked }
+                            }))}
+                          />
+                          <Label htmlFor="ig-reels" className="text-sm">Reels only with relatable phrases</Label>
                         </div>
                       </CollapsibleContent>
                     </Collapsible>
