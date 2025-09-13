@@ -9,9 +9,15 @@ import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { toast } from '@/hooks/use-toast';
-import { Search, ChevronDown, ChevronUp, MessageSquare, Hash, Users, Camera, Globe, Briefcase, Play, TrendingUp, Settings } from 'lucide-react';
+import { Search, ChevronDown, ChevronUp, MessageSquare, Hash, Users, Camera, Globe, Briefcase, Play, TrendingUp, Settings, Save, FolderOpen, User, LogOut, Crown } from 'lucide-react';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { useAuth } from '@/components/auth/AuthProvider';
+import { AuthDialog } from '@/components/auth/AuthDialog';
+import { PaywallDialog } from '@/components/paywall/PaywallDialog';
+import { SavedQueriesDialog } from '@/components/queries/SavedQueriesDialog';
+import { useQueries } from '@/hooks/useQueries';
+import { useToast } from '@/hooks/use-toast';
 import researchMascot from '@/assets/research-mascot.png';
 
 interface Platform {
@@ -186,6 +192,18 @@ const Index = () => {
   const [selectedPreset, setSelectedPreset] = useState<string>('');
   const [lastLinks, setLastLinks] = useState<{ name: string; url: string; display: string }[]>([]);
   const [platformSelectorOpen, setPlatformSelectorOpen] = useState(false);
+
+  // Auth and paywall state
+  const [authDialogOpen, setAuthDialogOpen] = useState(false);
+  const [paywallDialogOpen, setPaywallDialogOpen] = useState(false);
+  const [paywallFeature, setPaywallFeature] = useState('');
+  const [savedQueriesDialogOpen, setSavedQueriesDialogOpen] = useState(false);
+  const [saveQueryTitle, setSaveQueryTitle] = useState('');
+  const [showSaveInput, setShowSaveInput] = useState(false);
+  
+  const { user, signOut, isPro, isPremium } = useAuth();
+  const { saveQuery } = useQueries();
+  const { toast } = useToast();
 
   // Tutorial state
   const [showTutorial, setShowTutorial] = useState(false);
@@ -632,6 +650,78 @@ const Index = () => {
     );
   };
 
+  const handleSaveQuery = async () => {
+    if (!user) {
+      setAuthDialogOpen(true);
+      return;
+    }
+
+    if (!isPro) {
+      setPaywallFeature('save queries');
+      setPaywallDialogOpen(true);
+      return;
+    }
+
+    if (!saveQueryTitle.trim()) {
+      toast({
+        title: 'Please enter a title',
+        description: 'A title is required to save your query.',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    const queryData = {
+      selectedPlatforms,
+      selectedPhrases,
+      mainTopic,
+      additionalKeywords,
+      generatedQuery,
+      searchEngine,
+      timeFilter,
+    };
+
+    const saved = await saveQuery(saveQueryTitle, queryData, selectedPlatforms);
+    if (saved) {
+      toast({
+        title: 'Query saved!',
+        description: `"${saveQueryTitle}" has been saved to your queries.`,
+      });
+      setSaveQueryTitle('');
+      setShowSaveInput(false);
+    } else {
+      toast({
+        title: 'Error saving query',
+        description: 'Please try again.',
+        variant: 'destructive',
+      });
+    }
+  };
+
+  const handleLoadQuery = (queryData: any, platforms: string[]) => {
+    setSelectedPlatforms(platforms);
+    setSelectedPhrases(queryData.selectedPhrases || []);
+    setMainTopic(queryData.mainTopic || '');
+    setAdditionalKeywords(queryData.additionalKeywords || '');
+    setSearchEngine(queryData.searchEngine || 'google');
+    setTimeFilter(queryData.timeFilter || 'any');
+  };
+
+  const checkFeatureAccess = (feature: string) => {
+    if (!user) {
+      setAuthDialogOpen(true);
+      return false;
+    }
+
+    if (!isPro && (feature === 'export' || feature === 'advanced-operators')) {
+      setPaywallFeature(feature);
+      setPaywallDialogOpen(true);
+      return false;
+    }
+
+    return true;
+  };
+
   const applyPreset = (presetId: string) => {
     const preset = phrasePresets.find(p => p.id === presetId);
     if (!preset) return;
@@ -739,6 +829,21 @@ const Index = () => {
       <header className="bg-background shadow-sm border-b border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              {user && (
+                <div className="flex items-center gap-2">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setSavedQueriesDialogOpen(true)}
+                  >
+                    <FolderOpen className="w-4 h-4 mr-2" />
+                    Saved Queries
+                  </Button>
+                </div>
+              )}
+            </div>
+            
             <div className="flex-1 text-center">
               <div className="flex items-center justify-center gap-3 mb-1">
                 <img 
@@ -754,7 +859,8 @@ const Index = () => {
                 Build advanced search queries to discover customer insights across social platforms
               </p>
             </div>
-            <div className="flex-shrink-0 flex items-center gap-2">
+            
+            <div className="flex items-center gap-2">
               <Button
                 variant="outline"
                 size="sm"
@@ -764,6 +870,25 @@ const Index = () => {
                 Help Tour
               </Button>
               <ThemeToggle />
+              {user ? (
+                <div className="flex items-center gap-2">
+                  {isPro && (
+                    <Badge variant="secondary" className="bg-primary/10 text-primary">
+                      <Crown className="w-3 h-3 mr-1" />
+                      {isPremium ? 'Premium' : 'Pro'}
+                    </Badge>
+                  )}
+                  <Button variant="ghost" size="sm" onClick={signOut}>
+                    <LogOut className="w-4 h-4 mr-2" />
+                    Sign Out
+                  </Button>
+                </div>
+              ) : (
+                <Button variant="outline" size="sm" onClick={() => setAuthDialogOpen(true)}>
+                  <User className="w-4 h-4 mr-2" />
+                  Sign In
+                </Button>
+              )}
             </div>
           </div>
         </div>
@@ -777,19 +902,59 @@ const Index = () => {
             {/* Main Topic and Keywords */}
             <Card className="shadow-card">
               <CardHeader>
-                <div className="flex items-center justify-between">
+                <div className="flex flex-wrap items-center justify-between gap-2">
                   <CardTitle className="flex items-center gap-2 text-2xl">
                     <Hash className="w-7 h-7 text-research-blue" />
                     Research Topic
                   </CardTitle>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={clearAll}
-                    className="text-muted-foreground hover:text-foreground"
-                  >
-                    Clear All
-                  </Button>
+                  <div className="flex items-center gap-2">
+                    {user && (
+                      <>
+                        {showSaveInput ? (
+                          <div className="flex gap-2 items-center">
+                            <Input
+                              placeholder="Query title..."
+                              value={saveQueryTitle}
+                              onChange={(e) => setSaveQueryTitle(e.target.value)}
+                              className="w-32 h-8 text-sm"
+                              onKeyPress={(e) => e.key === 'Enter' && handleSaveQuery()}
+                            />
+                            <Button onClick={handleSaveQuery} size="sm" variant="outline">
+                              <Save className="w-3 h-3 mr-1" />
+                              Save
+                            </Button>
+                            <Button 
+                              variant="ghost" 
+                              size="sm" 
+                              onClick={() => {
+                                setShowSaveInput(false);
+                                setSaveQueryTitle('');
+                              }}
+                            >
+                              Cancel
+                            </Button>
+                          </div>
+                        ) : (
+                          <Button 
+                            onClick={() => setShowSaveInput(true)} 
+                            variant="outline" 
+                            size="sm"
+                          >
+                            <Save className="w-4 h-4 mr-2" />
+                            Save Query
+                          </Button>
+                        )}
+                      </>
+                    )}
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={clearAll}
+                      className="text-muted-foreground hover:text-foreground"
+                    >
+                      Clear All
+                    </Button>
+                  </div>
                 </div>
               </CardHeader>
               <CardContent className="space-y-3">
@@ -1658,6 +1823,18 @@ const Index = () => {
           </div>
         </div>
       </footer>
+      
+      <AuthDialog open={authDialogOpen} onOpenChange={setAuthDialogOpen} />
+      <PaywallDialog 
+        open={paywallDialogOpen} 
+        onOpenChange={setPaywallDialogOpen}
+        feature={paywallFeature}
+      />
+      <SavedQueriesDialog
+        open={savedQueriesDialogOpen}
+        onOpenChange={setSavedQueriesDialogOpen}
+        onLoadQuery={handleLoadQuery}
+      />
     </div>
   );
 };
