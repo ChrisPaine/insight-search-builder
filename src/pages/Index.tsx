@@ -477,21 +477,6 @@ const Index = () => {
                 <div className="mt-3 text-sm text-muted-foreground">
                   Selected: {selectedPlatforms.length} platform{selectedPlatforms.length !== 1 ? 's' : ''}
                 </div>
-                <div className="mt-4">
-                  <Button
-                    variant="research"
-                    size="lg"
-                    className="w-full"
-                    onClick={handleSearch}
-                    disabled={!mainTopic.trim() || selectedPlatforms.length === 0}
-                  >
-                    <Search className="w-5 h-5 mr-2" />
-                    Open {selectedPlatforms.length} Tab{selectedPlatforms.length !== 1 ? 's' : ''}
-                  </Button>
-                  <p className="text-xs text-muted-foreground text-center mt-2">
-                    Opens separate {searchEngine === 'google' ? 'Google' : searchEngine === 'duckduckgo' ? 'DuckDuckGo' : 'Bing'} tab{selectedPlatforms.length !== 1 ? 's' : ''} — one per platform
-                  </p>
-                </div>
               </CardContent>
             </Card>
 
