@@ -515,7 +515,7 @@ const Index = () => {
                             {platformElement}
                           </TooltipTrigger>
                           <TooltipContent>
-                            <p>Uses Main Topic only!</p>
+                            <p>Uses Main Topic only! After opening, select "Topic" instead of "Search term" from the dropdown for better results.</p>
                           </TooltipContent>
                         </Tooltip>
                       );
