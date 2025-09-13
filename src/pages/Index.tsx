@@ -403,6 +403,30 @@ const Index = () => {
     setSelectedPhrases(newSelectedPhrases);
   };
 
+  const clearAll = () => {
+    // Reset all form inputs
+    setMainTopic('');
+    setAdditionalKeywords('');
+    
+    // Reset phrase builder
+    setSelectedPhrases([]);
+    setSelectedPreset('');
+    setPhraseCategories(initialPhraseCategories.map(category => ({ ...category, isOpen: false })));
+    
+    // Reset platforms
+    setSelectedPlatforms([]);
+    
+    // Reset search settings
+    setSearchEngine('google');
+    setTimeFilter('any');
+    setGoogleTrendsCategory('0');
+    
+    toast({
+      title: 'Cleared',
+      description: 'All settings reset to default'
+    });
+  };
+
   return (
     <div className="min-h-screen bg-gradient-subtle">
       {/* Header */}
@@ -432,10 +456,20 @@ const Index = () => {
             {/* Main Topic and Keywords */}
             <Card className="shadow-card">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-2xl">
-                  <Hash className="w-7 h-7 text-research-blue" />
-                  Research Topic
-                </CardTitle>
+                <div className="flex items-center justify-between">
+                  <CardTitle className="flex items-center gap-2 text-2xl">
+                    <Hash className="w-7 h-7 text-research-blue" />
+                    Research Topic
+                  </CardTitle>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={clearAll}
+                    className="text-muted-foreground hover:text-foreground"
+                  >
+                    Clear All
+                  </Button>
+                </div>
               </CardHeader>
               <CardContent className="space-y-3">
                 <div>
