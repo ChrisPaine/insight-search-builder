@@ -635,26 +635,6 @@ const Index = () => {
                     <p className="text-xs text-muted-foreground mt-1">Filter results by time (Google only).</p>
                   </div>
                 </div>
-                
-                {/* Google Trends Category Selection - only show when Google Trends is selected */}
-                {selectedPlatforms.includes('google-trends') && (
-                  <div className="pt-3 border-t border-border">
-                    <Label className="text-sm font-medium mb-2 block">Google Trends Category</Label>
-                    <Select value={googleTrendsCategory} onValueChange={setGoogleTrendsCategory}>
-                      <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Select category" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {googleTrendsCategories.map((category) => (
-                          <SelectItem key={category.id} value={category.id}>
-                            {category.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <p className="text-xs text-muted-foreground mt-1">Choose a category to get more targeted trends data for your topic.</p>
-                  </div>
-                )}
               </CardContent>
             </Card>
           </div>
