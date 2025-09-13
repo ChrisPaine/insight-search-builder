@@ -22,18 +22,35 @@ export const PaywallDialog: React.FC<PaywallDialogProps> = ({ open, onOpenChange
   const [isLoading, setIsLoading] = useState(false)
   const { user, isSupabaseConnected } = useAuth()
 
-  // Check if Supabase is connected
+  // Check if Supabase is connected - for demo, show as feature preview
   if (!isSupabaseConnected) {
     return (
       <Dialog open={open} onOpenChange={onOpenChange}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>Supabase Connection Required</DialogTitle>
+            <DialogTitle>Premium Features Demo</DialogTitle>
             <DialogDescription>
-              To use premium features, you need to connect to Supabase first.
-              Click the green Supabase button in the top right to get started.
+              This is a demo of premium features. In a real deployment, 
+              you would connect to Supabase and Stripe to enable subscriptions.
             </DialogDescription>
           </DialogHeader>
+          <div className="mt-4 p-4 bg-muted rounded-lg">
+            <p className="text-sm text-muted-foreground">
+              Premium features include:
+            </p>
+            <ul className="text-sm mt-2 space-y-1">
+              <li>• Save unlimited queries</li>
+              <li>• Advanced search operators</li>
+              <li>• Export results to CSV</li>
+              <li>• Team collaboration</li>
+            </ul>
+          </div>
+          <Button 
+            onClick={() => onOpenChange(false)} 
+            className="mt-4 w-full"
+          >
+            Close Demo Preview
+          </Button>
         </DialogContent>
       </Dialog>
     )

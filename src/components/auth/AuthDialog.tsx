@@ -25,18 +25,34 @@ export const AuthDialog: React.FC<AuthDialogProps> = ({ open, onOpenChange }) =>
   const { signIn, signUp, isSupabaseConnected } = useAuth()
   const { toast } = useToast()
 
-  // Check if Supabase is connected
+  // Check if Supabase is connected - for demo, show as feature preview
   if (!isSupabaseConnected) {
     return (
       <Dialog open={open} onOpenChange={onOpenChange}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>Supabase Connection Required</DialogTitle>
+            <DialogTitle>Authentication Demo</DialogTitle>
             <DialogDescription>
-              To use authentication and save queries, you need to connect to Supabase first.
-              Click the green Supabase button in the top right to get started.
+              This is a demo of the authentication feature. In a real deployment, 
+              you would connect to Supabase to enable user accounts and query saving.
             </DialogDescription>
           </DialogHeader>
+          <div className="mt-4 p-4 bg-muted rounded-lg">
+            <p className="text-sm text-muted-foreground">
+              Demo features available:
+            </p>
+            <ul className="text-sm mt-2 space-y-1">
+              <li>• User registration and login</li>
+              <li>• Save and manage search queries</li>
+              <li>• Premium subscription tiers</li>
+            </ul>
+          </div>
+          <Button 
+            onClick={() => onOpenChange(false)} 
+            className="mt-4 w-full"
+          >
+            Close Demo Preview
+          </Button>
         </DialogContent>
       </Dialog>
     )

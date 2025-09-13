@@ -201,7 +201,7 @@ const Index = () => {
   const [saveQueryTitle, setSaveQueryTitle] = useState('');
   const [showSaveInput, setShowSaveInput] = useState(false);
   
-  const { user, signOut, isPro, isPremium } = useAuth();
+  const { user, signOut, isPro, isPremium, isSupabaseConnected } = useAuth();
   const { saveQuery } = useQueries();
   const { toast } = useToast();
 
@@ -662,6 +662,15 @@ const Index = () => {
   };
 
   const handleSaveQuery = async () => {
+    // For demo purposes, allow saving without Supabase
+    if (!isSupabaseConnected) {
+      toast({ 
+        title: 'Demo Mode', 
+        description: 'Query saving is a premium feature available with Supabase connection.' 
+      });
+      return;
+    }
+    
     if (!user) {
       setAuthDialogOpen(true);
       return;
@@ -719,17 +728,24 @@ const Index = () => {
   };
 
   const checkFeatureAccess = (feature: string) => {
+    // For demo purposes, show premium dialogs instead of requiring connection
+    if (!isSupabaseConnected) {
+      setPaywallFeature(feature);
+      setPaywallDialogOpen(true);
+      return false;
+    }
+    
     if (!user) {
       setAuthDialogOpen(true);
       return false;
     }
-
+    
     if (!isPro && (feature === 'export' || feature === 'advanced-operators')) {
       setPaywallFeature(feature);
       setPaywallDialogOpen(true);
       return false;
     }
-
+    
     return true;
   };
 
