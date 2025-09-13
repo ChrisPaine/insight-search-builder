@@ -482,7 +482,7 @@ const Index = () => {
         // Add Reddit advanced options
         const redditOptions = advancedOptions.reddit;
         if (redditOptions.selfPostsOnly) {
-          platformToken += ' inurl:selfserve';
+          platformToken += ' -inurl:redd.it inurl:/r/';
         }
         if (redditOptions.minScore) {
           platformToken += ` score:>${redditOptions.scoreThreshold}`;
