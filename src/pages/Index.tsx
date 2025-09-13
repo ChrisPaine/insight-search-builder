@@ -26,24 +26,10 @@ interface PhraseCategory {
 
 const platforms: Platform[] = [
   {
-    id: 'reddit',
-    name: 'Reddit',
-    site: 'site:reddit.com',
-    icon: <MessageSquare className="w-4 h-4" />,
-    color: 'text-research-blue-dark'
-  },
-  {
-    id: 'youtube',
-    name: 'YouTube',
-    site: 'site:youtube.com',
-    icon: <Play className="w-4 h-4" />,
-    color: 'text-research-accent'
-  },
-  {
-    id: 'twitter',
-    name: 'Twitter',
-    site: 'site:twitter.com',
-    icon: <Globe className="w-4 h-4" />,
+    id: 'facebook',
+    name: 'Facebook',
+    site: 'site:facebook.com',
+    icon: <Users className="w-4 h-4" />,
     color: 'text-research-blue-dark'
   },
   {
@@ -54,18 +40,32 @@ const platforms: Platform[] = [
     color: 'text-research-blue-dark'
   },
   {
-    id: 'facebook',
-    name: 'Facebook',
-    site: 'site:facebook.com',
-    icon: <Users className="w-4 h-4" />,
-    color: 'text-research-blue-dark'
-  },
-  {
     id: 'linkedin',
     name: 'LinkedIn',
     site: 'site:linkedin.com',
     icon: <Briefcase className="w-4 h-4" />,
     color: 'text-research-blue-dark'
+  },
+  {
+    id: 'reddit',
+    name: 'Reddit',
+    site: 'site:reddit.com',
+    icon: <MessageSquare className="w-4 h-4" />,
+    color: 'text-research-blue-dark'
+  },
+  {
+    id: 'twitter',
+    name: 'Twitter',
+    site: 'site:twitter.com',
+    icon: <Globe className="w-4 h-4" />,
+    color: 'text-research-blue-dark'
+  },
+  {
+    id: 'youtube',
+    name: 'YouTube',
+    site: 'site:youtube.com',
+    icon: <Play className="w-4 h-4" />,
+    color: 'text-research-accent'
   }
 ];
 
