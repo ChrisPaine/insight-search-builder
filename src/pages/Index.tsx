@@ -389,9 +389,9 @@ const Index = () => {
     // Keep the combined query for preview, but build individual platform queries for search
     const platformTokens = selectedPlatforms
       .map((platformId) => {
-        if (platformId === 'reddit') return 'site:reddit.com inurl:comments|inurl:thread';
+        if (platformId === 'reddit') return 'site:reddit.com (inurl:comments OR inurl:thread)';
         const siteStr = platforms.find((p) => p.id === platformId)?.site ?? '';
-        return siteStr.replace(/\s+OR\s+/g, '|');
+        return siteStr;
       })
       .filter(Boolean) as string[];
 
@@ -477,12 +477,12 @@ const Index = () => {
       // Build platform-specific query
       let platformToken = '';
       if (platformId === 'reddit') {
-        platformToken = 'site:reddit.com inurl:comments|inurl:thread';
+        platformToken = 'site:reddit.com (inurl:comments OR inurl:thread)';
         
         // Add Reddit advanced options
         const redditOptions = advancedOptions.reddit;
         if (redditOptions.selfPostsOnly) {
-          platformToken += ' -inurl:redd.it inurl:/r/';
+          platformToken += ' -inurl:redd.it -inurl:imgur.com -inurl:youtube.com -inurl:twitter.com';
         }
         if (redditOptions.minScore) {
           platformToken += ` score:>${redditOptions.scoreThreshold}`;
