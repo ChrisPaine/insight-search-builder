@@ -183,6 +183,7 @@ const Index = () => {
   const [googleTrendsCategory, setGoogleTrendsCategory] = useState<string>('0');
   const [selectedPreset, setSelectedPreset] = useState<string>('');
   const [lastLinks, setLastLinks] = useState<{ name: string; url: string; display: string }[]>([]);
+  const [platformSelectorOpen, setPlatformSelectorOpen] = useState(true);
   
   // Advanced platform options
   const [advancedOptions, setAdvancedOptions] = useState({
@@ -599,11 +600,16 @@ const Index = () => {
                 </div>
               </CardHeader>
               <CardContent>
-                <Collapsible defaultOpen={true}>
+                <Collapsible open={platformSelectorOpen} onOpenChange={setPlatformSelectorOpen}>
                   <CollapsibleTrigger className="w-full">
                     <div className="flex items-center justify-between p-2 bg-research-gray rounded-lg hover:bg-research-blue-light transition-colors">
-                      <h3 className="font-semibold text-left text-sm">Available Platforms</h3>
-                      <ChevronDown className="w-4 h-4" />
+                      <h3 className="font-semibold text-left text-sm">
+                        {selectedPlatforms.length > 0 && !platformSelectorOpen 
+                          ? selectedPlatforms.map(id => platforms.find(p => p.id === id)?.name).join(', ')
+                          : 'Available Platforms'
+                        }
+                      </h3>
+                      {platformSelectorOpen ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
                     </div>
                   </CollapsibleTrigger>
                   <CollapsibleContent className="mt-2">
