@@ -113,6 +113,30 @@ const initialPhraseCategories: PhraseCategory[] = [
   }
 ];
 
+// Google Trends categories for targeted search
+const googleTrendsCategories = [
+  { id: '0', name: 'All Categories' },
+  { id: '3', name: 'Arts & Entertainment' },
+  { id: '5', name: 'Computers & Electronics' },
+  { id: '7', name: 'Finance' },
+  { id: '8', name: 'Games' },
+  { id: '11', name: 'Home & Garden' },
+  { id: '12', name: 'Internet & Telecom' },
+  { id: '13', name: 'Jobs & Education' },
+  { id: '14', name: 'Law & Government' },
+  { id: '16', name: 'News' },
+  { id: '17', name: 'Online Communities' },
+  { id: '18', name: 'People & Society' },
+  { id: '19', name: 'Pets & Animals' },
+  { id: '20', name: 'Real Estate' },
+  { id: '22', name: 'Science' },
+  { id: '23', name: 'Sports' },
+  { id: '24', name: 'Travel' },
+  { id: '1237', name: 'Business & Industrial' },
+  { id: '45', name: 'Health' },
+  { id: '299', name: 'Shopping' }
+];
+
 const Index = () => {
   const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([]);
   const [phraseCategories, setPhraseCategories] = useState<PhraseCategory[]>(initialPhraseCategories);
@@ -122,6 +146,7 @@ const Index = () => {
   const [generatedQuery, setGeneratedQuery] = useState('');
   const [searchEngine, setSearchEngine] = useState<'google' | 'duckduckgo' | 'bing'>('google');
   const [timeFilter, setTimeFilter] = useState<'any' | 'hour' | 'day' | 'week' | 'month' | 'year'>('any');
+  const [googleTrendsCategory, setGoogleTrendsCategory] = useState<string>('0');
   const [lastLinks, setLastLinks] = useState<{ name: string; url: string; display: string }[]>([]);
 
   // Update query whenever inputs change
@@ -228,8 +253,10 @@ const Index = () => {
       // Special handling for Google Trends
       if (platformId === 'google-trends') {
         const trendsQuery = encodeURIComponent(mainTopic.trim());
-        const trendsUrl = `https://trends.google.com/trends/explore?date=all&q=${trendsQuery}&hl=en`;
-        const display = `Google Trends: ${mainTopic.trim()}`;
+        const categoryParam = googleTrendsCategory !== '0' ? `&cat=${googleTrendsCategory}` : '';
+        const trendsUrl = `https://trends.google.com/trends/explore?date=all&q=${trendsQuery}${categoryParam}&hl=en`;
+        const categoryName = googleTrendsCategories.find(c => c.id === googleTrendsCategory)?.name || 'All Categories';
+        const display = `Google Trends: ${mainTopic.trim()} (${categoryName})`;
         
         links.push({ name: platform.name, url: trendsUrl, display });
 
@@ -475,6 +502,26 @@ const Index = () => {
                     <p className="text-xs text-muted-foreground mt-1">Filter results by time (Google only).</p>
                   </div>
                 </div>
+                
+                {/* Google Trends Category Selection - only show when Google Trends is selected */}
+                {selectedPlatforms.includes('google-trends') && (
+                  <div className="pt-3 border-t border-border">
+                    <Label className="text-sm font-medium mb-2 block">Google Trends Category</Label>
+                    <Select value={googleTrendsCategory} onValueChange={setGoogleTrendsCategory}>
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Select category" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {googleTrendsCategories.map((category) => (
+                          <SelectItem key={category.id} value={category.id}>
+                            {category.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <p className="text-xs text-muted-foreground mt-1">Choose a category to get more targeted trends data for your topic.</p>
+                  </div>
+                )}
               </CardContent>
             </Card>
           </div>
@@ -515,7 +562,7 @@ const Index = () => {
                             {platformElement}
                           </TooltipTrigger>
                           <TooltipContent>
-                            <p>Uses Main Topic only! After opening, select "Topic" instead of "Search term" from the dropdown for better results.</p>
+                            <p>Uses Main Topic only! You can select a category below for more targeted results.</p>
                           </TooltipContent>
                         </Tooltip>
                       );
