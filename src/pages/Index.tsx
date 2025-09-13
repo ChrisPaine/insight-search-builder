@@ -574,28 +574,36 @@ const Index = () => {
       } else if (platformId === 'youtube') {
         platformToken = 'site:youtube.com';
         
-        // Add YouTube advanced options
+        // Add YouTube advanced options using compatible syntax
         const youtubeOptions = advancedOptions.youtube;
+        
+        let youtubeTerms = [];
+        
         if (youtubeOptions.commentsSearch) {
-          platformToken += ' intext:("I tried this" OR "this helped me" OR "I struggled with" OR "my experience")';
+          youtubeTerms.push('("I tried this" OR "this helped me" OR "I struggled with" OR "my experience")');
         }
         if (youtubeOptions.videoContent) {
-          platformToken = 'site:youtube.com/watch ("review" OR "experience" OR "problems" OR "issues" OR "struggles")';
+          youtubeTerms.push('("review" OR "experience" OR "problems" OR "issues" OR "struggles")');
         }
         if (youtubeOptions.channelSpecific) {
-          platformToken = 'site:youtube.com site:youtube.com/c/ ("honest review" OR "my thoughts" OR "problems with")';
+          youtubeTerms.push('("honest review" OR "my thoughts" OR "problems with")');
         }
         if (youtubeOptions.videoReactions) {
-          platformToken += ' ("this saved my life" OR "game changer" OR "waste of money" OR "don\'t buy this" OR "total scam")';
+          youtubeTerms.push('("this saved my life" OR "game changer" OR "waste of money" OR "don\'t buy this")');
         }
         if (youtubeOptions.tutorialFeedback) {
-          platformToken += ' ("this didn\'t work for me" OR "finally something that works" OR "I tried everything" OR "this is the only thing")';
+          youtubeTerms.push('("this didn\'t work for me" OR "finally something that works" OR "I tried everything")');
         }
         if (youtubeOptions.productReviews) {
-          platformToken += ' ("after 6 months of using" OR "honest opinion" OR "pros and cons" OR "before you buy")';
+          youtubeTerms.push('("honest opinion" OR "pros and cons" OR "before you buy")');
         }
         if (youtubeOptions.longTermReviews) {
-          platformToken += ' ("long term review" OR "6 month update" OR "1 year later")';
+          youtubeTerms.push('("long term review" OR "6 month update" OR "1 year later")');
+        }
+        
+        // Combine terms with OR logic to be less restrictive
+        if (youtubeTerms.length > 0) {
+          platformToken += ' (' + youtubeTerms.join(' OR ') + ')';
         }
       } else {
         platformToken = platform.site;
