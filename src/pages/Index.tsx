@@ -204,8 +204,7 @@ const Index = () => {
       content: 'Select which social media platforms to search. Each platform has unique advanced options for better targeting. Let me show you Reddit\'s advanced features!',
       position: 'right',
       action: () => {
-        // Select all available platforms during this step
-        setSelectedPlatforms(platforms.map(p => p.id));
+        setSelectedPlatforms(['reddit']);
         setPlatformSelectorOpen(true);
       }
     },
