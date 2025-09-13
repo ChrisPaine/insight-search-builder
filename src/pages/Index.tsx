@@ -318,13 +318,25 @@ const Index = () => {
                   <Label htmlFor="mainTopic" className="text-sm font-medium mb-2 block">
                     Main Topic <span className="text-destructive">*</span>
                   </Label>
-                  <Input
-                    id="mainTopic"
-                    value={mainTopic}
-                    onChange={(e) => setMainTopic(e.target.value)}
-                    placeholder="e.g., project management software, meal planning apps, fitness tracking..."
-                    className="w-full"
-                  />
+                  <div className="flex gap-2">
+                    <Input
+                      id="mainTopic"
+                      value={mainTopic}
+                      onChange={(e) => setMainTopic(e.target.value)}
+                      placeholder="e.g., project management software, meal planning apps, fitness tracking..."
+                      className="flex-1"
+                    />
+                    <Button
+                      variant="research"
+                      size="sm"
+                      onClick={handleSearch}
+                      disabled={!mainTopic.trim() || selectedPlatforms.length === 0}
+                      className="px-4"
+                    >
+                      <Search className="w-4 h-4 mr-1" />
+                      Search
+                    </Button>
+                  </div>
                 </div>
                 <div>
                   <Label htmlFor="additionalKeywords" className="text-sm font-medium mb-2 block">
@@ -468,38 +480,7 @@ const Index = () => {
               </CardContent>
             </Card>
 
-            {/* Search Button */}
-            <Card className="shadow-card">
-              <CardContent className="pt-4">
-                <Button
-                  variant="research"
-                  size="lg"
-                  className="w-full"
-                  onClick={handleSearch}
-                  disabled={!mainTopic.trim() || selectedPlatforms.length === 0}
-                >
-                  <Search className="w-5 h-5 mr-2" />
-                  Search Now
-                </Button>
-                <p className="text-xs text-muted-foreground text-center mt-2">
-                  Opens {selectedPlatforms.length} separate {searchEngine === 'google' ? 'Google' : searchEngine === 'duckduckgo' ? 'DuckDuckGo' : 'Bing'} tab{selectedPlatforms.length !== 1 ? 's' : ''} — one per platform
-                </p>
-                {lastLinks.length > 0 && (
-                  <div className="mt-3">
-                    <p className="text-xs text-muted-foreground mb-2">Quick links (use if pop-ups or Google are blocked):</p>
-                    <div className="flex flex-col gap-1">
-                      {lastLinks.map(link => (
-                        <a key={link.url} href={link.url} target="_blank" rel="noopener noreferrer" className="text-xs underline text-foreground/80 hover:text-foreground">
-                          {link.display}
-                        </a>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-
-            {/* Selected Summary */}
+            {/* Search Summary */}
             <Card className="shadow-card">
               <CardHeader>
                 <CardTitle className="text-base">Search Summary</CardTitle>
@@ -520,7 +501,7 @@ const Index = () => {
                         })}
                       </div>
                     ) : (
-                      <span className="text-sm text-muted-foreground">None selected</span>
+                      <span className="text-xs text-muted-foreground">None selected</span>
                     )}
                   </div>
                 </div>
@@ -528,12 +509,37 @@ const Index = () => {
                   <span className="text-sm font-medium text-muted-foreground">Phrases:</span>
                   <div className="mt-1">
                     {selectedPhrases.length > 0 ? (
-                      <span className="text-sm">{selectedPhrases.length} selected</span>
+                      <div className="flex flex-wrap gap-1">
+                        {selectedPhrases.map(phrase => (
+                          <Badge key={phrase} variant="outline" className="text-xs">
+                            {phrase}
+                          </Badge>
+                        ))}
+                      </div>
                     ) : (
-                      <span className="text-sm text-muted-foreground">None selected</span>
+                      <span className="text-xs text-muted-foreground">None selected</span>
                     )}
                   </div>
                 </div>
+                <div>
+                  <span className="text-sm font-medium text-muted-foreground">Generated Query:</span>
+                  <div className="mt-1 p-2 bg-muted rounded text-xs font-mono break-words">
+                    {generatedQuery || "Enter a main topic to generate a query"}
+                  </div>
+                </div>
+                {lastLinks.length > 0 && (
+                  <div>
+                    <span className="text-sm font-medium text-muted-foreground">Quick Links:</span>
+                    <p className="text-xs text-muted-foreground mb-2">Use if pop-ups are blocked:</p>
+                    <div className="flex flex-col gap-1">
+                      {lastLinks.map(link => (
+                        <a key={link.url} href={link.url} target="_blank" rel="noopener noreferrer" className="text-xs underline text-foreground/80 hover:text-foreground break-all">
+                          {link.name}: {link.display}
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </CardContent>
             </Card>
           </div>
