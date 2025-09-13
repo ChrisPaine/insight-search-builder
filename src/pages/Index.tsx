@@ -206,6 +206,10 @@ const Index = () => {
       action: () => {
         setSelectedPlatforms(['reddit']);
         setPlatformSelectorOpen(true);
+        // Close after a brief delay to show the selection
+        setTimeout(() => {
+          setPlatformSelectorOpen(false);
+        }, 500);
       }
     },
     {
