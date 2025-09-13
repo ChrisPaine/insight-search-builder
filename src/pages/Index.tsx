@@ -213,7 +213,7 @@ const Index = () => {
       }
     },
     {
-      target: '.reddit-advanced-options',
+      target: '#advanced-options',
       title: 'Step 3: Platform Advanced Features',
       content: 'Each platform offers powerful advanced options! Reddit lets you target self-posts, high-engagement content, specific users, and more. These help find the most relevant pain points.',
       position: 'left',
@@ -1005,7 +1005,7 @@ const Index = () => {
 
             {/* Advanced Platform Options */}
             {selectedPlatforms.length > 0 && (
-              <Card className="shadow-card">
+              <Card id="advanced-options" className="shadow-card">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2 text-base">
                     <Settings className="w-4 h-4 text-research-blue" />
