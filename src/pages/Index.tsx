@@ -396,9 +396,9 @@ const Index = () => {
       .filter(Boolean) as string[];
 
     // phrases with single intext prefix
-    const phrasesToken = selectedPhrases.length > 0 ? `intext:"${selectedPhrases.join('"|"')}"` : '';
+    const phrasesToken = selectedPhrases.length > 0 ? `intext:("${selectedPhrases.join('" OR "')}")` : '';
 
-    const groupedContent = [platformTokens.join(' | '), phrasesToken].filter(Boolean).join(' | ');
+    const groupedContent = [platformTokens.join(' OR '), phrasesToken].filter(Boolean).join(' OR ');
 
     const query = groupedContent ? `${topicPart}${keywordsPart} (${groupedContent})` : `${topicPart}${keywordsPart}`;
 
@@ -544,15 +544,15 @@ const Index = () => {
         // Add LinkedIn advanced options
         const linkedinOptions = advancedOptions.linkedin;
         if (linkedinOptions.publicPosts) {
-          platformToken = 'site:linkedin.com/posts ("I struggled with"|"my experience"|"I learned"|"pain point"|"challenge")';
+          platformToken = 'site:linkedin.com/posts ("I struggled with" OR "my experience" OR "I learned" OR "pain point" OR "challenge")';
         } else if (linkedinOptions.pulseArticles) {
-          platformToken = 'site:linkedin.com/pulse ("I think"|"my opinion"|"I found that"|"biggest challenge")';
+          platformToken = 'site:linkedin.com/pulse ("I think" OR "my opinion" OR "I found that" OR "biggest challenge")';
         } else if (linkedinOptions.companyPosts) {
-          platformToken = 'site:linkedin.com/company ("feedback"|"review"|"experience"|"struggled")';
+          platformToken = 'site:linkedin.com/company ("feedback" OR "review" OR "experience" OR "struggled")';
         } else if (linkedinOptions.industrySpecific) {
-          platformToken = 'site:linkedin.com ("I wish"|"frustration"|"pain point"|"challenge"|"struggled")';
+          platformToken = 'site:linkedin.com ("I wish" OR "frustration" OR "pain point" OR "challenge" OR "struggled")';
         } else if (linkedinOptions.roleBased) {
-          platformToken = `site:linkedin.com ("${linkedinOptions.targetRole}"|"founder"|"marketing manager") "biggest challenge"`;
+          platformToken = `site:linkedin.com ("${linkedinOptions.targetRole}" OR "founder" OR "marketing manager") "biggest challenge"`;
         }
       } else if (platformId === 'instagram') {
         platformToken = 'site:instagram.com';
@@ -560,13 +560,13 @@ const Index = () => {
         // Add Instagram advanced options
         const igOptions = advancedOptions.instagram;
         if (igOptions.linkInBio) {
-          platformToken += ' intext:"link in bio" ("struggling"|"journey"|"help")';
+          platformToken += ' intext:"link in bio" ("struggling" OR "journey" OR "help")';
         }
         if (igOptions.swipeUp) {
-          platformToken += ' intext:"swipe up" ("honest"|"real"|"truth")';
+          platformToken += ' intext:"swipe up" ("honest" OR "real" OR "truth")';
         }
         if (igOptions.reelsOnly) {
-          platformToken = 'site:instagram.com/reel ("anyone else"|"am I the only one"|"struggle")';
+          platformToken = 'site:instagram.com/reel ("anyone else" OR "am I the only one" OR "struggle")';
         }
       } else if (platformId === 'youtube') {
         platformToken = 'site:youtube.com';
@@ -574,31 +574,31 @@ const Index = () => {
         // Add YouTube advanced options
         const youtubeOptions = advancedOptions.youtube;
         if (youtubeOptions.commentsSearch) {
-          platformToken += ' intext:("I tried this"|"this helped me"|"I struggled with"|"my experience")';
+          platformToken += ' intext:("I tried this" OR "this helped me" OR "I struggled with" OR "my experience")';
         }
         if (youtubeOptions.videoContent) {
-          platformToken = 'site:youtube.com/watch ("review"|"experience"|"problems"|"issues"|"struggles")';
+          platformToken = 'site:youtube.com/watch ("review" OR "experience" OR "problems" OR "issues" OR "struggles")';
         }
         if (youtubeOptions.channelSpecific) {
-          platformToken = 'site:youtube.com site:youtube.com/c/ ("honest review"|"my thoughts"|"problems with")';
+          platformToken = 'site:youtube.com site:youtube.com/c/ ("honest review" OR "my thoughts" OR "problems with")';
         }
         if (youtubeOptions.videoReactions) {
-          platformToken += ' ("this saved my life"|"game changer"|"waste of money"|"don\'t buy this"|"total scam")';
+          platformToken += ' ("this saved my life" OR "game changer" OR "waste of money" OR "don\'t buy this" OR "total scam")';
         }
         if (youtubeOptions.tutorialFeedback) {
-          platformToken += ' ("this didn\'t work for me"|"finally something that works"|"I tried everything"|"this is the only thing")';
+          platformToken += ' ("this didn\'t work for me" OR "finally something that works" OR "I tried everything" OR "this is the only thing")';
         }
         if (youtubeOptions.productReviews) {
-          platformToken += ' ("after 6 months of using"|"honest opinion"|"pros and cons"|"before you buy")';
+          platformToken += ' ("after 6 months of using" OR "honest opinion" OR "pros and cons" OR "before you buy")';
         }
         if (youtubeOptions.longTermReviews) {
-          platformToken += ' ("long term review"|"6 month update"|"1 year later")';
+          platformToken += ' ("long term review" OR "6 month update" OR "1 year later")';
         }
       } else {
-        platformToken = platform.site.replace(/\s+OR\s+/g, '|');
+        platformToken = platform.site;
       }
 
-      const phrasesToken = selectedPhrases.length > 0 ? `intext:"${selectedPhrases.join('"|"')}"` : '';
+      const phrasesToken = selectedPhrases.length > 0 ? `intext:("${selectedPhrases.join('" OR "')}")` : '';
       const groupedContent = [platformToken, phrasesToken].filter(Boolean).join(' ');
       const platformQuery = groupedContent ? `${topicPart}${keywordsPart} (${groupedContent})` : `${topicPart}${keywordsPart}`;
 
