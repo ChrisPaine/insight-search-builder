@@ -250,13 +250,22 @@ const Index = () => {
   const nextStep = () => {
     const currentStep = tutorialSteps[tutorialStep];
     
-    // Execute step action if it exists
+    // Execute current step action if it exists
     if (currentStep.action) {
       currentStep.action();
     }
     
     if (tutorialStep < tutorialSteps.length - 1) {
-      setTutorialStep(tutorialStep + 1);
+      const nextStepIndex = tutorialStep + 1;
+      setTutorialStep(nextStepIndex);
+      
+      // Execute next step action immediately when it becomes active
+      const nextStep = tutorialSteps[nextStepIndex];
+      if (nextStep.action) {
+        setTimeout(() => {
+          nextStep.action();
+        }, 100);
+      }
     } else {
       setShowTutorial(false);
       setTutorialStep(0);
