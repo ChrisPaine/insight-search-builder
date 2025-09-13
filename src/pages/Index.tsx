@@ -585,6 +585,57 @@ const Index = () => {
               </CardContent>
             </Card>
 
+            {/* Platform Selection */}
+            <Card className="shadow-card">
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <CardTitle className="flex items-center gap-2 text-lg">
+                    <Globe className="w-5 h-5 text-research-blue" />
+                    Select Platforms
+                  </CardTitle>
+                  <div className="text-sm text-muted-foreground">
+                    Selected: {selectedPlatforms.length} platform{selectedPlatforms.length !== 1 ? 's' : ''}
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 gap-3">
+                  {platforms.map((platform) => {
+                    const platformElement = (
+                      <label
+                        key={platform.id}
+                        className="flex items-center space-x-2 p-2 rounded-lg border border-border hover:bg-research-blue-light cursor-pointer transition-all duration-200"
+                      >
+                        <Checkbox
+                          checked={selectedPlatforms.includes(platform.id)}
+                          onCheckedChange={() => togglePlatform(platform.id)}
+                        />
+                        <div className="flex items-center space-x-1">
+                          <span className={platform.color}>{platform.icon}</span>
+                          <span className="font-medium text-sm">{platform.name}</span>
+                        </div>
+                      </label>
+                    );
+
+                    if (platform.id === 'google-trends') {
+                      return (
+                        <Tooltip key={platform.id}>
+                          <TooltipTrigger asChild>
+                            {platformElement}
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>Uses Main Topic only! You'll have to change on Google Trends tab to Topic not Search term.</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      );
+                    }
+
+                    return platformElement;
+                  })}
+                </div>
+              </CardContent>
+            </Card>
+
             {/* Search Phrase Builder */}
             <Card className="shadow-card">
               <CardHeader>
@@ -834,57 +885,8 @@ const Index = () => {
             )}
           </div>
 
-          {/* Right Column - Platform Selection & Search */}
+          {/* Right Column - Search Settings & Advanced Options */}
           <div className="space-y-4">
-            {/* Platform Selection */}
-            <Card className="shadow-card">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Globe className="w-5 h-5 text-research-blue" />
-                  Select Platforms
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-1 gap-3">
-                  {platforms.map((platform) => {
-                    const platformElement = (
-                      <label
-                        key={platform.id}
-                        className="flex items-center space-x-2 p-2 rounded-lg border border-border hover:bg-research-blue-light cursor-pointer transition-all duration-200"
-                      >
-                        <Checkbox
-                          checked={selectedPlatforms.includes(platform.id)}
-                          onCheckedChange={() => togglePlatform(platform.id)}
-                        />
-                        <div className="flex items-center space-x-1">
-                          <span className={platform.color}>{platform.icon}</span>
-                          <span className="font-medium text-sm">{platform.name}</span>
-                        </div>
-                      </label>
-                    );
-
-                    if (platform.id === 'google-trends') {
-                      return (
-                        <Tooltip key={platform.id}>
-                          <TooltipTrigger asChild>
-                            {platformElement}
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <p>Uses Main Topic only! You'll have to change on Google Trends tab to Topic not Search term.</p>
-                          </TooltipContent>
-                        </Tooltip>
-                      );
-                    }
-
-                    return platformElement;
-                  })}
-                </div>
-                <div className="mt-3 text-sm text-muted-foreground">
-                  Selected: {selectedPlatforms.length} platform{selectedPlatforms.length !== 1 ? 's' : ''}
-                </div>
-              </CardContent>
-            </Card>
-
             {/* Search Settings */}
             <Card className="shadow-card">
               <CardHeader>
@@ -929,6 +931,190 @@ const Index = () => {
                 </div>
               </CardContent>
             </Card>
+
+            {/* Advanced Platform Options */}
+            {selectedPlatforms.length > 0 && (
+              <Card className="shadow-card">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2 text-base">
+                    <Settings className="w-4 h-4 text-research-blue" />
+                    Advanced Options
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  
+                  {/* Facebook Advanced Options */}
+                  {selectedPlatforms.includes('facebook') && (
+                    <Collapsible>
+                      <CollapsibleTrigger className="flex items-center justify-between w-full p-2 rounded-lg border border-border hover:bg-research-blue-light">
+                        <div className="flex items-center gap-2">
+                          <Globe className="w-4 h-4 text-research-blue" />
+                          <span className="font-medium">Facebook Options</span>
+                        </div>
+                        <ChevronDown className="w-4 h-4" />
+                      </CollapsibleTrigger>
+                      <CollapsibleContent className="mt-3 space-y-3 pl-4">
+                        <div>
+                          <Label className="text-sm font-medium">Group ID (optional)</Label>
+                          <Input
+                            placeholder="Enter Facebook group ID"
+                            value={advancedOptions.facebook.groupId}
+                            onChange={(e) => setAdvancedOptions(prev => ({
+                              ...prev,
+                              facebook: { ...prev.facebook, groupId: e.target.value }
+                            }))}
+                            className="mt-1"
+                          />
+                        </div>
+                        
+                        <div className="flex items-center space-x-2">
+                          <Checkbox
+                            id="fb-public"
+                            checked={advancedOptions.facebook.publicPostsOnly}
+                            onCheckedChange={(checked) => setAdvancedOptions(prev => ({
+                              ...prev,
+                              facebook: { ...prev.facebook, publicPostsOnly: !!checked }
+                            }))}
+                          />
+                          <Label htmlFor="fb-public" className="text-sm">Public posts only</Label>
+                        </div>
+                        
+                        <div>
+                          <Label className="text-sm font-medium mb-2 block">Community Focus</Label>
+                          <div className="grid grid-cols-2 gap-2">
+                            {['support', 'community help', 'beginners', 'newbies'].map(type => (
+                              <label key={type} className="flex items-center space-x-2 text-sm">
+                                <Checkbox
+                                  checked={advancedOptions.facebook.communityType.includes(type)}
+                                  onCheckedChange={(checked) => {
+                                    setAdvancedOptions(prev => ({
+                                      ...prev,
+                                      facebook: {
+                                        ...prev.facebook,
+                                        communityType: checked 
+                                          ? [...prev.facebook.communityType, type]
+                                          : prev.facebook.communityType.filter(t => t !== type)
+                                      }
+                                    }));
+                                  }}
+                                />
+                                <span>{type}</span>
+                              </label>
+                            ))}
+                          </div>
+                        </div>
+                      </CollapsibleContent>
+                    </Collapsible>
+                  )}
+
+                  {/* Reddit Advanced Options */}
+                  {selectedPlatforms.includes('reddit') && (
+                    <Collapsible>
+                      <CollapsibleTrigger className="flex items-center justify-between w-full p-2 rounded-lg border border-border hover:bg-research-blue-light">
+                        <div className="flex items-center gap-2">
+                          <MessageSquare className="w-4 h-4 text-research-blue" />
+                          <span className="font-medium">Reddit Options</span>
+                        </div>
+                        <ChevronDown className="w-4 h-4" />
+                      </CollapsibleTrigger>
+                      <CollapsibleContent className="mt-3 space-y-3 pl-4">
+                        <div className="flex items-center space-x-2">
+                          <Checkbox
+                            id="reddit-self"
+                            checked={advancedOptions.reddit.selfPostsOnly}
+                            onCheckedChange={(checked) => setAdvancedOptions(prev => ({
+                              ...prev,
+                              reddit: { ...prev.reddit, selfPostsOnly: !!checked }
+                            }))}
+                          />
+                          <Label htmlFor="reddit-self" className="text-sm">Self posts only</Label>
+                        </div>
+                        
+                        <div className="flex items-center space-x-2">
+                          <Checkbox
+                            id="reddit-score"
+                            checked={advancedOptions.reddit.minScore}
+                            onCheckedChange={(checked) => setAdvancedOptions(prev => ({
+                              ...prev,
+                              reddit: { ...prev.reddit, minScore: !!checked }
+                            }))}
+                          />
+                          <Label htmlFor="reddit-score" className="text-sm">High engagement posts (score ≥ {advancedOptions.reddit.scoreThreshold})</Label>
+                        </div>
+                        
+                        {advancedOptions.reddit.minScore && (
+                          <div>
+                            <Label className="text-sm font-medium">Score Threshold</Label>
+                            <Input
+                              type="number"
+                              min="1"
+                              value={advancedOptions.reddit.scoreThreshold}
+                              onChange={(e) => setAdvancedOptions(prev => ({
+                                ...prev,
+                                reddit: { ...prev.reddit, scoreThreshold: parseInt(e.target.value) || 50 }
+                              }))}
+                              className="mt-1"
+                            />
+                          </div>
+                        )}
+                        
+                        <div>
+                          <Label className="text-sm font-medium">Author Search (optional)</Label>
+                          <Input
+                            placeholder="Enter Reddit username"
+                            value={advancedOptions.reddit.author}
+                            onChange={(e) => setAdvancedOptions(prev => ({
+                              ...prev,
+                              reddit: { ...prev.reddit, author: e.target.value }
+                            }))}
+                            className="mt-1"
+                          />
+                        </div>
+                      </CollapsibleContent>
+                    </Collapsible>
+                  )}
+
+                  {/* Twitter Advanced Options */}
+                  {selectedPlatforms.includes('twitter') && (
+                    <Collapsible>
+                      <CollapsibleTrigger className="flex items-center justify-between w-full p-2 rounded-lg border border-border hover:bg-research-blue-light">
+                        <div className="flex items-center gap-2">
+                          <Globe className="w-4 h-4 text-research-blue" />
+                          <span className="font-medium">Twitter Options</span>
+                        </div>
+                        <ChevronDown className="w-4 h-4" />
+                      </CollapsibleTrigger>
+                      <CollapsibleContent className="mt-3 space-y-3 pl-4">
+                        <div className="flex items-center space-x-2">
+                          <Checkbox
+                            id="twitter-verified"
+                            checked={advancedOptions.twitter.verifiedOnly}
+                            onCheckedChange={(checked) => setAdvancedOptions(prev => ({
+                              ...prev,
+                              twitter: { ...prev.twitter, verifiedOnly: !!checked }
+                            }))}
+                          />
+                          <Label htmlFor="twitter-verified" className="text-sm">Verified accounts only</Label>
+                        </div>
+                        
+                        <div className="flex items-center space-x-2">
+                          <Checkbox
+                            id="twitter-media"
+                            checked={advancedOptions.twitter.hasMedia}
+                            onCheckedChange={(checked) => setAdvancedOptions(prev => ({
+                              ...prev,
+                              twitter: { ...prev.twitter, hasMedia: !!checked }
+                            }))}
+                          />
+                          <Label htmlFor="twitter-media" className="text-sm">Posts with media only</Label>
+                        </div>
+                      </CollapsibleContent>
+                    </Collapsible>
+                  )}
+                  
+                </CardContent>
+              </Card>
+            )}
           </div>
         </div>
       </main>
