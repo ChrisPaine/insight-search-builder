@@ -12,6 +12,7 @@ import { toast } from '@/hooks/use-toast';
 import { Search, ChevronDown, ChevronUp, MessageSquare, Hash, Users, Camera, Globe, Briefcase, Play, TrendingUp, Settings } from 'lucide-react';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import researchMascot from '@/assets/research-mascot.png';
 
 interface Platform {
   id: string;
@@ -739,9 +740,16 @@ const Index = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
             <div className="flex-1 text-center">
-              <h1 className="text-2xl font-bold text-foreground mb-1">
-                Customer Pain Point Research Tool
-              </h1>
+              <div className="flex items-center justify-center gap-3 mb-1">
+                <img 
+                  src={researchMascot} 
+                  alt="Research Tool Mascot" 
+                  className="w-10 h-10 rounded-lg shadow-sm"
+                />
+                <h1 className="text-2xl font-bold text-foreground">
+                  Customer Pain Point Research Tool
+                </h1>
+              </div>
               <p className="text-muted-foreground">
                 Build advanced search queries to discover customer insights across social platforms
               </p>
