@@ -534,13 +534,25 @@ const Index = () => {
                   <div>
                     <span className="text-sm font-medium text-muted-foreground">Quick Links:</span>
                     <p className="text-xs text-muted-foreground mb-2">Use if pop-ups are blocked:</p>
-                    <div className="flex flex-col gap-1">
-                      {lastLinks.map(link => (
-                        <a key={link.url} href={link.url} target="_blank" rel="noopener noreferrer" className="text-xs underline text-foreground/80 hover:text-foreground break-all">
-                          {link.name}: {link.display}
-                        </a>
-                      ))}
-                    </div>
+                     <div className="flex flex-col gap-1">
+                       {lastLinks.map(link => {
+                         // Create abbreviated display URL
+                         let abbreviatedUrl = '';
+                         if (searchEngine === 'google') {
+                           abbreviatedUrl = `www.google.com/${link.name.toLowerCase()}...`;
+                         } else if (searchEngine === 'bing') {
+                           abbreviatedUrl = `www.bing.com/${link.name.toLowerCase()}...`;
+                         } else if (searchEngine === 'duckduckgo') {
+                           abbreviatedUrl = `duckduckgo.com/${link.name.toLowerCase()}...`;
+                         }
+                         
+                         return (
+                           <a key={link.url} href={link.url} target="_blank" rel="noopener noreferrer" className="text-xs underline text-foreground/80 hover:text-foreground">
+                             {link.name}: {abbreviatedUrl}
+                           </a>
+                         );
+                       })}
+                     </div>
                   </div>
                 )}
               </CardContent>
