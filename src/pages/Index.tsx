@@ -1546,6 +1546,7 @@ const Index = () => {
                 ))}
               </CardContent>
             </Card>
+          </div>
 
           {/* Right Column - Search Settings & Advanced Options */}
           <div className="space-y-4">
@@ -2227,7 +2228,7 @@ const Index = () => {
                 </>
               );
             })()}
-          </div>
+           </div>
         </>
       )}
 
