@@ -1099,7 +1099,7 @@ const Index = () => {
                 <div className="flex items-center justify-between">
                   <CardTitle className="flex items-center gap-2 text-lg">
                     <MessageSquare className="w-5 h-5 text-research-blue" />
-                    Search Phrase Builder
+                    Pain Point Filter
                   </CardTitle>
                   <div className="flex items-center gap-2">
                     <Select value={selectedPreset} onValueChange={applyPreset}>
