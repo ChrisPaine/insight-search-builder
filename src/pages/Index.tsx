@@ -947,9 +947,9 @@ const Index = () => {
           <div className="lg:col-span-3 space-y-4">
             {/* Main Topic and Keywords */}
             <Card className="shadow-card">
-              <CardHeader className="border-b border-border">
+              <CardHeader>
                 <div className="flex flex-wrap items-center justify-between gap-2">
-                  <CardTitle className="flex items-center gap-2 text-2xl">
+                  <CardTitle className="flex items-center gap-2 text-2xl border-b border-border pb-2">
                     <Hash className="w-7 h-7 text-research-blue" />
                     Research Topic
                   </CardTitle>
@@ -1091,9 +1091,9 @@ const Index = () => {
 
             {/* Search Phrase Builder */}
             <Card id="phrase-builder" className="shadow-card">
-              <CardHeader className="border-b border-border">
+              <CardHeader>
                 <div className="flex items-center justify-between">
-                  <CardTitle className="flex items-center gap-2 text-lg">
+                  <CardTitle className="flex items-center gap-2 text-lg border-b border-border pb-2">
                     <MessageSquare className="w-5 h-5 text-research-blue" />
                     Pain Point Filter
                   </CardTitle>
