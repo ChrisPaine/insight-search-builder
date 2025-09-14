@@ -209,6 +209,7 @@ const Index = () => {
   // Tutorial state
   const [showTutorial, setShowTutorial] = useState(false);
   const [tutorialStep, setTutorialStep] = useState(0);
+  const [additionalKeywordsOpen, setAdditionalKeywordsOpen] = useState(false);
   const [redditAdvancedOpen, setRedditAdvancedOpen] = useState(false);
   const [spotlightTick, setSpotlightTick] = useState(0);
 
@@ -243,7 +244,12 @@ const Index = () => {
       target: '#additional-keywords',  
       title: 'Step 4: Add Keywords (Optional)',
       content: 'Add specific keywords to narrow down your search. This helps find more targeted pain points.',
-      position: 'bottom'
+      position: 'bottom',
+      action: () => {
+        setAdditionalKeywordsOpen(true);
+        // Recalculate spotlight after expansion
+        setTimeout(() => setSpotlightTick((t) => t + 1), 300);
+      }
     },
     {
       target: '#phrase-builder',
@@ -1030,7 +1036,7 @@ const Index = () => {
                   </div>
                 </div>
                 
-                <Collapsible>
+                <Collapsible open={additionalKeywordsOpen} onOpenChange={setAdditionalKeywordsOpen}>
                   <CollapsibleTrigger className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors w-full justify-start p-2 -mx-2 rounded hover:bg-muted/50">
                     <ChevronDown className="w-4 h-4" />
                     <span>Additional Keywords (optional)</span>
