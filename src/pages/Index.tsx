@@ -1024,9 +1024,150 @@ const Index = () => {
                   
                   <div className="grid grid-cols-3 gap-2 mt-2">
                     {/* Health Market Dropdown */}
-                    <Select onValueChange={(value) => setMainTopic(value)}>
+                    <Select key={`health-${mainTopic}`} value={mainTopic || undefined} onValueChange={(value) => setMainTopic(value)}>
                       <SelectTrigger className="w-full">
                         <SelectValue placeholder="Health Market" />
+                      </SelectTrigger>
+                      <SelectContent className="max-h-[400px]">
+                        <SelectGroup>
+                          <SelectLabel>Health Market</SelectLabel>
+                          <SelectItem value="Health">Health</SelectItem>
+                          
+                          <SelectItem value="Fitness" className="pl-6">• Fitness</SelectItem>
+                          <SelectItem value="Strength Training" className="pl-8">• Strength Training</SelectItem>
+                          <SelectItem value="Home-Based Strength Training" className="pl-10">• Home-Based Strength Training</SelectItem>
+                          <SelectItem value="Strength Training for Postpartum Mothers" className="pl-12">• Strength Training for Postpartum Mothers</SelectItem>
+                          <SelectItem value="Strength Training for Seniors" className="pl-12">• Strength Training for Seniors</SelectItem>
+                          <SelectItem value="Bodyweight Strength Training" className="pl-10">• Bodyweight Strength Training</SelectItem>
+                          <SelectItem value="Bodyweight Training for Travelers" className="pl-12">• Bodyweight Training for Travelers</SelectItem>
+                          <SelectItem value="Bodyweight Training for Military Personnel" className="pl-12">• Bodyweight Training for Military Personnel</SelectItem>
+                          
+                          <SelectItem value="Cardio Fitness" className="pl-8">• Cardio Fitness</SelectItem>
+                          <SelectItem value="High-Intensity Interval Training (HIIT)" className="pl-10">• High-Intensity Interval Training (HIIT)</SelectItem>
+                          <SelectItem value="HIIT for Busy Professionals" className="pl-12">• HIIT for Busy Professionals</SelectItem>
+                          <SelectItem value="HIIT for Weight Loss in Women" className="pl-12">• HIIT for Weight Loss in Women</SelectItem>
+                          
+                          <SelectItem value="Yoga" className="pl-8">• Yoga</SelectItem>
+                          <SelectItem value="Power Yoga" className="pl-10">• Power Yoga</SelectItem>
+                          <SelectItem value="Power Yoga for Athletes" className="pl-12">• Power Yoga for Athletes</SelectItem>
+                          <SelectItem value="Restorative Yoga" className="pl-10">• Restorative Yoga</SelectItem>
+                          <SelectItem value="Restorative Yoga for Stress Relief" className="pl-12">• Restorative Yoga for Stress Relief</SelectItem>
+                          <SelectItem value="Restorative Yoga for Chronic Pain Sufferers" className="pl-12">• Restorative Yoga for Chronic Pain Sufferers</SelectItem>
+                          
+                          <SelectItem value="Flexibility and Mobility" className="pl-8">• Flexibility and Mobility</SelectItem>
+                          <SelectItem value="Mobility Training for Athletes" className="pl-10">• Mobility Training for Athletes</SelectItem>
+                          <SelectItem value="Flexibility Training for Office Workers" className="pl-10">• Flexibility Training for Office Workers</SelectItem>
+                          <SelectItem value="Flexibility Programs for Remote Workers" className="pl-12">• Flexibility Programs for Remote Workers</SelectItem>
+                          
+                          <SelectItem value="Nutrition" className="pl-6">• Nutrition</SelectItem>
+                          <SelectItem value="Diet Plans" className="pl-8">• Diet Plans</SelectItem>
+                          <SelectItem value="Ketogenic Diet" className="pl-10">• Ketogenic Diet</SelectItem>
+                          <SelectItem value="Keto for Diabetics" className="pl-12">• Keto for Diabetics</SelectItem>
+                          <SelectItem value="Keto for Athletes" className="pl-12">• Keto for Athletes</SelectItem>
+                          <SelectItem value="Plant-Based Diets" className="pl-10">• Plant-Based Diets</SelectItem>
+                          <SelectItem value="Plant-Based Nutrition for Bodybuilders" className="pl-12">• Plant-Based Nutrition for Bodybuilders</SelectItem>
+                          <SelectItem value="Plant-Based Diet for Families" className="pl-12">• Plant-Based Diet for Families</SelectItem>
+                          
+                          <SelectItem value="Supplements" className="pl-8">• Supplements</SelectItem>
+                          <SelectItem value="Pre-Workout Supplements" className="pl-10">• Pre-Workout Supplements</SelectItem>
+                          <SelectItem value="Supplements for Endurance Athletes" className="pl-12">• Supplements for Endurance Athletes</SelectItem>
+                          <SelectItem value="Pre-Workout for Beginners" className="pl-12">• Pre-Workout for Beginners</SelectItem>
+                          <SelectItem value="Health Supplements" className="pl-10">• Health Supplements</SelectItem>
+                          <SelectItem value="Supplements for Men's Health" className="pl-12">• Supplements for Men's Health</SelectItem>
+                          <SelectItem value="Supplements for Hormonal Balance in Women" className="pl-12">• Supplements for Hormonal Balance in Women</SelectItem>
+                          
+                          <SelectItem value="Mental Health" className="pl-6">• Mental Health</SelectItem>
+                          <SelectItem value="Stress Management" className="pl-8">• Stress Management</SelectItem>
+                          <SelectItem value="Mindfulness and Meditation" className="pl-10">• Mindfulness and Meditation</SelectItem>
+                          <SelectItem value="Meditation for Corporate Professionals" className="pl-12">• Meditation for Corporate Professionals</SelectItem>
+                          <SelectItem value="Meditation for Sleep Improvement" className="pl-12">• Meditation for Sleep Improvement</SelectItem>
+                          <SelectItem value="Stress Relief Techniques" className="pl-10">• Stress Relief Techniques</SelectItem>
+                          <SelectItem value="Stress Relief for Parents" className="pl-12">• Stress Relief for Parents</SelectItem>
+                          <SelectItem value="Stress Management for College Students" className="pl-12">• Stress Management for College Students</SelectItem>
+                          
+                          <SelectItem value="Therapy and Counseling" className="pl-8">• Therapy and Counseling</SelectItem>
+                          <SelectItem value="Online Therapy" className="pl-10">• Online Therapy</SelectItem>
+                          <SelectItem value="Online Therapy for Veterans" className="pl-12">• Online Therapy for Veterans</SelectItem>
+                          <SelectItem value="Online Therapy for Social Anxiety" className="pl-12">• Online Therapy for Social Anxiety</SelectItem>
+                          <SelectItem value="Cognitive Behavioral Therapy (CBT)" className="pl-10">• Cognitive Behavioral Therapy (CBT)</SelectItem>
+                          <SelectItem value="CBT for Adolescents" className="pl-12">• CBT for Adolescents</SelectItem>
+                          <SelectItem value="CBT for Obsessive-Compulsive Disorder" className="pl-12">• CBT for Obsessive-Compulsive Disorder</SelectItem>
+                          
+                          <SelectItem value="Preventative Health" className="pl-6">• Preventative Health</SelectItem>
+                          <SelectItem value="Immunity Boosting" className="pl-8">• Immunity Boosting</SelectItem>
+                          <SelectItem value="Immunity Programs for Children" className="pl-10">• Immunity Programs for Children</SelectItem>
+                          <SelectItem value="Immunity Boosting for Travelers" className="pl-10">• Immunity Boosting for Travelers</SelectItem>
+                          <SelectItem value="Longevity and Anti-Aging" className="pl-8">• Longevity and Anti-Aging</SelectItem>
+                          <SelectItem value="Anti-Aging for Women Over 50" className="pl-10">• Anti-Aging for Women Over 50</SelectItem>
+                          <SelectItem value="Longevity Coaching for Executives" className="pl-10">• Longevity Coaching for Executives</SelectItem>
+                          <SelectItem value="Sleep Health" className="pl-8">• Sleep Health</SelectItem>
+                          <SelectItem value="Sleep Optimization for Athletes" className="pl-10">• Sleep Optimization for Athletes</SelectItem>
+                          <SelectItem value="Sleep Coaching for Busy Entrepreneurs" className="pl-10">• Sleep Coaching for Busy Entrepreneurs</SelectItem>
+                          
+                          <SelectItem value="Alternative Medicine" className="pl-6">• Alternative Medicine</SelectItem>
+                          <SelectItem value="Herbal Medicine" className="pl-8">• Herbal Medicine</SelectItem>
+                          <SelectItem value="Herbal Remedies for Skin Conditions" className="pl-10">• Herbal Remedies for Skin Conditions</SelectItem>
+                          <SelectItem value="Herbal Medicine for Digestive Health" className="pl-10">• Herbal Medicine for Digestive Health</SelectItem>
+                          <SelectItem value="Acupuncture" className="pl-8">• Acupuncture</SelectItem>
+                          <SelectItem value="Acupuncture for Chronic Pain Relief" className="pl-10">• Acupuncture for Chronic Pain Relief</SelectItem>
+                          <SelectItem value="Acupuncture for Fertility Issues" className="pl-10">• Acupuncture for Fertility Issues</SelectItem>
+                          <SelectItem value="Aromatherapy" className="pl-8">• Aromatherapy</SelectItem>
+                          <SelectItem value="Aromatherapy for Anxiety Reduction" className="pl-10">• Aromatherapy for Anxiety Reduction</SelectItem>
+                          <SelectItem value="Aromatherapy for Insomnia" className="pl-10">• Aromatherapy for Insomnia</SelectItem>
+                          
+                          <SelectItem value="Physical Therapy and Rehabilitation" className="pl-6">• Physical Therapy and Rehabilitation</SelectItem>
+                          <SelectItem value="Injury Rehabilitation" className="pl-8">• Injury Rehabilitation</SelectItem>
+                          <SelectItem value="Post-Surgery Rehabilitation for Athletes" className="pl-10">• Post-Surgery Rehabilitation for Athletes</SelectItem>
+                          <SelectItem value="Rehabilitation for Workplace Injuries" className="pl-10">• Rehabilitation for Workplace Injuries</SelectItem>
+                          <SelectItem value="Chronic Pain Management" className="pl-8">• Chronic Pain Management</SelectItem>
+                          <SelectItem value="Pain Management for Arthritis Patients" className="pl-10">• Pain Management for Arthritis Patients</SelectItem>
+                          <SelectItem value="Pain Relief for Long-Distance Runners" className="pl-10">• Pain Relief for Long-Distance Runners</SelectItem>
+                          <SelectItem value="Mobility Recovery" className="pl-8">• Mobility Recovery</SelectItem>
+                          <SelectItem value="Mobility Recovery for Seniors" className="pl-10">• Mobility Recovery for Seniors</SelectItem>
+                          <SelectItem value="Mobility Training After Car Accidents" className="pl-10">• Mobility Training After Car Accidents</SelectItem>
+                          
+                          <SelectItem value="Specialized Health Services" className="pl-6">• Specialized Health Services</SelectItem>
+                          <SelectItem value="Women's Health" className="pl-8">• Women's Health</SelectItem>
+                          <SelectItem value="Fertility Counseling" className="pl-10">• Fertility Counseling</SelectItem>
+                          <SelectItem value="Fertility Counseling for Older Women" className="pl-12">• Fertility Counseling for Older Women</SelectItem>
+                          <SelectItem value="Fertility Counseling for Same-Sex Couples" className="pl-12">• Fertility Counseling for Same-Sex Couples</SelectItem>
+                          <SelectItem value="Menopause Support" className="pl-10">• Menopause Support</SelectItem>
+                          <SelectItem value="Menopause Coaching for Professional Women" className="pl-12">• Menopause Coaching for Professional Women</SelectItem>
+                          
+                          <SelectItem value="Men's Health" className="pl-8">• Men's Health</SelectItem>
+                          <SelectItem value="Prostate Health" className="pl-10">• Prostate Health</SelectItem>
+                          <SelectItem value="Prostate Care for Men Over 50" className="pl-12">• Prostate Care for Men Over 50</SelectItem>
+                          <SelectItem value="Prostate Health Awareness for Young Men" className="pl-12">• Prostate Health Awareness for Young Men</SelectItem>
+                          <SelectItem value="Testosterone Optimization" className="pl-10">• Testosterone Optimization</SelectItem>
+                          <SelectItem value="Testosterone Therapy for Athletes" className="pl-12">• Testosterone Therapy for Athletes</SelectItem>
+                          <SelectItem value="Natural Testosterone Boosting for Men in Their 40s" className="pl-12">• Natural Testosterone Boosting for Men in Their 40s</SelectItem>
+                          
+                          <SelectItem value="Pediatric Health" className="pl-8">• Pediatric Health</SelectItem>
+                          <SelectItem value="Child Nutrition" className="pl-10">• Child Nutrition</SelectItem>
+                          <SelectItem value="Nutrition for Kids with Allergies" className="pl-12">• Nutrition for Kids with Allergies</SelectItem>
+                          <SelectItem value="Nutrition Coaching for Picky Eaters" className="pl-12">• Nutrition Coaching for Picky Eaters</SelectItem>
+                          <SelectItem value="Childhood Obesity Prevention" className="pl-10">• Childhood Obesity Prevention</SelectItem>
+                          <SelectItem value="Obesity Prevention Programs for Schools" className="pl-12">• Obesity Prevention Programs for Schools</SelectItem>
+                          <SelectItem value="Coaching for Parents on Childhood Obesity" className="pl-12">• Coaching for Parents on Childhood Obesity</SelectItem>
+                          
+                          <SelectItem value="Senior Health" className="pl-6">• Senior Health</SelectItem>
+                          <SelectItem value="Aging in Place" className="pl-8">• Aging in Place</SelectItem>
+                          <SelectItem value="Home Modifications for Seniors" className="pl-10">• Home Modifications for Seniors</SelectItem>
+                          <SelectItem value="Senior Support Services for Aging in Place" className="pl-10">• Senior Support Services for Aging in Place</SelectItem>
+                          <SelectItem value="Assisted Living Alternatives" className="pl-8">• Assisted Living Alternatives</SelectItem>
+                          <SelectItem value="Alternative Housing Solutions for Seniors" className="pl-10">• Alternative Housing Solutions for Seniors</SelectItem>
+                          <SelectItem value="Co-Living for Active Seniors" className="pl-10">• Co-Living for Active Seniors</SelectItem>
+                          <SelectItem value="Senior Fitness" className="pl-8">• Senior Fitness</SelectItem>
+                          <SelectItem value="Fitness Programs for Seniors with Limited Mobility" className="pl-10">• Fitness Programs for Seniors with Limited Mobility</SelectItem>
+                          <SelectItem value="Water Aerobics for Seniors" className="pl-10">• Water Aerobics for Seniors</SelectItem>
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+
+                    {/* Wealth Market Dropdown */}
+                    <Select key={`wealth-${mainTopic}`} value={mainTopic || undefined} onValueChange={(value) => setMainTopic(value)}>
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Wealth Market" />
                       </SelectTrigger>
                       <SelectContent className="max-h-[400px]">
                         <SelectGroup>
@@ -1294,7 +1435,7 @@ const Index = () => {
                     </Select>
 
                     {/* Relationships Market Dropdown */}
-                    <Select onValueChange={(value) => setMainTopic(value)}>
+                    <Select key={`relationships-${mainTopic}`} value={mainTopic || undefined} onValueChange={(value) => setMainTopic(value)}>
                       <SelectTrigger className="w-full">
                         <SelectValue placeholder="Relationships Market" />
                       </SelectTrigger>
