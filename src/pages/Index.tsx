@@ -895,7 +895,7 @@ const Index = () => {
                 {/* Right side icons */}
                 <div className="flex items-center gap-2">
                   <div className="w-6 h-6 bg-orange-500 rounded-full flex items-center justify-center">
-                    <div className="w-3 h-3 rounded-full border-2 border-white"></div>
+                    <span className="text-white text-xs font-bold">r/</span>
                   </div>
                   <div className="w-6 h-6 bg-blue-400 rounded-sm flex items-center justify-center">
                     <span className="text-white text-xs font-bold">X</span>
