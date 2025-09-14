@@ -358,7 +358,7 @@ const Index = () => {
 
   // Basic SEO for the tool
   useEffect(() => {
-    const title = 'Customer Pain Point Research Tool | Social Research Query Builder';
+    const title = 'Social media research tool | Social Research Query Builder';
     document.title = title;
 
     const desc = 'Build advanced social research queries across Reddit, YouTube, Twitter, Instagram, Facebook, and LinkedIn.';
@@ -881,7 +881,7 @@ const Index = () => {
                   className="w-10 h-10 rounded-lg shadow-sm"
                 />
                 <h1 className="text-2xl font-bold text-foreground">
-                  Customer Pain Point Research Tool
+                  Social media research tool
                 </h1>
               </div>
               <p className="text-muted-foreground">
@@ -1847,7 +1847,7 @@ const Index = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="text-center">
             <p className="text-muted-foreground text-sm">
-              © 2024 Customer Pain Point Research Tool. Built for researchers, marketers, and founders.
+              © 2024 Social media research tool. Built for researchers, marketers, and founders.
             </p>
           </div>
         </div>
