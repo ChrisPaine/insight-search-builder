@@ -877,20 +877,32 @@ const Index = () => {
               <div className="flex items-center justify-center gap-4 mb-1">
                 {/* Left side icons */}
                 <div className="flex items-center gap-2">
-                  <Users className="w-6 h-6 text-blue-600" />
-                  <Camera className="w-6 h-6 text-pink-500" />
-                  <Briefcase className="w-6 h-6 text-blue-700" />
+                  <div className="w-6 h-6 bg-blue-600 rounded-sm flex items-center justify-center">
+                    <Users className="w-4 h-4 text-white" />
+                  </div>
+                  <div className="w-6 h-6 bg-gradient-to-br from-purple-500 via-pink-500 to-orange-400 rounded-lg flex items-center justify-center">
+                    <Camera className="w-4 h-4 text-white" />
+                  </div>
+                  <div className="w-6 h-6 bg-blue-700 rounded-sm flex items-center justify-center">
+                    <Briefcase className="w-4 h-4 text-white" />
+                  </div>
                 </div>
                 
                 <h1 className="text-2xl font-bold text-foreground mx-4">
-                  Social media research tool
+                  Social Media Research Tool
                 </h1>
                 
                 {/* Right side icons */}
                 <div className="flex items-center gap-2">
-                  <MessageSquare className="w-6 h-6 text-orange-500" />
-                  <Globe className="w-6 h-6 text-blue-400" />
-                  <Play className="w-6 h-6 text-red-500" />
+                  <div className="w-6 h-6 bg-orange-500 rounded-full flex items-center justify-center">
+                    <MessageSquare className="w-4 h-4 text-white" />
+                  </div>
+                  <div className="w-6 h-6 bg-blue-400 rounded-sm flex items-center justify-center">
+                    <Hash className="w-4 h-4 text-white" />
+                  </div>
+                  <div className="w-6 h-6 bg-red-600 rounded-sm flex items-center justify-center">
+                    <Play className="w-4 h-4 text-white" />
+                  </div>
                 </div>
               </div>
               <p className="text-muted-foreground">
