@@ -192,7 +192,6 @@ const Index = () => {
   const [googleTrendsCategory, setGoogleTrendsCategory] = useState<string>('0');
   const [selectedPreset, setSelectedPreset] = useState<string>('');
   const [lastLinks, setLastLinks] = useState<{ name: string; url: string; display: string }[]>([]);
-  const [platformSelectorOpen, setPlatformSelectorOpen] = useState(false);
 
   // Auth and paywall state
   const [authDialogOpen, setAuthDialogOpen] = useState(false);
@@ -227,7 +226,6 @@ const Index = () => {
       position: 'right',
       action: () => {
         setSelectedPlatforms(['reddit']);
-        setPlatformSelectorOpen(true);
         // Recalculate spotlight after expansion so the whole card is highlighted
         setTimeout(() => setSpotlightTick((t) => t + 1), 400);
       }
@@ -238,7 +236,6 @@ const Index = () => {
       content: 'Each platform offers powerful advanced options! Reddit lets you target self-posts, high-engagement content, specific users, and more. These help find the most relevant pain points.',
       position: 'left',
       action: () => {
-        setPlatformSelectorOpen(false);
         setRedditAdvancedOpen(true);
       }
     },
@@ -791,7 +788,6 @@ const Index = () => {
     
     // Reset platforms
     setSelectedPlatforms([]);
-    setPlatformSelectorOpen(false);
     
     // Reset search settings
     setSearchEngine('google');
@@ -1050,67 +1046,47 @@ const Index = () => {
 
             {/* Platform Selection */}
             <Card id="platform-selector" className="shadow-card">
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <CardTitle className="flex items-center gap-2 text-lg">
-                    <Globe className="w-5 h-5 text-research-blue" />
-                    Select Platforms
-                  </CardTitle>
-                  <div className="text-sm text-muted-foreground">
-                    Selected: {selectedPlatforms.length} platform{selectedPlatforms.length !== 1 ? 's' : ''}
-                  </div>
-                </div>
+              <CardHeader className="pb-3">
+                <CardTitle className="flex items-center gap-2 text-lg">
+                  <Globe className="w-5 h-5 text-research-blue" />
+                  Select Platforms
+                </CardTitle>
               </CardHeader>
-              <CardContent>
-                <Collapsible open={platformSelectorOpen} onOpenChange={setPlatformSelectorOpen}>
-                  <CollapsibleTrigger className="w-full">
-                    <div className="flex items-center justify-between p-2 bg-research-gray rounded-lg hover:bg-research-blue-light transition-colors">
-                      <h3 className="font-semibold text-left text-sm">
-                        {selectedPlatforms.length > 0 && !platformSelectorOpen 
-                          ? selectedPlatforms.map(id => platforms.find(p => p.id === id)?.name).join(', ')
-                          : 'Available Platforms'
-                        }
-                      </h3>
-                      {platformSelectorOpen ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-                    </div>
-                  </CollapsibleTrigger>
-                  <CollapsibleContent className="mt-2">
-                    <div className="p-2 bg-white rounded-lg border border-border space-y-2">
-                      {platforms.map((platform) => {
-                        const platformElement = (
-                          <label
-                            key={platform.id}
-                            className="flex items-center space-x-2 p-2 rounded-lg border border-border hover:bg-research-blue-light cursor-pointer transition-all duration-200"
-                          >
-                            <Checkbox
-                              checked={selectedPlatforms.includes(platform.id)}
-                              onCheckedChange={() => togglePlatform(platform.id)}
-                            />
-                            <div className="flex items-center space-x-1">
-                              <span className={platform.color}>{platform.icon}</span>
-                              <span className="font-medium text-sm">{platform.name}</span>
-                            </div>
-                          </label>
-                        );
+              <CardContent className="pt-0">
+                <div className="grid grid-cols-2 gap-2">
+                  {platforms.map((platform) => {
+                    const platformElement = (
+                      <label
+                        key={platform.id}
+                        className="flex items-center space-x-2 p-2 rounded-lg border border-border hover:bg-research-blue-light cursor-pointer transition-all duration-200"
+                      >
+                        <Checkbox
+                          checked={selectedPlatforms.includes(platform.id)}
+                          onCheckedChange={() => togglePlatform(platform.id)}
+                        />
+                        <div className="flex items-center space-x-1">
+                          <span className={platform.color}>{platform.icon}</span>
+                          <span className="font-medium text-sm">{platform.name}</span>
+                        </div>
+                      </label>
+                    );
 
-                        if (platform.id === 'google-trends') {
-                          return (
-                            <Tooltip key={platform.id}>
-                              <TooltipTrigger asChild>
-                                {platformElement}
-                              </TooltipTrigger>
-                              <TooltipContent>
-                                <p>Uses Main Topic only! You'll have to change on Google Trends tab to Topic not Search term.</p>
-                              </TooltipContent>
-                            </Tooltip>
-                          );
-                        }
+                    if (platform.id === 'google-trends') {
+                      return (
+                        <Tooltip key={platform.id}>
+                          <TooltipTrigger asChild>
+                            {platformElement}
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>Uses Main Topic only! You'll have to change on Google Trends tab to Topic not Search term.</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      );
+                    }
 
-                        return platformElement;
-                      })}
-                    </div>
-                  </CollapsibleContent>
-                </Collapsible>
+                    return platformElement;
+                  })}
+                </div>
               </CardContent>
             </Card>
 
