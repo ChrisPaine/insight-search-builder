@@ -1029,18 +1029,24 @@ const Index = () => {
                     </Button>
                   </div>
                 </div>
-                <div>
-                  <Label htmlFor="additionalKeywords" className="text-sm font-medium mb-2 block">
-                    Additional Keywords <span className="text-muted-foreground">(optional)</span>
-                  </Label>
-                  <Input
-                    id="additional-keywords"
-                    value={additionalKeywords}
-                    onChange={(e) => setAdditionalKeywords(e.target.value)}
-                    placeholder="e.g., small business, beginners, affordable..."
-                    className="w-full"
-                  />
-                </div>
+                
+                <Collapsible>
+                  <CollapsibleTrigger className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors w-full justify-start p-2 -mx-2 rounded hover:bg-muted/50">
+                    <ChevronDown className="w-4 h-4" />
+                    <span>Additional Keywords (optional)</span>
+                  </CollapsibleTrigger>
+                  <CollapsibleContent className="mt-2">
+                    <div>
+                      <Input
+                        id="additional-keywords"
+                        value={additionalKeywords}
+                        onChange={(e) => setAdditionalKeywords(e.target.value)}
+                        placeholder="e.g., small business, beginners, affordable..."
+                        className="w-full"
+                      />
+                    </div>
+                  </CollapsibleContent>
+                </Collapsible>
               </CardContent>
             </Card>
 
