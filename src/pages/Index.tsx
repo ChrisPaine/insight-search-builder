@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { Badge } from '@/components/ui/badge';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, SelectGroup, SelectLabel, SelectSeparator } from '@/components/ui/select';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { toast } from '@/hooks/use-toast';
 import { Search, ChevronDown, ChevronUp, MessageSquare, Hash, Users, Camera, Globe, Briefcase, Play, TrendingUp, Settings, Save, FolderOpen, User, LogOut, Crown } from 'lucide-react';
@@ -1022,6 +1022,158 @@ const Index = () => {
                       placeholder="e.g., 3 evergreen core markets, where people always spend: Health, Wealth, Relationships!"
                       className="flex-1"
                     />
+                    <Select onValueChange={(value) => setMainTopic(value)}>
+                      <SelectTrigger className="w-[180px]">
+                        <SelectValue placeholder="Select market" />
+                      </SelectTrigger>
+                      <SelectContent className="max-h-[400px]">
+                        <SelectGroup>
+                          <SelectLabel>Health Markets</SelectLabel>
+                          <SelectItem value="Health">Health</SelectItem>
+                          <SelectItem value="Fitness">Fitness</SelectItem>
+                          <SelectItem value="Strength Training">Strength Training</SelectItem>
+                          <SelectItem value="Home-Based Strength Training">Home-Based Strength Training</SelectItem>
+                          <SelectItem value="Strength Training for Postpartum Mothers">Strength Training for Postpartum Mothers</SelectItem>
+                          <SelectItem value="Strength Training for Seniors">Strength Training for Seniors</SelectItem>
+                          <SelectItem value="Bodyweight Strength Training">Bodyweight Strength Training</SelectItem>
+                          <SelectItem value="Bodyweight Training for Travelers">Bodyweight Training for Travelers</SelectItem>
+                          <SelectItem value="Bodyweight Training for Military Personnel">Bodyweight Training for Military Personnel</SelectItem>
+                          <SelectItem value="Cardio Fitness">Cardio Fitness</SelectItem>
+                          <SelectItem value="High-Intensity Interval Training (HIIT)">High-Intensity Interval Training (HIIT)</SelectItem>
+                          <SelectItem value="HIIT for Busy Professionals">HIIT for Busy Professionals</SelectItem>
+                          <SelectItem value="HIIT for Weight Loss in Women">HIIT for Weight Loss in Women</SelectItem>
+                          <SelectItem value="Yoga">Yoga</SelectItem>
+                          <SelectItem value="Power Yoga">Power Yoga</SelectItem>
+                          <SelectItem value="Power Yoga for Athletes">Power Yoga for Athletes</SelectItem>
+                          <SelectItem value="Restorative Yoga">Restorative Yoga</SelectItem>
+                          <SelectItem value="Restorative Yoga for Stress Relief">Restorative Yoga for Stress Relief</SelectItem>
+                          <SelectItem value="Restorative Yoga for Chronic Pain Sufferers">Restorative Yoga for Chronic Pain Sufferers</SelectItem>
+                          <SelectItem value="Flexibility and Mobility">Flexibility and Mobility</SelectItem>
+                          <SelectItem value="Mobility Training for Athletes">Mobility Training for Athletes</SelectItem>
+                          <SelectItem value="Flexibility Training for Office Workers">Flexibility Training for Office Workers</SelectItem>
+                          <SelectItem value="Flexibility Programs for Remote Workers">Flexibility Programs for Remote Workers</SelectItem>
+                        </SelectGroup>
+                        <SelectSeparator />
+                        <SelectGroup>
+                          <SelectLabel>Nutrition</SelectLabel>
+                          <SelectItem value="Nutrition">Nutrition</SelectItem>
+                          <SelectItem value="Diet Plans">Diet Plans</SelectItem>
+                          <SelectItem value="Ketogenic Diet">Ketogenic Diet</SelectItem>
+                          <SelectItem value="Keto for Diabetics">Keto for Diabetics</SelectItem>
+                          <SelectItem value="Keto for Athletes">Keto for Athletes</SelectItem>
+                          <SelectItem value="Plant-Based Diets">Plant-Based Diets</SelectItem>
+                          <SelectItem value="Plant-Based Nutrition for Bodybuilders">Plant-Based Nutrition for Bodybuilders</SelectItem>
+                          <SelectItem value="Plant-Based Diet for Families">Plant-Based Diet for Families</SelectItem>
+                          <SelectItem value="Supplements">Supplements</SelectItem>
+                          <SelectItem value="Pre-Workout Supplements">Pre-Workout Supplements</SelectItem>
+                          <SelectItem value="Supplements for Endurance Athletes">Supplements for Endurance Athletes</SelectItem>
+                          <SelectItem value="Pre-Workout for Beginners">Pre-Workout for Beginners</SelectItem>
+                          <SelectItem value="Health Supplements">Health Supplements</SelectItem>
+                          <SelectItem value="Supplements for Men's Health">Supplements for Men's Health</SelectItem>
+                          <SelectItem value="Supplements for Hormonal Balance in Women">Supplements for Hormonal Balance in Women</SelectItem>
+                        </SelectGroup>
+                        <SelectSeparator />
+                        <SelectGroup>
+                          <SelectLabel>Mental Health</SelectLabel>
+                          <SelectItem value="Mental Health">Mental Health</SelectItem>
+                          <SelectItem value="Stress Management">Stress Management</SelectItem>
+                          <SelectItem value="Mindfulness and Meditation">Mindfulness and Meditation</SelectItem>
+                          <SelectItem value="Meditation for Corporate Professionals">Meditation for Corporate Professionals</SelectItem>
+                          <SelectItem value="Meditation for Sleep Improvement">Meditation for Sleep Improvement</SelectItem>
+                          <SelectItem value="Stress Relief Techniques">Stress Relief Techniques</SelectItem>
+                          <SelectItem value="Stress Relief for Parents">Stress Relief for Parents</SelectItem>
+                          <SelectItem value="Stress Management for College Students">Stress Management for College Students</SelectItem>
+                          <SelectItem value="Therapy and Counseling">Therapy and Counseling</SelectItem>
+                          <SelectItem value="Online Therapy">Online Therapy</SelectItem>
+                          <SelectItem value="Online Therapy for Veterans">Online Therapy for Veterans</SelectItem>
+                          <SelectItem value="Online Therapy for Social Anxiety">Online Therapy for Social Anxiety</SelectItem>
+                          <SelectItem value="Cognitive Behavioral Therapy (CBT)">Cognitive Behavioral Therapy (CBT)</SelectItem>
+                          <SelectItem value="CBT for Adolescents">CBT for Adolescents</SelectItem>
+                          <SelectItem value="CBT for Obsessive-Compulsive Disorder">CBT for Obsessive-Compulsive Disorder</SelectItem>
+                        </SelectGroup>
+                        <SelectSeparator />
+                        <SelectGroup>
+                          <SelectLabel>Preventative Health</SelectLabel>
+                          <SelectItem value="Preventative Health">Preventative Health</SelectItem>
+                          <SelectItem value="Immunity Boosting">Immunity Boosting</SelectItem>
+                          <SelectItem value="Immunity Programs for Children">Immunity Programs for Children</SelectItem>
+                          <SelectItem value="Immunity Boosting for Travelers">Immunity Boosting for Travelers</SelectItem>
+                          <SelectItem value="Longevity and Anti-Aging">Longevity and Anti-Aging</SelectItem>
+                          <SelectItem value="Anti-Aging for Women Over 50">Anti-Aging for Women Over 50</SelectItem>
+                          <SelectItem value="Longevity Coaching for Executives">Longevity Coaching for Executives</SelectItem>
+                          <SelectItem value="Sleep Health">Sleep Health</SelectItem>
+                          <SelectItem value="Sleep Optimization for Athletes">Sleep Optimization for Athletes</SelectItem>
+                          <SelectItem value="Sleep Coaching for Busy Entrepreneurs">Sleep Coaching for Busy Entrepreneurs</SelectItem>
+                        </SelectGroup>
+                        <SelectSeparator />
+                        <SelectGroup>
+                          <SelectLabel>Alternative Medicine</SelectLabel>
+                          <SelectItem value="Alternative Medicine">Alternative Medicine</SelectItem>
+                          <SelectItem value="Herbal Medicine">Herbal Medicine</SelectItem>
+                          <SelectItem value="Herbal Remedies for Skin Conditions">Herbal Remedies for Skin Conditions</SelectItem>
+                          <SelectItem value="Herbal Medicine for Digestive Health">Herbal Medicine for Digestive Health</SelectItem>
+                          <SelectItem value="Acupuncture">Acupuncture</SelectItem>
+                          <SelectItem value="Acupuncture for Chronic Pain Relief">Acupuncture for Chronic Pain Relief</SelectItem>
+                          <SelectItem value="Acupuncture for Fertility Issues">Acupuncture for Fertility Issues</SelectItem>
+                          <SelectItem value="Aromatherapy">Aromatherapy</SelectItem>
+                          <SelectItem value="Aromatherapy for Anxiety Reduction">Aromatherapy for Anxiety Reduction</SelectItem>
+                          <SelectItem value="Aromatherapy for Insomnia">Aromatherapy for Insomnia</SelectItem>
+                        </SelectGroup>
+                        <SelectSeparator />
+                        <SelectGroup>
+                          <SelectLabel>Physical Therapy</SelectLabel>
+                          <SelectItem value="Physical Therapy and Rehabilitation">Physical Therapy and Rehabilitation</SelectItem>
+                          <SelectItem value="Injury Rehabilitation">Injury Rehabilitation</SelectItem>
+                          <SelectItem value="Post-Surgery Rehabilitation for Athletes">Post-Surgery Rehabilitation for Athletes</SelectItem>
+                          <SelectItem value="Rehabilitation for Workplace Injuries">Rehabilitation for Workplace Injuries</SelectItem>
+                          <SelectItem value="Chronic Pain Management">Chronic Pain Management</SelectItem>
+                          <SelectItem value="Pain Management for Arthritis Patients">Pain Management for Arthritis Patients</SelectItem>
+                          <SelectItem value="Pain Relief for Long-Distance Runners">Pain Relief for Long-Distance Runners</SelectItem>
+                          <SelectItem value="Mobility Recovery">Mobility Recovery</SelectItem>
+                          <SelectItem value="Mobility Recovery for Seniors">Mobility Recovery for Seniors</SelectItem>
+                          <SelectItem value="Mobility Training After Car Accidents">Mobility Training After Car Accidents</SelectItem>
+                        </SelectGroup>
+                        <SelectSeparator />
+                        <SelectGroup>
+                          <SelectLabel>Specialized Health</SelectLabel>
+                          <SelectItem value="Specialized Health Services">Specialized Health Services</SelectItem>
+                          <SelectItem value="Women's Health">Women's Health</SelectItem>
+                          <SelectItem value="Fertility Counseling">Fertility Counseling</SelectItem>
+                          <SelectItem value="Fertility Counseling for Older Women">Fertility Counseling for Older Women</SelectItem>
+                          <SelectItem value="Fertility Counseling for Same-Sex Couples">Fertility Counseling for Same-Sex Couples</SelectItem>
+                          <SelectItem value="Menopause Support">Menopause Support</SelectItem>
+                          <SelectItem value="Menopause Coaching for Professional Women">Menopause Coaching for Professional Women</SelectItem>
+                          <SelectItem value="Men's Health">Men's Health</SelectItem>
+                          <SelectItem value="Prostate Health">Prostate Health</SelectItem>
+                          <SelectItem value="Prostate Care for Men Over 50">Prostate Care for Men Over 50</SelectItem>
+                          <SelectItem value="Prostate Health Awareness for Young Men">Prostate Health Awareness for Young Men</SelectItem>
+                          <SelectItem value="Testosterone Optimization">Testosterone Optimization</SelectItem>
+                          <SelectItem value="Testosterone Therapy for Athletes">Testosterone Therapy for Athletes</SelectItem>
+                          <SelectItem value="Natural Testosterone Boosting for Men in Their 40s">Natural Testosterone Boosting for Men in Their 40s</SelectItem>
+                          <SelectItem value="Pediatric Health">Pediatric Health</SelectItem>
+                          <SelectItem value="Child Nutrition">Child Nutrition</SelectItem>
+                          <SelectItem value="Nutrition for Kids with Allergies">Nutrition for Kids with Allergies</SelectItem>
+                          <SelectItem value="Nutrition Coaching for Picky Eaters">Nutrition Coaching for Picky Eaters</SelectItem>
+                          <SelectItem value="Childhood Obesity Prevention">Childhood Obesity Prevention</SelectItem>
+                          <SelectItem value="Obesity Prevention Programs for Schools">Obesity Prevention Programs for Schools</SelectItem>
+                          <SelectItem value="Coaching for Parents on Childhood Obesity">Coaching for Parents on Childhood Obesity</SelectItem>
+                        </SelectGroup>
+                        <SelectSeparator />
+                        <SelectGroup>
+                          <SelectLabel>Senior Health</SelectLabel>
+                          <SelectItem value="Senior Health">Senior Health</SelectItem>
+                          <SelectItem value="Aging in Place">Aging in Place</SelectItem>
+                          <SelectItem value="Home Modifications for Seniors">Home Modifications for Seniors</SelectItem>
+                          <SelectItem value="Senior Support Services for Aging in Place">Senior Support Services for Aging in Place</SelectItem>
+                          <SelectItem value="Assisted Living Alternatives">Assisted Living Alternatives</SelectItem>
+                          <SelectItem value="Alternative Housing Solutions for Seniors">Alternative Housing Solutions for Seniors</SelectItem>
+                          <SelectItem value="Co-Living for Active Seniors">Co-Living for Active Seniors</SelectItem>
+                          <SelectItem value="Senior Fitness">Senior Fitness</SelectItem>
+                          <SelectItem value="Fitness Programs for Seniors with Limited Mobility">Fitness Programs for Seniors with Limited Mobility</SelectItem>
+                          <SelectItem value="Water Aerobics for Seniors">Water Aerobics for Seniors</SelectItem>
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
                     <Button
                       id="search-button"
                       variant="research"
