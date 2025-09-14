@@ -878,13 +878,13 @@ const Index = () => {
                 {/* Left side icons */}
                 <div className="flex items-center gap-2">
                   <div className="w-6 h-6 bg-blue-600 rounded-sm flex items-center justify-center">
-                    <Users className="w-4 h-4 text-white" />
+                    <span className="text-white text-xs font-bold">f</span>
                   </div>
                   <div className="w-6 h-6 bg-gradient-to-br from-purple-500 via-pink-500 to-orange-400 rounded-lg flex items-center justify-center">
-                    <Camera className="w-4 h-4 text-white" />
+                    <div className="w-3 h-3 border-2 border-white rounded-sm"></div>
                   </div>
                   <div className="w-6 h-6 bg-blue-700 rounded-sm flex items-center justify-center">
-                    <Briefcase className="w-4 h-4 text-white" />
+                    <span className="text-white text-xs font-bold">in</span>
                   </div>
                 </div>
                 
@@ -895,13 +895,13 @@ const Index = () => {
                 {/* Right side icons */}
                 <div className="flex items-center gap-2">
                   <div className="w-6 h-6 bg-orange-500 rounded-full flex items-center justify-center">
-                    <MessageSquare className="w-4 h-4 text-white" />
+                    <div className="w-3 h-3 rounded-full border-2 border-white"></div>
                   </div>
                   <div className="w-6 h-6 bg-blue-400 rounded-sm flex items-center justify-center">
-                    <Hash className="w-4 h-4 text-white" />
+                    <span className="text-white text-xs font-bold">X</span>
                   </div>
                   <div className="w-6 h-6 bg-red-600 rounded-sm flex items-center justify-center">
-                    <Play className="w-4 h-4 text-white" />
+                    <div className="w-0 h-0 border-l-[4px] border-l-white border-y-[3px] border-y-transparent ml-0.5"></div>
                   </div>
                 </div>
               </div>
