@@ -1014,13 +1014,25 @@ const Index = () => {
                   <Label htmlFor="mainTopic" className="text-sm font-medium mb-2 block">
                     Main Topic <span className="text-destructive">*</span>
                   </Label>
-                  <Input
-                    id="main-topic"
-                    value={mainTopic}
-                    onChange={(e) => setMainTopic(e.target.value)}
-                    placeholder="e.g., 3 evergreen core markets, where people always spend: Health, Wealth, Relationships!"
-                    className="w-full"
-                  />
+                  <div className="flex gap-2 items-center">
+                    <Input
+                      id="main-topic"
+                      value={mainTopic}
+                      onChange={(e) => setMainTopic(e.target.value)}
+                      placeholder="e.g., 3 evergreen core markets, where people always spend: Health, Wealth, Relationships!"
+                      className="flex-1"
+                    />
+                    <Button
+                      id="search-button"
+                      variant="default"
+                      onClick={handleSearch}
+                      disabled={!mainTopic.trim() || selectedPlatforms.length === 0}
+                      className="px-4 py-2"
+                    >
+                      <Search className="w-4 h-4 mr-1" />
+                      Search
+                    </Button>
+                  </div>
                   
                   <div className="grid grid-cols-3 gap-2 mt-2">
                     {/* Health Market Dropdown */}
@@ -1402,19 +1414,6 @@ const Index = () => {
                         </SelectGroup>
                       </SelectContent>
                     </Select>
-                  </div>
-                  
-                  <div className="flex justify-center mt-3">
-                    <Button
-                      id="search-button"
-                      variant="default"
-                      onClick={handleSearch}
-                      disabled={!mainTopic.trim() || selectedPlatforms.length === 0}
-                      className="px-6 py-2"
-                    >
-                      <Search className="w-4 h-4 mr-2" />
-                      Search
-                    </Button>
                   </div>
                 </div>
                 
