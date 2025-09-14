@@ -1014,17 +1014,19 @@ const Index = () => {
                   <Label htmlFor="mainTopic" className="text-sm font-medium mb-2 block">
                     Main Topic <span className="text-destructive">*</span>
                   </Label>
-                  <div className="flex gap-2">
-                    <Input
-                      id="main-topic"
-                      value={mainTopic}
-                      onChange={(e) => setMainTopic(e.target.value)}
-                      placeholder="e.g., 3 evergreen core markets, where people always spend: Health, Wealth, Relationships!"
-                      className="flex-1"
-                    />
+                  <Input
+                    id="main-topic"
+                    value={mainTopic}
+                    onChange={(e) => setMainTopic(e.target.value)}
+                    placeholder="e.g., 3 evergreen core markets, where people always spend: Health, Wealth, Relationships!"
+                    className="w-full"
+                  />
+                  
+                  <div className="grid grid-cols-3 gap-2 mt-2">
+                    {/* Health Market Dropdown */}
                     <Select onValueChange={(value) => setMainTopic(value)}>
-                      <SelectTrigger className="w-[180px]">
-                        <SelectValue placeholder="Select market" />
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Health Market" />
                       </SelectTrigger>
                       <SelectContent className="max-h-[400px]">
                         <SelectGroup>
@@ -1158,8 +1160,17 @@ const Index = () => {
                           <SelectItem value="Senior Fitness" className="pl-8">• Senior Fitness</SelectItem>
                           <SelectItem value="Fitness Programs for Seniors with Limited Mobility" className="pl-10">• Fitness Programs for Seniors with Limited Mobility</SelectItem>
                           <SelectItem value="Water Aerobics for Seniors" className="pl-10">• Water Aerobics for Seniors</SelectItem>
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
 
-                          <SelectSeparator />
+                    {/* Wealth Market Dropdown */}
+                    <Select onValueChange={(value) => setMainTopic(value)}>
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Wealth Market" />
+                      </SelectTrigger>
+                      <SelectContent className="max-h-[400px]">
+                        <SelectGroup>
                           <SelectLabel>Wealth Market</SelectLabel>
                           <SelectItem value="Wealth">Wealth</SelectItem>
                           
@@ -1205,6 +1216,7 @@ const Index = () => {
                           <SelectItem value="Dropshipping" className="pl-10">• Dropshipping</SelectItem>
                           <SelectItem value="Dropshipping for Fashion Accessories" className="pl-12">• Dropshipping for Fashion Accessories</SelectItem>
                           <SelectItem value="Dropshipping for Eco-Friendly Products" className="pl-12">• Dropshipping for Eco-Friendly Products</SelectItem>
+                          
                           <SelectItem value="Freelancing" className="pl-8">• Freelancing</SelectItem>
                           <SelectItem value="Freelancing for Writers" className="pl-10">• Freelancing for Writers</SelectItem>
                           <SelectItem value="Freelancing for Graphic Designers" className="pl-10">• Freelancing for Graphic Designers</SelectItem>
@@ -1280,17 +1292,20 @@ const Index = () => {
                         </SelectGroup>
                       </SelectContent>
                     </Select>
-                    <Button
-                      id="search-button"
-                      variant="research"
-                      size="sm"
-                      onClick={handleSearch}
-                      disabled={!mainTopic.trim() || selectedPlatforms.length === 0}
-                      className="px-4"
-                    >
-                      <Search className="w-4 h-4 mr-1" />
-                      Search
-                    </Button>
+
+                    {/* Relationships Market Dropdown - Ready for content */}
+                    <Select onValueChange={(value) => setMainTopic(value)}>
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Relationships Market" />
+                      </SelectTrigger>
+                      <SelectContent className="max-h-[400px]">
+                        <SelectGroup>
+                          <SelectLabel>Relationships Market</SelectLabel>
+                          <SelectItem value="Relationships">Relationships</SelectItem>
+                          {/* Content will be added when provided */}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
                   </div>
                 </div>
                 
