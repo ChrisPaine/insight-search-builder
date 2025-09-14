@@ -1046,28 +1046,27 @@ const Index = () => {
 
             {/* Platform Selection */}
             <Card id="platform-selector" className="shadow-card">
-              <CardHeader className="pb-3">
+              <CardHeader className="pb-2">
                 <CardTitle className="flex items-center gap-2 text-lg">
                   <Globe className="w-5 h-5 text-research-blue" />
                   Select Platforms
                 </CardTitle>
               </CardHeader>
               <CardContent className="pt-0">
-                <div className="grid grid-cols-2 gap-2">
+                <div className="grid grid-cols-3 gap-1">
                   {platforms.map((platform) => {
                     const platformElement = (
                       <label
                         key={platform.id}
-                        className="flex items-center space-x-2 p-2 rounded-lg border border-border hover:bg-research-blue-light cursor-pointer transition-all duration-200"
+                        className="flex items-center space-x-1.5 p-1 hover:bg-muted/50 cursor-pointer rounded text-sm"
                       >
                         <Checkbox
                           checked={selectedPlatforms.includes(platform.id)}
                           onCheckedChange={() => togglePlatform(platform.id)}
+                          className="h-3 w-3"
                         />
-                        <div className="flex items-center space-x-1">
-                          <span className={platform.color}>{platform.icon}</span>
-                          <span className="font-medium text-sm">{platform.name}</span>
-                        </div>
+                        <span className={`${platform.color} flex-shrink-0`}>{platform.icon}</span>
+                        <span className="font-medium truncate">{platform.name}</span>
                       </label>
                     );
 
