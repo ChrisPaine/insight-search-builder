@@ -1590,7 +1590,7 @@ const Index = () => {
                 size="lg"
                 onClick={handleSearch}
                 disabled={!mainTopic.trim() || selectedPlatforms.length === 0}
-                className="w-full max-w-md bg-research-primary hover:bg-research-primary-dark text-white font-semibold py-3 px-8 shadow-lg"
+                className="w-full max-w-md bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-3 px-8 shadow-lg"
               >
                 <Search className="w-5 h-5 mr-2" />
                 Start Research Search
