@@ -1053,7 +1053,7 @@ const Index = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent className="pt-0">
-                <div className="grid grid-cols-3 gap-1">
+                <div className="grid grid-cols-4 gap-1">
                   {platforms.map((platform) => {
                     const platformElement = (
                       <label
