@@ -1293,7 +1293,7 @@ const Index = () => {
                       </SelectContent>
                     </Select>
 
-                    {/* Relationships Market Dropdown - Ready for content */}
+                    {/* Relationships Market Dropdown */}
                     <Select onValueChange={(value) => setMainTopic(value)}>
                       <SelectTrigger className="w-full">
                         <SelectValue placeholder="Relationships Market" />
@@ -1302,7 +1302,103 @@ const Index = () => {
                         <SelectGroup>
                           <SelectLabel>Relationships Market</SelectLabel>
                           <SelectItem value="Relationships">Relationships</SelectItem>
-                          {/* Content will be added when provided */}
+                          
+                          <SelectItem value="Romantic Relationships" className="pl-6">• Romantic Relationships</SelectItem>
+                          <SelectItem value="Dating" className="pl-8">• Dating</SelectItem>
+                          <SelectItem value="Online Dating" className="pl-10">• Online Dating</SelectItem>
+                          <SelectItem value="Dating for Introverted Professionals" className="pl-12">• Dating for Introverted Professionals</SelectItem>
+                          <SelectItem value="Dating for LGBTQ+ Individuals" className="pl-12">• Dating for LGBTQ+ Individuals</SelectItem>
+                          <SelectItem value="Speed Dating" className="pl-10">• Speed Dating</SelectItem>
+                          <SelectItem value="Speed Dating for Busy Professionals" className="pl-12">• Speed Dating for Busy Professionals</SelectItem>
+                          <SelectItem value="Speed Dating for Divorcees" className="pl-12">• Speed Dating for Divorcees</SelectItem>
+                          
+                          <SelectItem value="Relationship Coaching" className="pl-8">• Relationship Coaching</SelectItem>
+                          <SelectItem value="Marriage Coaching" className="pl-10">• Marriage Coaching</SelectItem>
+                          <SelectItem value="Coaching for Newlyweds" className="pl-12">• Coaching for Newlyweds</SelectItem>
+                          <SelectItem value="Coaching for Couples with Kids" className="pl-12">• Coaching for Couples with Kids</SelectItem>
+                          <SelectItem value="Breakup Recovery" className="pl-10">• Breakup Recovery</SelectItem>
+                          <SelectItem value="Breakup Coaching for Men" className="pl-12">• Breakup Coaching for Men</SelectItem>
+                          <SelectItem value="Breakup Support for Middle-Aged Women" className="pl-12">• Breakup Support for Middle-Aged Women</SelectItem>
+                          
+                          <SelectItem value="Family Relationships" className="pl-6">• Family Relationships</SelectItem>
+                          <SelectItem value="Parenting" className="pl-8">• Parenting</SelectItem>
+                          <SelectItem value="Single Parenting" className="pl-10">• Single Parenting</SelectItem>
+                          <SelectItem value="Parenting Tips for Single Dads" className="pl-12">• Parenting Tips for Single Dads</SelectItem>
+                          <SelectItem value="Single Parent Support for Moms" className="pl-12">• Single Parent Support for Moms</SelectItem>
+                          <SelectItem value="Co-Parenting" className="pl-10">• Co-Parenting</SelectItem>
+                          <SelectItem value="Co-Parenting Strategies for Divorced Couples" className="pl-12">• Co-Parenting Strategies for Divorced Couples</SelectItem>
+                          <SelectItem value="Co-Parenting for International Families" className="pl-12">• Co-Parenting for International Families</SelectItem>
+                          
+                          <SelectItem value="Sibling Relationships" className="pl-8">• Sibling Relationships</SelectItem>
+                          <SelectItem value="Sibling Rivalry Management" className="pl-10">• Sibling Rivalry Management</SelectItem>
+                          <SelectItem value="Sibling Bond Strengthening for Adults" className="pl-10">• Sibling Bond Strengthening for Adults</SelectItem>
+                          
+                          <SelectItem value="Friendships and Social Connections" className="pl-6">• Friendships and Social Connections</SelectItem>
+                          <SelectItem value="Building Friendships" className="pl-8">• Building Friendships</SelectItem>
+                          <SelectItem value="Friendship Building for New Moms" className="pl-10">• Friendship Building for New Moms</SelectItem>
+                          <SelectItem value="Friendship Support for Digital Nomads" className="pl-10">• Friendship Support for Digital Nomads</SelectItem>
+                          <SelectItem value="Networking" className="pl-8">• Networking</SelectItem>
+                          <SelectItem value="Professional Networking for Women in Tech" className="pl-10">• Professional Networking for Women in Tech</SelectItem>
+                          <SelectItem value="Networking Strategies for Entrepreneurs" className="pl-10">• Networking Strategies for Entrepreneurs</SelectItem>
+                          <SelectItem value="Social Skills" className="pl-8">• Social Skills</SelectItem>
+                          <SelectItem value="Social Skills Training for Introverts" className="pl-10">• Social Skills Training for Introverts</SelectItem>
+                          <SelectItem value="Social Confidence Building for Teens" className="pl-10">• Social Confidence Building for Teens</SelectItem>
+                          
+                          <SelectItem value="Workplace Relationships" className="pl-6">• Workplace Relationships</SelectItem>
+                          <SelectItem value="Team Building" className="pl-8">• Team Building</SelectItem>
+                          <SelectItem value="Team Building Activities for Remote Teams" className="pl-10">• Team Building Activities for Remote Teams</SelectItem>
+                          <SelectItem value="Team Bonding for Corporate Employees" className="pl-10">• Team Bonding for Corporate Employees</SelectItem>
+                          <SelectItem value="Conflict Resolution" className="pl-8">• Conflict Resolution</SelectItem>
+                          <SelectItem value="Conflict Resolution for Small Businesses" className="pl-10">• Conflict Resolution for Small Businesses</SelectItem>
+                          <SelectItem value="Workplace Mediation for Corporate Teams" className="pl-10">• Workplace Mediation for Corporate Teams</SelectItem>
+                          <SelectItem value="Employee Engagement" className="pl-8">• Employee Engagement</SelectItem>
+                          <SelectItem value="Engagement Strategies for Tech Startups" className="pl-10">• Engagement Strategies for Tech Startups</SelectItem>
+                          <SelectItem value="Employee Recognition Programs for Large Corporations" className="pl-10">• Employee Recognition Programs for Large Corporations</SelectItem>
+                          
+                          <SelectItem value="Community and Group Relationships" className="pl-6">• Community and Group Relationships</SelectItem>
+                          <SelectItem value="Support Groups" className="pl-8">• Support Groups</SelectItem>
+                          <SelectItem value="Support Groups for Cancer Survivors" className="pl-10">• Support Groups for Cancer Survivors</SelectItem>
+                          <SelectItem value="Support Groups for Parents of Children with Special Needs" className="pl-10">• Support Groups for Parents of Children with Special Needs</SelectItem>
+                          <SelectItem value="Volunteering and Community Service" className="pl-8">• Volunteering and Community Service</SelectItem>
+                          <SelectItem value="Volunteering Opportunities for Retirees" className="pl-10">• Volunteering Opportunities for Retirees</SelectItem>
+                          <SelectItem value="Community Service Programs for High School Students" className="pl-10">• Community Service Programs for High School Students</SelectItem>
+                          <SelectItem value="Group Hobbies and Interests" className="pl-8">• Group Hobbies and Interests</SelectItem>
+                          <SelectItem value="Group Hiking for Adventure Enthusiasts" className="pl-10">• Group Hiking for Adventure Enthusiasts</SelectItem>
+                          <SelectItem value="Book Clubs for Personal Development Enthusiasts" className="pl-10">• Book Clubs for Personal Development Enthusiasts</SelectItem>
+                          
+                          <SelectItem value="Parenting Support" className="pl-6">• Parenting Support</SelectItem>
+                          <SelectItem value="Parenting Education" className="pl-8">• Parenting Education</SelectItem>
+                          <SelectItem value="Parenting Skills for New Fathers" className="pl-10">• Parenting Skills for New Fathers</SelectItem>
+                          <SelectItem value="Positive Parenting Strategies for Teenagers" className="pl-10">• Positive Parenting Strategies for Teenagers</SelectItem>
+                          <SelectItem value="Special Needs Parenting" className="pl-8">• Special Needs Parenting</SelectItem>
+                          <SelectItem value="Autism Parenting Support" className="pl-10">• Autism Parenting Support</SelectItem>
+                          <SelectItem value="Coaching for Parents of Children with Autism" className="pl-12">• Coaching for Parents of Children with Autism</SelectItem>
+                          <SelectItem value="Autism Support for Siblings" className="pl-12">• Autism Support for Siblings</SelectItem>
+                          <SelectItem value="ADHD Parenting" className="pl-10">• ADHD Parenting</SelectItem>
+                          <SelectItem value="ADHD Parenting Coaching for School-Age Children" className="pl-12">• ADHD Parenting Coaching for School-Age Children</SelectItem>
+                          <SelectItem value="ADHD Support for Teenagers" className="pl-12">• ADHD Support for Teenagers</SelectItem>
+                          
+                          <SelectItem value="Personal Development in Relationships" className="pl-6">• Personal Development in Relationships</SelectItem>
+                          <SelectItem value="Emotional Intelligence" className="pl-8">• Emotional Intelligence</SelectItem>
+                          <SelectItem value="Emotional Intelligence Training for Leaders" className="pl-10">• Emotional Intelligence Training for Leaders</SelectItem>
+                          <SelectItem value="Emotional Intelligence Coaching for Teenagers" className="pl-10">• Emotional Intelligence Coaching for Teenagers</SelectItem>
+                          <SelectItem value="Conflict Management" className="pl-8">• Conflict Management</SelectItem>
+                          <SelectItem value="Conflict Management for Couples" className="pl-10">• Conflict Management for Couples</SelectItem>
+                          <SelectItem value="Conflict Resolution Skills for College Students" className="pl-10">• Conflict Resolution Skills for College Students</SelectItem>
+                          <SelectItem value="Communication Skills" className="pl-8">• Communication Skills</SelectItem>
+                          <SelectItem value="Communication Coaching for Couples" className="pl-10">• Communication Coaching for Couples</SelectItem>
+                          <SelectItem value="Assertiveness Training for Women in Relationships" className="pl-10">• Assertiveness Training for Women in Relationships</SelectItem>
+                          
+                          <SelectItem value="Digital Relationships" className="pl-6">• Digital Relationships</SelectItem>
+                          <SelectItem value="Online Friendships" className="pl-8">• Online Friendships</SelectItem>
+                          <SelectItem value="Friendship Building for Remote Workers" className="pl-10">• Friendship Building for Remote Workers</SelectItem>
+                          <SelectItem value="Virtual Friendship Support for Isolated Seniors" className="pl-10">• Virtual Friendship Support for Isolated Seniors</SelectItem>
+                          <SelectItem value="Social Media Influence" className="pl-8">• Social Media Influence</SelectItem>
+                          <SelectItem value="Building Personal Brand Relationships on Social Media" className="pl-10">• Building Personal Brand Relationships on Social Media</SelectItem>
+                          <SelectItem value="Social Media Networking for Entrepreneurs" className="pl-10">• Social Media Networking for Entrepreneurs</SelectItem>
+                          <SelectItem value="Digital Etiquette" className="pl-8">• Digital Etiquette</SelectItem>
+                          <SelectItem value="Digital Communication Skills for Teens" className="pl-10">• Digital Communication Skills for Teens</SelectItem>
+                          <SelectItem value="Digital Etiquette Training for Corporate Employees" className="pl-10">• Digital Etiquette Training for Corporate Employees</SelectItem>
                         </SelectGroup>
                       </SelectContent>
                     </Select>
