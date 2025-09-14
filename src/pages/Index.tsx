@@ -874,15 +874,24 @@ const Index = () => {
             </div>
             
             <div className="flex-1 text-center">
-              <div className="flex items-center justify-center gap-3 mb-1">
-                <img 
-                  src={researchMascot} 
-                  alt="Research Tool Mascot" 
-                  className="w-10 h-10 rounded-lg shadow-sm"
-                />
-                <h1 className="text-2xl font-bold text-foreground">
+              <div className="flex items-center justify-center gap-4 mb-1">
+                {/* Left side icons */}
+                <div className="flex items-center gap-2">
+                  <Users className="w-6 h-6 text-blue-600" />
+                  <Camera className="w-6 h-6 text-pink-500" />
+                  <Briefcase className="w-6 h-6 text-blue-700" />
+                </div>
+                
+                <h1 className="text-2xl font-bold text-foreground mx-4">
                   Social media research tool
                 </h1>
+                
+                {/* Right side icons */}
+                <div className="flex items-center gap-2">
+                  <MessageSquare className="w-6 h-6 text-orange-500" />
+                  <Globe className="w-6 h-6 text-blue-400" />
+                  <Play className="w-6 h-6 text-red-500" />
+                </div>
               </div>
               <p className="text-muted-foreground">
                 Build advanced search queries to discover customer insights across social platforms
