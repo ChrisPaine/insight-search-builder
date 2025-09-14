@@ -1019,7 +1019,7 @@ const Index = () => {
                       id="main-topic"
                       value={mainTopic}
                       onChange={(e) => setMainTopic(e.target.value)}
-                      placeholder="e.g., project management software, meal planning apps, fitness tracking..."
+                      placeholder="e.g., 3 evergreen core markets, where people always spend: Health, Wealth, Relationships!"
                       className="flex-1"
                     />
                     <Button
