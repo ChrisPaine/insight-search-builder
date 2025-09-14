@@ -1403,6 +1403,19 @@ const Index = () => {
                       </SelectContent>
                     </Select>
                   </div>
+                  
+                  <div className="flex justify-center mt-3">
+                    <Button
+                      id="search-button"
+                      variant="default"
+                      onClick={handleSearch}
+                      disabled={!mainTopic.trim() || selectedPlatforms.length === 0}
+                      className="px-6 py-2"
+                    >
+                      <Search className="w-4 h-4 mr-2" />
+                      Search
+                    </Button>
+                  </div>
                 </div>
                 
                 <Collapsible open={additionalKeywordsOpen} onOpenChange={setAdditionalKeywordsOpen}>
@@ -1533,7 +1546,6 @@ const Index = () => {
                 ))}
               </CardContent>
             </Card>
-          </div>
 
           {/* Right Column - Search Settings & Advanced Options */}
           <div className="space-y-4">
@@ -1581,21 +1593,6 @@ const Index = () => {
                 </div>
               </CardContent>
             </Card>
-
-            {/* Search Button */}
-            <div className="flex justify-center">
-              <Button
-                id="search-button"
-                variant="default"
-                size="lg"
-                onClick={handleSearch}
-                disabled={!mainTopic.trim() || selectedPlatforms.length === 0}
-                className="w-full max-w-md bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-3 px-8 shadow-lg"
-              >
-                <Search className="w-5 h-5 mr-2" />
-                Start Research Search
-              </Button>
-            </div>
 
             {/* Advanced Platform Options */}
             {selectedPlatforms.length > 0 && (
