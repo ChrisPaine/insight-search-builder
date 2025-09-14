@@ -949,7 +949,7 @@ const Index = () => {
             <Card className="shadow-card">
               <CardHeader>
                 <div className="flex flex-wrap items-center justify-between gap-2">
-                  <CardTitle className="flex items-center gap-2 text-2xl">
+                  <CardTitle className="flex items-center gap-2 text-2xl border-b border-border pb-2">
                     <Hash className="w-7 h-7 text-research-blue" />
                     Research Topic
                   </CardTitle>
@@ -1047,7 +1047,7 @@ const Index = () => {
             {/* Platform Selection */}
             <Card id="platform-selector" className="shadow-card">
               <CardHeader className="pb-2">
-                <CardTitle className="flex items-center gap-2 text-lg">
+                <CardTitle className="flex items-center gap-2 text-lg border-b border-border pb-2">
                   <Globe className="w-5 h-5 text-research-blue" />
                   Select Platforms
                 </CardTitle>
@@ -1093,7 +1093,7 @@ const Index = () => {
             <Card id="phrase-builder" className="shadow-card">
               <CardHeader>
                 <div className="flex items-center justify-between">
-                  <CardTitle className="flex items-center gap-2 text-lg">
+                  <CardTitle className="flex items-center gap-2 text-lg border-b border-border pb-2">
                     <MessageSquare className="w-5 h-5 text-research-blue" />
                     Pain Point Filter
                   </CardTitle>
@@ -1159,7 +1159,7 @@ const Index = () => {
             {/* Search Settings */}
             <Card id="search-settings" className="shadow-card">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-base">
+                <CardTitle className="flex items-center gap-2 text-base border-b border-border pb-2">
                   <Search className="w-4 h-4 text-research-blue" />
                   Search Settings
                 </CardTitle>
@@ -1205,7 +1205,7 @@ const Index = () => {
             {selectedPlatforms.length > 0 && (
               <Card id="advanced-options" className="shadow-card">
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2 text-base">
+                  <CardTitle className="flex items-center gap-2 text-base border-b border-border pb-2">
                     <Settings className="w-4 h-4 text-research-blue" />
                     Advanced Options
                   </CardTitle>
