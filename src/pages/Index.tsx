@@ -220,7 +220,6 @@ const Index = () => {
   // Tutorial state
   const [showTutorial, setShowTutorial] = useState(false);
   const [tutorialStep, setTutorialStep] = useState(0);
-  const [additionalKeywordsOpen, setAdditionalKeywordsOpen] = useState(false);
   const [redditAdvancedOpen, setRedditAdvancedOpen] = useState(false);
   const [spotlightTick, setSpotlightTick] = useState(0);
 
@@ -255,12 +254,7 @@ const Index = () => {
       target: '#additional-keywords',  
       title: 'Step 4: Add Keywords (Optional)',
       content: 'Add specific keywords to narrow down your search. This helps find more targeted pain points.',
-      position: 'bottom',
-      action: () => {
-        setAdditionalKeywordsOpen(true);
-        // Recalculate spotlight after expansion
-        setTimeout(() => setSpotlightTick((t) => t + 1), 300);
-      }
+      position: 'bottom'
     },
     {
       target: '#phrase-builder',
@@ -1543,23 +1537,21 @@ const Index = () => {
                   </div>
                 </div>
                 
-                <Collapsible open={additionalKeywordsOpen} onOpenChange={setAdditionalKeywordsOpen}>
-                  <CollapsibleTrigger className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors w-full justify-start p-2 -mx-2 rounded hover:bg-muted/50">
-                    <ChevronDown className="w-4 h-4" />
-                    <span>Additional Keywords (optional)</span>
-                  </CollapsibleTrigger>
-                  <CollapsibleContent className="mt-2">
-                    <div>
-                      <Input
-                        id="additional-keywords"
-                        value={additionalKeywords}
-                        onChange={(e) => setAdditionalKeywords(e.target.value)}
-                        placeholder="e.g., small business, beginners, affordable..."
-                        className="w-full"
-                      />
-                    </div>
-                  </CollapsibleContent>
-                </Collapsible>
+                <div className="mt-4">
+                  <Label htmlFor="additional-keywords" className="text-sm font-medium mb-2 block">
+                    Search within comments & content
+                  </Label>
+                  <Input
+                    id="additional-keywords"
+                    value={additionalKeywords}
+                    onChange={(e) => setAdditionalKeywords(e.target.value)}
+                    placeholder="e.g., small business, beginners, affordable..."
+                    className="w-full"
+                  />
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Find discussions mentioning these terms within posts and comments.
+                  </p>
+                </div>
               </CardContent>
             </Card>
 
