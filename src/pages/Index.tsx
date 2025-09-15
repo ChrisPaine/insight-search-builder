@@ -346,7 +346,6 @@ const Index = () => {
       minEngagement: false,
       engagementThreshold: 10000,
       viralPatterns: [] as string[],
-      timeBasedTrends: [] as string[],
       
       // Advanced Targeting
       brandMentions: false,
@@ -629,12 +628,6 @@ const Index = () => {
         if (tiktokOptions.viralPatterns.length > 0) {
           const viralTerms = tiktokOptions.viralPatterns.map(pattern => `"${pattern}"`).join(' OR ');
           tiktokTerms.push(`(${viralTerms})`);
-        }
-        
-        // Time-based trends
-        if (tiktokOptions.timeBasedTrends.length > 0) {
-          const timeTerms = tiktokOptions.timeBasedTrends.map(trend => `"${trend}"`).join(' OR ');
-          tiktokTerms.push(`(${timeTerms})`);
         }
         
         // Brand mentions
@@ -926,7 +919,6 @@ const Index = () => {
         minEngagement: false,
         engagementThreshold: 10000,
         viralPatterns: [],
-        timeBasedTrends: [],
         brandMentions: false,
         crossPlatformTrends: false,
         realTimeAlerts: false
@@ -2266,32 +2258,6 @@ const Index = () => {
                                    }}
                                  />
                                  <span>{pattern}</span>
-                               </label>
-                             ))}
-                           </div>
-                         </div>
-
-                         {/* Time-based Trends */}
-                         <div>
-                           <Label className="text-sm font-medium mb-2 block">Time-based Analysis</Label>
-                           <div className="grid grid-cols-2 gap-2">
-                             {['morning routine', 'night routine', 'weekly update', 'monthly wrap'].map(trend => (
-                               <label key={trend} className="flex items-center space-x-2 text-sm">
-                                 <Checkbox
-                                   checked={advancedOptions.tiktok.timeBasedTrends.includes(trend)}
-                                   onCheckedChange={(checked) => {
-                                     setAdvancedOptions(prev => ({
-                                       ...prev,
-                                       tiktok: {
-                                         ...prev.tiktok,
-                                         timeBasedTrends: checked 
-                                           ? [...prev.tiktok.timeBasedTrends, trend]
-                                           : prev.tiktok.timeBasedTrends.filter(t => t !== trend)
-                                       }
-                                     }));
-                                   }}
-                                 />
-                                 <span>{trend}</span>
                                </label>
                              ))}
                            </div>
