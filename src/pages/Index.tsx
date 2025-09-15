@@ -1566,13 +1566,11 @@ const Index = () => {
             {/* Platform Selection */}
             <Card id="platform-selector" className="shadow-card">
               <CardHeader className="pb-2">
-                <CardTitle className="flex items-center gap-2 text-lg border-b border-border pb-2">
-                  <Globe className="w-5 h-5 text-research-blue" />
-                  Select Platforms
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="pt-0">
-                <div className="flex items-center justify-between mb-3 pb-2 border-b border-border">
+                <div className="flex items-center justify-between border-b border-border pb-2">
+                  <CardTitle className="flex items-center gap-2 text-lg">
+                    <Globe className="w-5 h-5 text-research-blue" />
+                    Select Platforms
+                  </CardTitle>
                   <div className="flex items-center space-x-2">
                     <Checkbox
                       checked={selectedPlatforms.length === platforms.length}
@@ -1587,12 +1585,9 @@ const Index = () => {
                     />
                     <Label className="text-sm font-medium cursor-pointer">Select All</Label>
                   </div>
-                  {selectedPlatforms.length > 0 && (
-                    <span className="text-xs text-muted-foreground">
-                      {selectedPlatforms.length} of {platforms.length} selected
-                    </span>
-                  )}
                 </div>
+              </CardHeader>
+              <CardContent className="pt-0">
                 <div className="grid grid-cols-4 gap-1">
                   {platforms.map((platform) => {
                     const platformElement = (
