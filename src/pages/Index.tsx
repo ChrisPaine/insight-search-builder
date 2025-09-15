@@ -44,6 +44,13 @@ const platforms: Platform[] = [
     color: 'text-research-blue-dark'
   },
   {
+    id: 'google-trends',
+    name: 'Google Trends',
+    site: '', // Special handling in search function
+    icon: <TrendingUp className="w-4 h-4" />,
+    color: 'text-research-blue-dark'
+  },
+  {
     id: 'instagram',
     name: 'Instagram',
     site: 'site:instagram.com',
@@ -65,6 +72,13 @@ const platforms: Platform[] = [
     color: 'text-research-blue-dark'
   },
   {
+    id: 'tiktok',
+    name: 'TikTok',
+    site: 'site:tiktok.com',
+    icon: <Play className="w-4 h-4" />,
+    color: 'text-research-blue-dark'
+  },
+  {
     id: 'twitter',
     name: 'Twitter',
     site: 'site:twitter.com',
@@ -77,13 +91,6 @@ const platforms: Platform[] = [
     site: 'site:youtube.com',
     icon: <Play className="w-4 h-4" />,
     color: 'text-research-accent'
-  },
-  {
-    id: 'google-trends',
-    name: 'Google Trends',
-    site: '', // Special handling in search function
-    icon: <TrendingUp className="w-4 h-4" />,
-    color: 'text-research-blue-dark'
   }
 ];
 
@@ -318,6 +325,12 @@ const Index = () => {
       minScore: false,
       scoreThreshold: 50,
       author: ''
+    },
+    tiktok: {
+      hashtagsOnly: false,
+      minLikes: false,
+      likesThreshold: 1000,
+      creator: ''
     },
     twitter: {
       verifiedOnly: false,
@@ -813,6 +826,12 @@ const Index = () => {
         scoreThreshold: 50,
         author: ''
       },
+      tiktok: {
+        hashtagsOnly: false,
+        minLikes: false,
+        likesThreshold: 1000,
+        creator: ''
+      },
       twitter: {
         verifiedOnly: false,
         hasMedia: false,
@@ -888,6 +907,9 @@ const Index = () => {
                   <div className="w-6 h-6 bg-blue-700 rounded-sm flex items-center justify-center">
                     <span className="text-white text-xs font-bold">in</span>
                   </div>
+                  <div className="w-6 h-6 bg-black rounded-sm flex items-center justify-center">
+                    <span className="text-white text-xs font-bold">tt</span>
+                  </div>
                 </div>
                 
                 <h1 className="text-2xl font-bold text-foreground mx-4">
@@ -904,6 +926,9 @@ const Index = () => {
                   </div>
                   <div className="w-6 h-6 bg-red-600 rounded-sm flex items-center justify-center">
                     <div className="w-0 h-0 border-l-[4px] border-l-white border-y-[3px] border-y-transparent ml-0.5"></div>
+                  </div>
+                  <div className="w-6 h-6 bg-blue-500 rounded-sm flex items-center justify-center">
+                    <TrendingUp className="w-3 h-3 text-white" />
                   </div>
                 </div>
               </div>
