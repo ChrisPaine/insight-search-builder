@@ -350,7 +350,8 @@ const Index = () => {
       // Advanced Targeting
       brandMentions: false,
       crossPlatformTrends: false,
-      realTimeAlerts: false
+      realTimeAlerts: false,
+      strictRecency: false
     },
     twitter: {
       verifiedOnly: false,
@@ -727,7 +728,13 @@ const Index = () => {
           month: 'qdr:m',
           year: 'qdr:y'
         };
-        baseUrl += `&tbs=${timeParams[timeFilter]}`;
+        
+        // Use Google Video search for TikTok with strict recency
+        if (platformId === 'tiktok' && advancedOptions.tiktok.strictRecency) {
+          baseUrl += `&tbm=vid&sbd=1&tbs=${timeParams[timeFilter]}`;
+        } else {
+          baseUrl += `&tbs=${timeParams[timeFilter]}`;
+        }
       }
 
       const url = baseUrl;
@@ -921,7 +928,8 @@ const Index = () => {
         viralPatterns: [],
         brandMentions: false,
         crossPlatformTrends: false,
-        realTimeAlerts: false
+        realTimeAlerts: false,
+        strictRecency: false
       },
       twitter: {
         verifiedOnly: false,
@@ -2311,6 +2319,18 @@ const Index = () => {
                                }))}
                              />
                              <Label htmlFor="tiktok-engagement" className="text-sm">High engagement content (≥ {advancedOptions.tiktok.engagementThreshold.toLocaleString()} interactions)</Label>
+                           </div>
+                           
+                           <div className="flex items-center space-x-2">
+                             <Checkbox
+                               id="tiktok-recency"
+                               checked={advancedOptions.tiktok.strictRecency}
+                               onCheckedChange={(checked) => setAdvancedOptions(prev => ({
+                                 ...prev,
+                                 tiktok: { ...prev.tiktok, strictRecency: !!checked }
+                               }))}
+                             />
+                             <Label htmlFor="tiktok-recency" className="text-sm">Strict recency (uses Video search for fresher results with time filters)</Label>
                            </div>
                            
                            {advancedOptions.tiktok.minEngagement && (
