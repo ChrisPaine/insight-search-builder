@@ -242,6 +242,7 @@ const Index = () => {
       content: 'Select which social media platforms to search. Each platform has unique advanced options for better targeting. Let me show you Reddit\'s advanced features!',
       position: 'right',
       action: () => {
+        setSelectedPlatforms((prev) => (prev.includes('reddit') ? prev : [...prev, 'reddit']));
         setRedditAdvancedOpen(true);
       }
     },
@@ -251,7 +252,7 @@ const Index = () => {
       content: 'Each platform offers powerful advanced options! Reddit lets you target self-posts, high-engagement content, specific users, and more. These help find the most relevant pain points.',
       position: 'left',
       action: () => {
-        setRedditAdvancedOpen(false);
+        setRedditAdvancedOpen(true);
       }
     },
     {
