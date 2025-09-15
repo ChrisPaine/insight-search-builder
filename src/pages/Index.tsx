@@ -231,30 +231,28 @@ const Index = () => {
       position: 'bottom'
     },
     {
-      target: '#platform-selector',
-      title: 'Step 2: Choose Platforms',
-      content: 'Select which social media platforms to search. Each platform has unique advanced options for better targeting. Let me show you Reddit\'s advanced features!',
-      position: 'right',
-      action: () => {
-        setSelectedPlatforms(['reddit']);
-        // Recalculate spotlight after expansion so the whole card is highlighted
-        setTimeout(() => setSpotlightTick((t) => t + 1), 400);
-      }
+      target: '#additional-keywords',  
+      title: 'Step 2: Search Within Comments & Content',
+      content: 'Use this field to search within the actual text of posts and comments. This powerful feature helps you find specific discussions, pain points, and user feedback that contain your exact keywords.',
+      position: 'bottom'
     },
     {
-      target: '#advanced-options',
-      title: 'Step 3: Platform Advanced Features',
-      content: 'Each platform offers powerful advanced options! Reddit lets you target self-posts, high-engagement content, specific users, and more. These help find the most relevant pain points.',
-      position: 'left',
+      target: '#platform-selector',
+      title: 'Step 3: Choose Platforms',
+      content: 'Select which social media platforms to search. Each platform has unique advanced options for better targeting. Let me show you Reddit\'s advanced features!',
+      position: 'right',
       action: () => {
         setRedditAdvancedOpen(true);
       }
     },
     {
-      target: '#additional-keywords',  
-      title: 'Step 4: Add Keywords (Optional)',
-      content: 'Add specific keywords to narrow down your search. This helps find more targeted pain points.',
-      position: 'bottom'
+      target: '#advanced-options',
+      title: 'Step 4: Platform Advanced Features',
+      content: 'Each platform offers powerful advanced options! Reddit lets you target self-posts, high-engagement content, specific users, and more. These help find the most relevant pain points.',
+      position: 'left',
+      action: () => {
+        setRedditAdvancedOpen(false);
+      }
     },
     {
       target: '#phrase-builder',
