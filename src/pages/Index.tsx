@@ -703,9 +703,19 @@ const Index = () => {
         platformToken = platform.site;
       }
 
-      const phrasesToken = selectedPhrases.length > 0 ? `intext:("${selectedPhrases.join('" OR "')}")` : '';
-      const groupedContent = [platformToken, phrasesToken].filter(Boolean).join(' ');
-      const platformQuery = groupedContent ? `${topicPart}${keywordsPart} (${groupedContent})` : `${topicPart}${keywordsPart}`;
+      // Build platform-specific query based on search engine
+      let platformQuery;
+      if (searchEngine === 'google') {
+        // Use Google's advanced search operators
+        const phrasesToken = selectedPhrases.length > 0 ? `intext:("${selectedPhrases.join('" OR "')}")` : '';
+        const groupedContent = [platformToken, phrasesToken].filter(Boolean).join(' ');
+        platformQuery = groupedContent ? `${topicPart}${keywordsPart} (${groupedContent})` : `${topicPart}${keywordsPart}`;
+      } else {
+        // Simplified query for DuckDuckGo and Bing
+        const phrasesToken = selectedPhrases.length > 0 ? `"${selectedPhrases.join('" "')}"` : '';
+        const groupedContent = [platformToken, phrasesToken].filter(Boolean).join(' ');
+        platformQuery = groupedContent ? `${topicPart}${keywordsPart} ${groupedContent}` : `${topicPart}${keywordsPart}`;
+      }
 
       // Build URL with time filter for Google
       let baseUrl = searchEngine === 'google'
