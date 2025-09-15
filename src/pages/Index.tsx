@@ -331,10 +331,27 @@ const Index = () => {
       author: ''
     },
     tiktok: {
-      hashtagsOnly: false,
-      minLikes: false,
-      likesThreshold: 1000,
-      creator: ''
+      // Content Discovery
+      hashtagTrends: [] as string[],
+      contentTypes: [] as string[],
+      soundTrends: false,
+      challengeId: false,
+      
+      // Creator Features  
+      creatorCollabs: [] as string[],
+      creatorTier: [] as string[],
+      specificCreator: '',
+      
+      // Engagement & Analytics
+      minEngagement: false,
+      engagementThreshold: 10000,
+      viralPatterns: [] as string[],
+      timeBasedTrends: [] as string[],
+      
+      // Advanced Targeting
+      brandMentions: false,
+      crossPlatformTrends: false,
+      realTimeAlerts: false
     },
     twitter: {
       verifiedOnly: false,
@@ -560,6 +577,74 @@ const Index = () => {
         // Combine terms if any are selected
         if (twitterTerms.length > 0) {
           platformToken += ' ' + twitterTerms.join(' ');
+        }
+      } else if (platformId === 'tiktok') {
+        platformToken = 'site:tiktok.com';
+        
+        // Add TikTok advanced options using Google-compatible syntax
+        const tiktokOptions = advancedOptions.tiktok;
+        
+        let tiktokTerms = [];
+        
+        // Hashtag trends
+        if (tiktokOptions.hashtagTrends.length > 0) {
+          const hashtagTerms = tiktokOptions.hashtagTrends.map(tag => `"#${tag}"`).join(' OR ');
+          tiktokTerms.push(`(${hashtagTerms})`);
+        }
+        
+        // Content types
+        if (tiktokOptions.contentTypes.length > 0) {
+          const contentTerms = tiktokOptions.contentTypes.map(type => `"${type}"`).join(' OR ');
+          tiktokTerms.push(`(${contentTerms})`);
+        }
+        
+        // Sound trends
+        if (tiktokOptions.soundTrends) {
+          tiktokTerms.push('("original sound" OR "trending sound" OR "viral sound" OR "sound by")');
+        }
+        
+        // Challenge identification
+        if (tiktokOptions.challengeId) {
+          tiktokTerms.push('("challenge" OR "#challenge" OR "try this" OR "trend")');
+        }
+        
+        // Creator collaborations
+        if (tiktokOptions.creatorCollabs.length > 0) {
+          const collabTerms = tiktokOptions.creatorCollabs.map(type => `"${type}"`).join(' OR ');
+          tiktokTerms.push(`(${collabTerms})`);
+        }
+        
+        // Creator tiers
+        if (tiktokOptions.creatorTier.length > 0) {
+          const tierTerms = tiktokOptions.creatorTier.map(tier => `"${tier}"`).join(' OR ');
+          tiktokTerms.push(`(${tierTerms})`);
+        }
+        
+        // Specific creator
+        if (tiktokOptions.specificCreator) {
+          tiktokTerms.push(`"@${tiktokOptions.specificCreator}"`);
+        }
+        
+        // Viral patterns
+        if (tiktokOptions.viralPatterns.length > 0) {
+          const viralTerms = tiktokOptions.viralPatterns.map(pattern => `"${pattern}"`).join(' OR ');
+          tiktokTerms.push(`(${viralTerms})`);
+        }
+        
+        // Time-based trends
+        if (tiktokOptions.timeBasedTrends.length > 0) {
+          const timeTerms = tiktokOptions.timeBasedTrends.map(trend => `"${trend}"`).join(' OR ');
+          tiktokTerms.push(`(${timeTerms})`);
+        }
+        
+        // Brand mentions
+        if (tiktokOptions.brandMentions) {
+          tiktokTerms.push('("brand" OR "sponsored" OR "ad" OR "#ad" OR "partnership")');
+        }
+        
+        // Combine terms if any are selected
+        if (tiktokTerms.length > 0) {
+          platformToken += ' ' + tiktokTerms.join(' ');
         }
       } else if (platformId === 'discord') {
         platformToken = 'site:discord.com OR site:discord.gg OR site:disboard.org';
@@ -831,10 +916,20 @@ const Index = () => {
         author: ''
       },
       tiktok: {
-        hashtagsOnly: false,
-        minLikes: false,
-        likesThreshold: 1000,
-        creator: ''
+        hashtagTrends: [],
+        contentTypes: [],
+        soundTrends: false,
+        challengeId: false,
+        creatorCollabs: [],
+        creatorTier: [],
+        specificCreator: '',
+        minEngagement: false,
+        engagementThreshold: 10000,
+        viralPatterns: [],
+        timeBasedTrends: [],
+        brandMentions: false,
+        crossPlatformTrends: false,
+        realTimeAlerts: false
       },
       twitter: {
         verifiedOnly: false,
@@ -2017,9 +2112,263 @@ const Index = () => {
                         </div>
                       </CollapsibleContent>
                     </Collapsible>
-                  )}
+                   )}
 
-                  {/* YouTube Advanced Options */}
+                   {/* TikTok Advanced Options */}
+                   {selectedPlatforms.includes('tiktok') && (
+                     <Collapsible>
+                       <CollapsibleTrigger className="flex items-center justify-between w-full p-2 rounded-lg border border-border hover:bg-research-blue-light">
+                         <div className="flex items-center gap-2">
+                           <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                             <path d="M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/>
+                           </svg>
+                           <span className="font-medium">TikTok Options</span>
+                         </div>
+                         <ChevronDown className="w-4 h-4" />
+                       </CollapsibleTrigger>
+                       <CollapsibleContent className="mt-3 space-y-4 pl-4">
+                         {/* Hashtag Trends */}
+                         <div>
+                           <Label className="text-sm font-medium mb-2 block">Hashtag Trends</Label>
+                           <div className="grid grid-cols-2 gap-2">
+                             {['fyp', 'viral', 'trending', 'foryou', 'foryoupage', 'trend', 'popular', 'explore'].map(tag => (
+                               <label key={tag} className="flex items-center space-x-2 text-sm">
+                                 <Checkbox
+                                   checked={advancedOptions.tiktok.hashtagTrends.includes(tag)}
+                                   onCheckedChange={(checked) => {
+                                     setAdvancedOptions(prev => ({
+                                       ...prev,
+                                       tiktok: {
+                                         ...prev.tiktok,
+                                         hashtagTrends: checked 
+                                           ? [...prev.tiktok.hashtagTrends, tag]
+                                           : prev.tiktok.hashtagTrends.filter(t => t !== tag)
+                                       }
+                                     }));
+                                   }}
+                                 />
+                                 <span>#{tag}</span>
+                               </label>
+                             ))}
+                           </div>
+                         </div>
+
+                         {/* Content Types */}
+                         <div>
+                           <Label className="text-sm font-medium mb-2 block">Content Types</Label>
+                           <div className="grid grid-cols-2 gap-2">
+                             {['dance', 'comedy', 'educational', 'cooking', 'beauty', 'fitness', 'life hacks', 'review'].map(type => (
+                               <label key={type} className="flex items-center space-x-2 text-sm">
+                                 <Checkbox
+                                   checked={advancedOptions.tiktok.contentTypes.includes(type)}
+                                   onCheckedChange={(checked) => {
+                                     setAdvancedOptions(prev => ({
+                                       ...prev,
+                                       tiktok: {
+                                         ...prev.tiktok,
+                                         contentTypes: checked 
+                                           ? [...prev.tiktok.contentTypes, type]
+                                           : prev.tiktok.contentTypes.filter(t => t !== type)
+                                       }
+                                     }));
+                                   }}
+                                 />
+                                 <span>{type}</span>
+                               </label>
+                             ))}
+                           </div>
+                         </div>
+
+                         {/* Creator Features */}
+                         <div>
+                           <Label className="text-sm font-medium mb-2 block">Creator Collaborations</Label>
+                           <div className="grid grid-cols-2 gap-2">
+                             {['duet', 'stitch', 'collaboration', 'collab'].map(collab => (
+                               <label key={collab} className="flex items-center space-x-2 text-sm">
+                                 <Checkbox
+                                   checked={advancedOptions.tiktok.creatorCollabs.includes(collab)}
+                                   onCheckedChange={(checked) => {
+                                     setAdvancedOptions(prev => ({
+                                       ...prev,
+                                       tiktok: {
+                                         ...prev.tiktok,
+                                         creatorCollabs: checked 
+                                           ? [...prev.tiktok.creatorCollabs, collab]
+                                           : prev.tiktok.creatorCollabs.filter(c => c !== collab)
+                                       }
+                                     }));
+                                   }}
+                                 />
+                                 <span>{collab}</span>
+                               </label>
+                             ))}
+                           </div>
+                         </div>
+
+                         {/* Creator Tiers */}
+                         <div>
+                           <Label className="text-sm font-medium mb-2 block">Creator Tiers</Label>
+                           <div className="grid grid-cols-2 gap-2">
+                             {['micro influencer', 'macro influencer', 'celebrity', 'brand ambassador'].map(tier => (
+                               <label key={tier} className="flex items-center space-x-2 text-sm">
+                                 <Checkbox
+                                   checked={advancedOptions.tiktok.creatorTier.includes(tier)}
+                                   onCheckedChange={(checked) => {
+                                     setAdvancedOptions(prev => ({
+                                       ...prev,
+                                       tiktok: {
+                                         ...prev.tiktok,
+                                         creatorTier: checked 
+                                           ? [...prev.tiktok.creatorTier, tier]
+                                           : prev.tiktok.creatorTier.filter(t => t !== tier)
+                                       }
+                                     }));
+                                   }}
+                                 />
+                                 <span>{tier}</span>
+                               </label>
+                             ))}
+                           </div>
+                         </div>
+
+                         {/* Specific Creator */}
+                         <div>
+                           <Label className="text-sm font-medium">Specific Creator (optional)</Label>
+                           <Input
+                             placeholder="Enter creator username (without @)"
+                             value={advancedOptions.tiktok.specificCreator}
+                             onChange={(e) => setAdvancedOptions(prev => ({
+                               ...prev,
+                               tiktok: { ...prev.tiktok, specificCreator: e.target.value }
+                             }))}
+                             className="mt-1"
+                           />
+                         </div>
+
+                         {/* Viral Patterns */}
+                         <div>
+                           <Label className="text-sm font-medium mb-2 block">Viral Patterns</Label>
+                           <div className="grid grid-cols-2 gap-2">
+                             {['went viral', 'blew up', 'viral moment', 'trending now'].map(pattern => (
+                               <label key={pattern} className="flex items-center space-x-2 text-sm">
+                                 <Checkbox
+                                   checked={advancedOptions.tiktok.viralPatterns.includes(pattern)}
+                                   onCheckedChange={(checked) => {
+                                     setAdvancedOptions(prev => ({
+                                       ...prev,
+                                       tiktok: {
+                                         ...prev.tiktok,
+                                         viralPatterns: checked 
+                                           ? [...prev.tiktok.viralPatterns, pattern]
+                                           : prev.tiktok.viralPatterns.filter(p => p !== pattern)
+                                       }
+                                     }));
+                                   }}
+                                 />
+                                 <span>{pattern}</span>
+                               </label>
+                             ))}
+                           </div>
+                         </div>
+
+                         {/* Time-based Trends */}
+                         <div>
+                           <Label className="text-sm font-medium mb-2 block">Time-based Analysis</Label>
+                           <div className="grid grid-cols-2 gap-2">
+                             {['morning routine', 'night routine', 'weekly update', 'monthly wrap'].map(trend => (
+                               <label key={trend} className="flex items-center space-x-2 text-sm">
+                                 <Checkbox
+                                   checked={advancedOptions.tiktok.timeBasedTrends.includes(trend)}
+                                   onCheckedChange={(checked) => {
+                                     setAdvancedOptions(prev => ({
+                                       ...prev,
+                                       tiktok: {
+                                         ...prev.tiktok,
+                                         timeBasedTrends: checked 
+                                           ? [...prev.tiktok.timeBasedTrends, trend]
+                                           : prev.tiktok.timeBasedTrends.filter(t => t !== trend)
+                                       }
+                                     }));
+                                   }}
+                                 />
+                                 <span>{trend}</span>
+                               </label>
+                             ))}
+                           </div>
+                         </div>
+
+                         {/* Additional Options */}
+                         <div className="space-y-3">
+                           <div className="flex items-center space-x-2">
+                             <Checkbox
+                               id="tiktok-sounds"
+                               checked={advancedOptions.tiktok.soundTrends}
+                               onCheckedChange={(checked) => setAdvancedOptions(prev => ({
+                                 ...prev,
+                                 tiktok: { ...prev.tiktok, soundTrends: !!checked }
+                               }))}
+                             />
+                             <Label htmlFor="tiktok-sounds" className="text-sm">Sound & Music Trends</Label>
+                           </div>
+                           
+                           <div className="flex items-center space-x-2">
+                             <Checkbox
+                               id="tiktok-challenges"
+                               checked={advancedOptions.tiktok.challengeId}
+                               onCheckedChange={(checked) => setAdvancedOptions(prev => ({
+                                 ...prev,
+                                 tiktok: { ...prev.tiktok, challengeId: !!checked }
+                               }))}
+                             />
+                             <Label htmlFor="tiktok-challenges" className="text-sm">Challenge Identification</Label>
+                           </div>
+                           
+                           <div className="flex items-center space-x-2">
+                             <Checkbox
+                               id="tiktok-brands"
+                               checked={advancedOptions.tiktok.brandMentions}
+                               onCheckedChange={(checked) => setAdvancedOptions(prev => ({
+                                 ...prev,
+                                 tiktok: { ...prev.tiktok, brandMentions: !!checked }
+                               }))}
+                             />
+                             <Label htmlFor="tiktok-brands" className="text-sm">Brand Mentions & Sponsorships</Label>
+                           </div>
+                           
+                           <div className="flex items-center space-x-2">
+                             <Checkbox
+                               id="tiktok-engagement"
+                               checked={advancedOptions.tiktok.minEngagement}
+                               onCheckedChange={(checked) => setAdvancedOptions(prev => ({
+                                 ...prev,
+                                 tiktok: { ...prev.tiktok, minEngagement: !!checked }
+                               }))}
+                             />
+                             <Label htmlFor="tiktok-engagement" className="text-sm">High engagement content (≥ {advancedOptions.tiktok.engagementThreshold.toLocaleString()} interactions)</Label>
+                           </div>
+                           
+                           {advancedOptions.tiktok.minEngagement && (
+                             <div>
+                               <Label className="text-sm font-medium">Engagement Threshold</Label>
+                               <Input
+                                 type="number"
+                                 min="1000"
+                                 step="1000"
+                                 value={advancedOptions.tiktok.engagementThreshold}
+                                 onChange={(e) => setAdvancedOptions(prev => ({
+                                   ...prev,
+                                   tiktok: { ...prev.tiktok, engagementThreshold: parseInt(e.target.value) || 10000 }
+                                 }))}
+                                 className="mt-1"
+                               />
+                             </div>
+                           )}
+                         </div>
+                       </CollapsibleContent>
+                     </Collapsible>
+                   )}
+
+                   {/* YouTube Advanced Options */}
                   {selectedPlatforms.includes('youtube') && (
                     <Collapsible>
                       <CollapsibleTrigger className="flex items-center justify-between w-full p-2 rounded-lg border border-border hover:bg-research-blue-light">
