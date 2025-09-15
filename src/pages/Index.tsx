@@ -1572,6 +1572,27 @@ const Index = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent className="pt-0">
+                <div className="flex items-center justify-between mb-3 pb-2 border-b border-border">
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      checked={selectedPlatforms.length === platforms.length}
+                      onCheckedChange={(checked) => {
+                        if (checked) {
+                          setSelectedPlatforms(platforms.map(p => p.id));
+                        } else {
+                          setSelectedPlatforms([]);
+                        }
+                      }}
+                      className="h-4 w-4"
+                    />
+                    <Label className="text-sm font-medium cursor-pointer">Select All</Label>
+                  </div>
+                  {selectedPlatforms.length > 0 && (
+                    <span className="text-xs text-muted-foreground">
+                      {selectedPlatforms.length} of {platforms.length} selected
+                    </span>
+                  )}
+                </div>
                 <div className="grid grid-cols-4 gap-1">
                   {platforms.map((platform) => {
                     const platformElement = (
