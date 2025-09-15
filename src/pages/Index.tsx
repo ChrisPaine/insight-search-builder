@@ -44,13 +44,6 @@ const platforms: Platform[] = [
     color: 'text-research-blue-dark'
   },
   {
-    id: 'google-trends',
-    name: 'Google Trends',
-    site: '', // Special handling in search function
-    icon: <TrendingUp className="w-4 h-4" />,
-    color: 'text-research-blue-dark'
-  },
-  {
     id: 'instagram',
     name: 'Instagram',
     site: 'site:instagram.com',
@@ -95,6 +88,13 @@ const platforms: Platform[] = [
     site: 'site:youtube.com',
     icon: <Play className="w-4 h-4" />,
     color: 'text-research-accent'
+  },
+  {
+    id: 'google-trends',
+    name: 'Google Trends',
+    site: '', // Special handling in search function
+    icon: <TrendingUp className="w-4 h-4" />,
+    color: 'text-research-blue-dark'
   }
 ];
 
