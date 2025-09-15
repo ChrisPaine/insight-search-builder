@@ -417,7 +417,7 @@ const Index = () => {
     }
 
     const topicPart = `"${mainTopic.trim()}"`;
-    const keywordsPart = additionalKeywords.trim() ? ` AND "${additionalKeywords.trim()}"` : '';
+    const keywordsPart = additionalKeywords.trim() ? ` AND intext:"${additionalKeywords.trim()}"` : '';
 
     // Keep the combined query for preview, but build individual platform queries for search
     const platformTokens = selectedPlatforms
@@ -505,7 +505,7 @@ const Index = () => {
       }
 
       const topicPart = `"${mainTopic.trim()}"`;
-      const keywordsPart = additionalKeywords.trim() ? ` AND "${additionalKeywords.trim()}"` : '';
+      const keywordsPart = additionalKeywords.trim() ? ` AND intext:"${additionalKeywords.trim()}"` : '';
       
       // Build platform-specific query
       let platformToken = '';
