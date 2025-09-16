@@ -407,6 +407,12 @@ const Index = () => {
   
   const { user, signOut, isPro, isPremium, isSupabaseConnected } = useAuth();
   const { saveQuery } = useQueries();
+  const { 
+    canSearch, 
+    incrementSearchCount, 
+    getRemainingSearches,
+    isLimited 
+  } = useUsageLimit();
   const { toast } = useToast();
   const navigate = useNavigate();
 
