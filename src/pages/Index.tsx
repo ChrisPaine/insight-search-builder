@@ -1644,7 +1644,7 @@ const Index = () => {
               </CardHeader>
               <CardContent className="pt-0">
                 {/* Mobile-first responsive grid: 1 col mobile, 2 cols desktop right column */}
-                <div className="grid grid-cols-1 lg:grid-cols-1 gap-3">
+                <div className="grid grid-cols-1 lg:grid-cols-1 gap-1">
                   {platforms.map((platform) => {
                     const platformElement = (
                       <label
