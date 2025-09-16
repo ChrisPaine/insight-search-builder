@@ -472,7 +472,7 @@ const Index = () => {
           text: 'Load Weight Loss Example',
           action: () => {
             setMainTopic('weight loss');
-            setAdditionalKeywords('"struggling with diet" "motivation" "cravings plateau" "emotional eating"');
+            setAdditionalKeywords('"struggling with diet motivation" "craving plateau" "emotional eating"');
             setSelectedPlatforms(['reddit', 'facebook']);
             setSelectedPhrases([
               "I can't",
@@ -645,7 +645,8 @@ const Index = () => {
     }
 
     const topicPart = `"${mainTopic.trim()}"`;
-    const keywordsPart = additionalKeywords.trim() ? ` AND intext:"${additionalKeywords.trim()}"` : '';
+    const kw = additionalKeywords.trim();
+    const keywordsPart = kw ? (kw.includes('"') ? ` AND (${kw})` : ` AND intext:"${kw}"`) : '';
 
     // Keep the combined query for preview, but build individual platform queries for search
     const platformTokens = selectedPlatforms
@@ -733,7 +734,8 @@ const Index = () => {
       }
 
       const topicPart = `"${mainTopic.trim()}"`;
-      const keywordsPart = additionalKeywords.trim() ? ` AND intext:"${additionalKeywords.trim()}"` : '';
+      const kw2 = additionalKeywords.trim();
+      const keywordsPart = kw2 ? (kw2.includes('"') ? ` AND (${kw2})` : ` AND intext:"${kw2}"`) : '';
       
       // Build platform-specific query
       let platformToken = '';
@@ -1562,7 +1564,7 @@ const Index = () => {
                       </SelectTrigger>
                       <SelectContent>
                         {phrasePresets.map((preset) => (
-                          <SelectItem key={preset.id} value={preset.id}>
+                          <SelectItem key={preset.id} value={preset.id} textValue={preset.name}>
                             <div className="flex flex-col">
                               <span className="font-medium">{preset.name}</span>
                               <span className="text-xs text-muted-foreground">{preset.description}</span>
@@ -2484,6 +2486,15 @@ const Index = () => {
                         <p className="text-sm text-muted-foreground">
                           {currentStep.content}
                         </p>
+                        {Array.isArray((currentStep as any).buttons) && (currentStep as any).buttons.length > 0 && (
+                          <div className="mt-3 flex flex-wrap gap-2">
+                            {(currentStep as any).buttons.map((btn: any, i: number) => (
+                              <Button key={i} size="sm" variant="secondary" className="text-xs" onClick={btn.action}>
+                                {btn.text}
+                              </Button>
+                            ))}
+                          </div>
+                        )}
                       </div>
                       
                       <div className="flex items-center justify-between">
