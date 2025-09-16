@@ -1163,7 +1163,15 @@ const Index = () => {
                     </Button>
                   </div>
                   
-                  <div className="grid grid-cols-3 gap-2 mt-2">
+                  <Collapsible className="mt-2">
+                    <CollapsibleTrigger className="w-full">
+                      <div className="flex items-center justify-between p-2 bg-research-gray rounded-lg hover:bg-research-blue-light transition-colors">
+                        <h3 className="font-semibold text-left text-sm">Profitable Market Main Topic Templates</h3>
+                        <ChevronDown className="w-4 h-4" />
+                      </div>
+                    </CollapsibleTrigger>
+                    <CollapsibleContent className="mt-2">
+                      <div className="grid grid-cols-3 gap-2">
                     {/* Health Market Dropdown */}
                     <Select key={`health-${mainTopic}`} value={mainTopic || undefined} onValueChange={(value) => setMainTopic(value)}>
                       <SelectTrigger className="w-full">
@@ -1543,7 +1551,9 @@ const Index = () => {
                         </SelectGroup>
                       </SelectContent>
                     </Select>
-                  </div>
+                      </div>
+                    </CollapsibleContent>
+                  </Collapsible>
                 </div>
                 
                 <div className="mt-4">
