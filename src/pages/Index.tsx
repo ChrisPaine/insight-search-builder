@@ -464,9 +464,41 @@ const Index = () => {
     },
     {
       target: '#search-button',
-      title: 'Step 8: Start Your Research',
-      content: 'Click to open search tabs for each selected platform. Your query will be automatically optimized for each platform.',
-      position: 'top'
+      title: 'Step 8: Try It Now!',
+      content: 'Ready to see this in action? Click "Load Weight Loss Example" below to populate the form with a complete weight loss research setup, then hit the search button to start finding real customer pain points!',
+      position: 'top',
+      buttons: [
+        {
+          text: 'Load Weight Loss Example',
+          action: () => {
+            setMainTopic('weight loss');
+            setAdditionalKeywords('struggling with diet motivation cravings plateau emotional eating');
+            setSelectedPlatforms(['reddit', 'facebook']);
+            setSelectedPhrases([
+              "I can't",
+              "I struggle with",
+              "I'm frustrated by",
+              "I hate",
+              "I need help with",
+              "I don't know how to",
+              "I'm tired of",
+              "I wish I could",
+              "I'm stuck",
+              "I'm overwhelmed by",
+              "I'm confused about",
+              "I'm worried about",
+              "I'm afraid of",
+              "I keep failing at",
+              "I give up on",
+              "I'm discouraged by",
+              "I'm stressed about",
+              "I can't afford",
+              "I don't have time for",
+              "I'm too busy for"
+            ]);
+          }
+        }
+      ]
     }
   ];
   const nextStep = () => {
