@@ -191,6 +191,195 @@ const googleTrendsCategories = [
   { id: '299', name: 'Shopping' }
 ];
 
+// Helper function to format volume numbers with K/M abbreviations
+const formatVolume = (volume: number): string => {
+  if (volume >= 1000000) {
+    return `${(volume / 1000000).toFixed(1)}M`;
+  } else if (volume >= 1000) {
+    return `${(volume / 1000).toFixed(1)}K`;
+  }
+  return volume.toString();
+};
+
+// Market topic data structures with volume information
+const healthMarketTopics = [
+  { value: "Health", name: "Health", volume: 5400000, level: 0 },
+  
+  { value: "Fitness", name: "• Fitness", volume: 1200000, level: 1 },
+  { value: "Strength Training", name: "• Strength Training", volume: 820000, level: 2 },
+  { value: "Home-Based Strength Training", name: "• Home-Based Strength Training", volume: 45000, level: 3 },
+  { value: "Strength Training for Postpartum Mothers", name: "• Strength Training for Postpartum Mothers", volume: 12000, level: 4 },
+  { value: "Strength Training for Seniors", name: "• Strength Training for Seniors", volume: 38000, level: 4 },
+  { value: "Bodyweight Strength Training", name: "• Bodyweight Strength Training", volume: 67000, level: 3 },
+  { value: "Bodyweight Training for Travelers", name: "• Bodyweight Training for Travelers", volume: 8500, level: 4 },
+  { value: "Bodyweight Training for Military Personnel", name: "• Bodyweight Training for Military Personnel", volume: 6200, level: 4 },
+  
+  { value: "Cardio Fitness", name: "• Cardio Fitness", volume: 390000, level: 2 },
+  { value: "High-Intensity Interval Training (HIIT)", name: "• High-Intensity Interval Training (HIIT)", volume: 245000, level: 3 },
+  { value: "HIIT for Busy Professionals", name: "• HIIT for Busy Professionals", volume: 15000, level: 4 },
+  { value: "HIIT for Weight Loss in Women", name: "• HIIT for Weight Loss in Women", volume: 22000, level: 4 },
+  
+  { value: "Yoga", name: "• Yoga", volume: 890000, level: 2 },
+  { value: "Power Yoga", name: "• Power Yoga", volume: 78000, level: 3 },
+  { value: "Power Yoga for Athletes", name: "• Power Yoga for Athletes", volume: 9500, level: 4 },
+  { value: "Restorative Yoga", name: "• Restorative Yoga", volume: 134000, level: 3 },
+  { value: "Restorative Yoga for Stress Relief", name: "• Restorative Yoga for Stress Relief", volume: 18000, level: 4 },
+  { value: "Restorative Yoga for Chronic Pain Sufferers", name: "• Restorative Yoga for Chronic Pain Sufferers", volume: 7200, level: 4 },
+  
+  { value: "Flexibility and Mobility", name: "• Flexibility and Mobility", volume: 167000, level: 2 },
+  { value: "Mobility Training for Athletes", name: "• Mobility Training for Athletes", volume: 28000, level: 3 },
+  { value: "Flexibility Training for Office Workers", name: "• Flexibility Training for Office Workers", volume: 19000, level: 3 },
+  { value: "Flexibility Programs for Remote Workers", name: "• Flexibility Programs for Remote Workers", volume: 8900, level: 4 },
+  
+  { value: "Nutrition", name: "• Nutrition", volume: 2100000, level: 1 },
+  { value: "Diet Plans", name: "• Diet Plans", volume: 456000, level: 2 },
+  { value: "Ketogenic Diet", name: "• Ketogenic Diet", volume: 234000, level: 3 },
+  { value: "Keto for Diabetics", name: "• Keto for Diabetics", volume: 34000, level: 4 },
+  { value: "Keto for Athletes", name: "• Keto for Athletes", volume: 18000, level: 4 },
+  { value: "Plant-Based Diets", name: "• Plant-Based Diets", volume: 189000, level: 3 },
+  { value: "Plant-Based Nutrition for Bodybuilders", name: "• Plant-Based Nutrition for Bodybuilders", volume: 12000, level: 4 },
+  { value: "Plant-Based Diet for Families", name: "• Plant-Based Diet for Families", volume: 15000, level: 4 },
+  
+  { value: "Supplements", name: "• Supplements", volume: 678000, level: 2 },
+  { value: "Pre-Workout Supplements", name: "• Pre-Workout Supplements", volume: 123000, level: 3 },
+  { value: "Supplements for Endurance Athletes", name: "• Supplements for Endurance Athletes", volume: 23000, level: 4 },
+  { value: "Pre-Workout for Beginners", name: "• Pre-Workout for Beginners", volume: 16000, level: 4 },
+  { value: "Health Supplements", name: "• Health Supplements", volume: 298000, level: 3 },
+  { value: "Supplements for Men's Health", name: "• Supplements for Men's Health", volume: 45000, level: 4 },
+  { value: "Supplements for Hormonal Balance in Women", name: "• Supplements for Hormonal Balance in Women", volume: 28000, level: 4 },
+  
+  { value: "Mental Health", name: "• Mental Health", volume: 1890000, level: 1 },
+  { value: "Stress Management", name: "• Stress Management", volume: 234000, level: 2 },
+  { value: "Mindfulness and Meditation", name: "• Mindfulness and Meditation", volume: 567000, level: 3 },
+  { value: "Meditation for Corporate Professionals", name: "• Meditation for Corporate Professionals", volume: 19000, level: 4 },
+  { value: "Meditation for Sleep Improvement", name: "• Meditation for Sleep Improvement", volume: 34000, level: 4 },
+  { value: "Stress Relief Techniques", name: "• Stress Relief Techniques", volume: 89000, level: 3 },
+  { value: "Stress Relief for Parents", name: "• Stress Relief for Parents", volume: 24000, level: 4 },
+  { value: "Stress Management for College Students", name: "• Stress Management for College Students", volume: 18000, level: 4 },
+  
+  { value: "Therapy and Counseling", name: "• Therapy and Counseling", volume: 456000, level: 2 },
+  { value: "Online Therapy", name: "• Online Therapy", volume: 123000, level: 3 },
+  { value: "Online Therapy for Veterans", name: "• Online Therapy for Veterans", volume: 15000, level: 4 },
+  { value: "Online Therapy for Social Anxiety", name: "• Online Therapy for Social Anxiety", volume: 28000, level: 4 },
+  { value: "Cognitive Behavioral Therapy (CBT)", name: "• Cognitive Behavioral Therapy (CBT)", volume: 189000, level: 3 },
+  { value: "CBT for Adolescents", name: "• CBT for Adolescents", volume: 22000, level: 4 },
+  { value: "CBT for Obsessive-Compulsive Disorder", name: "• CBT for Obsessive-Compulsive Disorder", volume: 16000, level: 4 }
+];
+
+const wealthMarketTopics = [
+  { value: "Wealth", name: "Wealth", volume: 3200000, level: 0 },
+  
+  { value: "Investing", name: "• Investing", volume: 1890000, level: 1 },
+  { value: "Real Estate Investing", name: "• Real Estate Investing", volume: 456000, level: 2 },
+  { value: "Residential Real Estate", name: "• Residential Real Estate", volume: 234000, level: 3 },
+  { value: "Real Estate for First-Time Homebuyers", name: "• Real Estate for First-Time Homebuyers", volume: 89000, level: 4 },
+  { value: "Real Estate Investing for Single Parents", name: "• Real Estate Investing for Single Parents", volume: 12000, level: 4 },
+  { value: "Commercial Real Estate", name: "• Commercial Real Estate", volume: 167000, level: 3 },
+  { value: "Commercial Real Estate for Small Business Owners", name: "• Commercial Real Estate for Small Business Owners", volume: 18000, level: 4 },
+  
+  { value: "Stock Market Investing", name: "• Stock Market Investing", volume: 678000, level: 2 },
+  { value: "Dividend Investing", name: "• Dividend Investing", volume: 123000, level: 3 },
+  { value: "Dividend Investing for Retirees", name: "• Dividend Investing for Retirees", volume: 34000, level: 4 },
+  { value: "Growth Stock Investing", name: "• Growth Stock Investing", volume: 89000, level: 3 },
+  { value: "Stock Investing for Young Professionals", name: "• Stock Investing for Young Professionals", volume: 28000, level: 4 },
+  { value: "Stock Market Education for Beginners", name: "• Stock Market Education for Beginners", volume: 45000, level: 4 },
+  
+  { value: "Cryptocurrency", name: "• Cryptocurrency", volume: 890000, level: 2 },
+  { value: "Bitcoin Investing", name: "• Bitcoin Investing", volume: 234000, level: 3 },
+  { value: "Bitcoin for Beginners", name: "• Bitcoin for Beginners", volume: 67000, level: 4 },
+  { value: "Altcoin Trading", name: "• Altcoin Trading", volume: 156000, level: 3 },
+  { value: "DeFi (Decentralized Finance)", name: "• DeFi (Decentralized Finance)", volume: 89000, level: 3 },
+  { value: "DeFi for Beginners", name: "• DeFi for Beginners", volume: 28000, level: 4 },
+  
+  { value: "Business and Entrepreneurship", name: "• Business and Entrepreneurship", volume: 1234000, level: 1 },
+  { value: "Starting a Business", name: "• Starting a Business", volume: 345000, level: 2 },
+  { value: "Online Business", name: "• Online Business", volume: 234000, level: 3 },
+  { value: "E-commerce", name: "• E-commerce", volume: 567000, level: 3 },
+  { value: "Dropshipping", name: "• Dropshipping", volume: 189000, level: 4 },
+  { value: "Amazon FBA", name: "• Amazon FBA", volume: 123000, level: 4 },
+  { value: "Print on Demand", name: "• Print on Demand", volume: 78000, level: 4 },
+  
+  { value: "Freelancing", name: "• Freelancing", volume: 234000, level: 2 },
+  { value: "Freelance Writing", name: "• Freelance Writing", volume: 89000, level: 3 },
+  { value: "Content Writing for Startups", name: "• Content Writing for Startups", volume: 15000, level: 4 },
+  { value: "Freelance Graphic Design", name: "• Freelance Graphic Design", volume: 67000, level: 3 },
+  { value: "Logo Design Services", name: "• Logo Design Services", volume: 34000, level: 4 },
+  
+  { value: "Passive Income", name: "• Passive Income", volume: 456000, level: 1 },
+  { value: "Rental Income", name: "• Rental Income", volume: 123000, level: 2 },
+  { value: "Airbnb Hosting", name: "• Airbnb Hosting", volume: 89000, level: 3 },
+  { value: "Airbnb for Suburban Hosts", name: "• Airbnb for Suburban Hosts", volume: 18000, level: 4 },
+  { value: "Digital Products", name: "• Digital Products", volume: 167000, level: 2 },
+  { value: "Online Courses", name: "• Online Courses", volume: 234000, level: 3 },
+  { value: "Course Creation for Experts", name: "• Course Creation for Experts", volume: 28000, level: 4 },
+  { value: "Affiliate Marketing", name: "• Affiliate Marketing", volume: 189000, level: 3 },
+  { value: "Affiliate Marketing for Beauty Bloggers", name: "• Affiliate Marketing for Beauty Bloggers", volume: 12000, level: 4 },
+  { value: "Affiliate Marketing for Travel Writers", name: "• Affiliate Marketing for Travel Writers", volume: 9500, level: 4 }
+];
+
+const relationshipMarketTopics = [
+  { value: "Relationships", name: "Relationships", volume: 2890000, level: 0 },
+  
+  { value: "Dating", name: "• Dating", volume: 1234000, level: 1 },
+  { value: "Online Dating", name: "• Online Dating", volume: 456000, level: 2 },
+  { value: "Dating Apps", name: "• Dating Apps", volume: 234000, level: 3 },
+  { value: "Dating App Optimization", name: "• Dating App Optimization", volume: 45000, level: 4 },
+  { value: "Dating Profile Tips", name: "• Dating Profile Tips", volume: 78000, level: 4 },
+  { value: "Long-Distance Dating", name: "• Long-Distance Dating", volume: 123000, level: 3 },
+  { value: "Dating After Divorce", name: "• Dating After Divorce", volume: 89000, level: 3 },
+  { value: "Dating for Single Parents", name: "• Dating for Single Parents", volume: 67000, level: 4 },
+  { value: "Dating Over 50", name: "• Dating Over 50", volume: 156000, level: 3 },
+  { value: "Senior Dating Advice", name: "• Senior Dating Advice", volume: 34000, level: 4 },
+  
+  { value: "Marriage and Commitment", name: "• Marriage and Commitment", volume: 678000, level: 1 },
+  { value: "Wedding Planning", name: "• Wedding Planning", volume: 345000, level: 2 },
+  { value: "Budget Wedding Planning", name: "• Budget Wedding Planning", volume: 89000, level: 3 },
+  { value: "DIY Wedding Decorations", name: "• DIY Wedding Decorations", volume: 56000, level: 4 },
+  { value: "Destination Weddings", name: "• Destination Weddings", volume: 123000, level: 3 },
+  { value: "Beach Wedding Planning", name: "• Beach Wedding Planning", volume: 28000, level: 4 },
+  { value: "Marriage Counseling", name: "• Marriage Counseling", volume: 189000, level: 2 },
+  { value: "Couples Therapy", name: "• Couples Therapy", volume: 167000, level: 3 },
+  { value: "Online Marriage Counseling", name: "• Online Marriage Counseling", volume: 45000, level: 4 },
+  { value: "Premarital Counseling", name: "• Premarital Counseling", volume: 67000, level: 3 },
+  
+  { value: "Family Dynamics", name: "• Family Dynamics", volume: 456000, level: 1 },
+  { value: "Parenting", name: "• Parenting", volume: 890000, level: 2 },
+  { value: "New Parent Support", name: "• New Parent Support", volume: 234000, level: 3 },
+  { value: "Sleep Training for Babies", name: "• Sleep Training for Babies", volume: 123000, level: 4 },
+  { value: "Breastfeeding Support", name: "• Breastfeeding Support", volume: 89000, level: 4 },
+  { value: "Single Parenting", name: "• Single Parenting", volume: 167000, level: 3 },
+  { value: "Co-Parenting After Divorce", name: "• Co-Parenting After Divorce", volume: 78000, level: 4 },
+  { value: "Parenting Teenagers", name: "• Parenting Teenagers", volume: 156000, level: 3 },
+  { value: "Teen Communication Strategies", name: "• Teen Communication Strategies", volume: 34000, level: 4 },
+  
+  { value: "Relationship Skills", name: "• Relationship Skills", volume: 345000, level: 1 },
+  { value: "Communication", name: "• Communication", volume: 234000, level: 2 },
+  { value: "Conflict Resolution", name: "• Conflict Resolution", volume: 123000, level: 3 },
+  { value: "Active Listening Skills", name: "• Active Listening Skills", volume: 56000, level: 4 },
+  { value: "Trust Building", name: "• Trust Building", volume: 89000, level: 3 },
+  { value: "Rebuilding Trust After Infidelity", name: "• Rebuilding Trust After Infidelity", volume: 28000, level: 4 },
+  { value: "Emotional Intelligence", name: "• Emotional Intelligence", volume: 167000, level: 2 },
+  { value: "EQ in Relationships", name: "• EQ in Relationships", volume: 45000, level: 3 },
+  
+  { value: "Social Connections", name: "• Social Connections", volume: 289000, level: 1 },
+  { value: "Friendship", name: "• Friendship", volume: 189000, level: 2 },
+  { value: "Making Friends as an Adult", name: "• Making Friends as an Adult", volume: 89000, level: 3 },
+  { value: "Friendship for Introverts", name: "• Friendship for Introverts", volume: 34000, level: 4 },
+  { value: "Maintaining Long-Distance Friendships", name: "• Maintaining Long-Distance Friendships", volume: 23000, level: 4 },
+  { value: "Social Anxiety", name: "• Social Anxiety", volume: 234000, level: 2 },
+  { value: "Overcoming Social Anxiety", name: "• Overcoming Social Anxiety", volume: 123000, level: 3 },
+  { value: "Social Skills for Professionals", name: "• Social Skills for Professionals", volume: 67000, level: 4 },
+  
+  { value: "Personal Development in Relationships", name: "• Personal Development in Relationships", volume: 178000, level: 1 },
+  { value: "Self-Love and Self-Care", name: "• Self-Love and Self-Care", volume: 345000, level: 2 },
+  { value: "Boundary Setting", name: "• Boundary Setting", volume: 156000, level: 3 },
+  { value: "Healthy Boundaries with Family", name: "• Healthy Boundaries with Family", volume: 45000, level: 4 },
+  { value: "Setting Boundaries at Work", name: "• Setting Boundaries at Work", volume: 67000, level: 4 },
+  { value: "Codependency Recovery", name: "• Codependency Recovery", volume: 89000, level: 3 },
+  { value: "Healing from Toxic Relationships", name: "• Healing from Toxic Relationships", volume: 123000, level: 3 },
+  { value: "Recovery from Narcissistic Abuse", name: "• Recovery from Narcissistic Abuse", volume: 78000, level: 4 }
+];
+
 const Index = () => {
   const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([]);
   const [phraseCategories, setPhraseCategories] = useState<PhraseCategory[]>(initialPhraseCategories);
@@ -1180,135 +1369,15 @@ const Index = () => {
                       <SelectContent className="max-h-[400px]">
                         <SelectGroup>
                           <SelectLabel>Health Market</SelectLabel>
-                          <SelectItem value="Health">Health</SelectItem>
-                          
-                          <SelectItem value="Fitness" className="pl-6">• Fitness</SelectItem>
-                          <SelectItem value="Strength Training" className="pl-8">• Strength Training</SelectItem>
-                          <SelectItem value="Home-Based Strength Training" className="pl-10">• Home-Based Strength Training</SelectItem>
-                          <SelectItem value="Strength Training for Postpartum Mothers" className="pl-12">• Strength Training for Postpartum Mothers</SelectItem>
-                          <SelectItem value="Strength Training for Seniors" className="pl-12">• Strength Training for Seniors</SelectItem>
-                          <SelectItem value="Bodyweight Strength Training" className="pl-10">• Bodyweight Strength Training</SelectItem>
-                          <SelectItem value="Bodyweight Training for Travelers" className="pl-12">• Bodyweight Training for Travelers</SelectItem>
-                          <SelectItem value="Bodyweight Training for Military Personnel" className="pl-12">• Bodyweight Training for Military Personnel</SelectItem>
-                          
-                          <SelectItem value="Cardio Fitness" className="pl-8">• Cardio Fitness</SelectItem>
-                          <SelectItem value="High-Intensity Interval Training (HIIT)" className="pl-10">• High-Intensity Interval Training (HIIT)</SelectItem>
-                          <SelectItem value="HIIT for Busy Professionals" className="pl-12">• HIIT for Busy Professionals</SelectItem>
-                          <SelectItem value="HIIT for Weight Loss in Women" className="pl-12">• HIIT for Weight Loss in Women</SelectItem>
-                          
-                          <SelectItem value="Yoga" className="pl-8">• Yoga</SelectItem>
-                          <SelectItem value="Power Yoga" className="pl-10">• Power Yoga</SelectItem>
-                          <SelectItem value="Power Yoga for Athletes" className="pl-12">• Power Yoga for Athletes</SelectItem>
-                          <SelectItem value="Restorative Yoga" className="pl-10">• Restorative Yoga</SelectItem>
-                          <SelectItem value="Restorative Yoga for Stress Relief" className="pl-12">• Restorative Yoga for Stress Relief</SelectItem>
-                          <SelectItem value="Restorative Yoga for Chronic Pain Sufferers" className="pl-12">• Restorative Yoga for Chronic Pain Sufferers</SelectItem>
-                          
-                          <SelectItem value="Flexibility and Mobility" className="pl-8">• Flexibility and Mobility</SelectItem>
-                          <SelectItem value="Mobility Training for Athletes" className="pl-10">• Mobility Training for Athletes</SelectItem>
-                          <SelectItem value="Flexibility Training for Office Workers" className="pl-10">• Flexibility Training for Office Workers</SelectItem>
-                          <SelectItem value="Flexibility Programs for Remote Workers" className="pl-12">• Flexibility Programs for Remote Workers</SelectItem>
-                          
-                          <SelectItem value="Nutrition" className="pl-6">• Nutrition</SelectItem>
-                          <SelectItem value="Diet Plans" className="pl-8">• Diet Plans</SelectItem>
-                          <SelectItem value="Ketogenic Diet" className="pl-10">• Ketogenic Diet</SelectItem>
-                          <SelectItem value="Keto for Diabetics" className="pl-12">• Keto for Diabetics</SelectItem>
-                          <SelectItem value="Keto for Athletes" className="pl-12">• Keto for Athletes</SelectItem>
-                          <SelectItem value="Plant-Based Diets" className="pl-10">• Plant-Based Diets</SelectItem>
-                          <SelectItem value="Plant-Based Nutrition for Bodybuilders" className="pl-12">• Plant-Based Nutrition for Bodybuilders</SelectItem>
-                          <SelectItem value="Plant-Based Diet for Families" className="pl-12">• Plant-Based Diet for Families</SelectItem>
-                          
-                          <SelectItem value="Supplements" className="pl-8">• Supplements</SelectItem>
-                          <SelectItem value="Pre-Workout Supplements" className="pl-10">• Pre-Workout Supplements</SelectItem>
-                          <SelectItem value="Supplements for Endurance Athletes" className="pl-12">• Supplements for Endurance Athletes</SelectItem>
-                          <SelectItem value="Pre-Workout for Beginners" className="pl-12">• Pre-Workout for Beginners</SelectItem>
-                          <SelectItem value="Health Supplements" className="pl-10">• Health Supplements</SelectItem>
-                          <SelectItem value="Supplements for Men's Health" className="pl-12">• Supplements for Men's Health</SelectItem>
-                          <SelectItem value="Supplements for Hormonal Balance in Women" className="pl-12">• Supplements for Hormonal Balance in Women</SelectItem>
-                          
-                          <SelectItem value="Mental Health" className="pl-6">• Mental Health</SelectItem>
-                          <SelectItem value="Stress Management" className="pl-8">• Stress Management</SelectItem>
-                          <SelectItem value="Mindfulness and Meditation" className="pl-10">• Mindfulness and Meditation</SelectItem>
-                          <SelectItem value="Meditation for Corporate Professionals" className="pl-12">• Meditation for Corporate Professionals</SelectItem>
-                          <SelectItem value="Meditation for Sleep Improvement" className="pl-12">• Meditation for Sleep Improvement</SelectItem>
-                          <SelectItem value="Stress Relief Techniques" className="pl-10">• Stress Relief Techniques</SelectItem>
-                          <SelectItem value="Stress Relief for Parents" className="pl-12">• Stress Relief for Parents</SelectItem>
-                          <SelectItem value="Stress Management for College Students" className="pl-12">• Stress Management for College Students</SelectItem>
-                          
-                          <SelectItem value="Therapy and Counseling" className="pl-8">• Therapy and Counseling</SelectItem>
-                          <SelectItem value="Online Therapy" className="pl-10">• Online Therapy</SelectItem>
-                          <SelectItem value="Online Therapy for Veterans" className="pl-12">• Online Therapy for Veterans</SelectItem>
-                          <SelectItem value="Online Therapy for Social Anxiety" className="pl-12">• Online Therapy for Social Anxiety</SelectItem>
-                          <SelectItem value="Cognitive Behavioral Therapy (CBT)" className="pl-10">• Cognitive Behavioral Therapy (CBT)</SelectItem>
-                          <SelectItem value="CBT for Adolescents" className="pl-12">• CBT for Adolescents</SelectItem>
-                          <SelectItem value="CBT for Obsessive-Compulsive Disorder" className="pl-12">• CBT for Obsessive-Compulsive Disorder</SelectItem>
-                          
-                          <SelectItem value="Preventative Health" className="pl-6">• Preventative Health</SelectItem>
-                          <SelectItem value="Immunity Boosting" className="pl-8">• Immunity Boosting</SelectItem>
-                          <SelectItem value="Immunity Programs for Children" className="pl-10">• Immunity Programs for Children</SelectItem>
-                          <SelectItem value="Immunity Boosting for Travelers" className="pl-10">• Immunity Boosting for Travelers</SelectItem>
-                          <SelectItem value="Longevity and Anti-Aging" className="pl-8">• Longevity and Anti-Aging</SelectItem>
-                          <SelectItem value="Anti-Aging for Women Over 50" className="pl-10">• Anti-Aging for Women Over 50</SelectItem>
-                          <SelectItem value="Longevity Coaching for Executives" className="pl-10">• Longevity Coaching for Executives</SelectItem>
-                          <SelectItem value="Sleep Health" className="pl-8">• Sleep Health</SelectItem>
-                          <SelectItem value="Sleep Optimization for Athletes" className="pl-10">• Sleep Optimization for Athletes</SelectItem>
-                          <SelectItem value="Sleep Coaching for Busy Entrepreneurs" className="pl-10">• Sleep Coaching for Busy Entrepreneurs</SelectItem>
-                          
-                          <SelectItem value="Alternative Medicine" className="pl-6">• Alternative Medicine</SelectItem>
-                          <SelectItem value="Herbal Medicine" className="pl-8">• Herbal Medicine</SelectItem>
-                          <SelectItem value="Herbal Remedies for Skin Conditions" className="pl-10">• Herbal Remedies for Skin Conditions</SelectItem>
-                          <SelectItem value="Herbal Medicine for Digestive Health" className="pl-10">• Herbal Medicine for Digestive Health</SelectItem>
-                          <SelectItem value="Acupuncture" className="pl-8">• Acupuncture</SelectItem>
-                          <SelectItem value="Acupuncture for Chronic Pain Relief" className="pl-10">• Acupuncture for Chronic Pain Relief</SelectItem>
-                          <SelectItem value="Acupuncture for Fertility Issues" className="pl-10">• Acupuncture for Fertility Issues</SelectItem>
-                          <SelectItem value="Aromatherapy" className="pl-8">• Aromatherapy</SelectItem>
-                          <SelectItem value="Aromatherapy for Anxiety Reduction" className="pl-10">• Aromatherapy for Anxiety Reduction</SelectItem>
-                          <SelectItem value="Aromatherapy for Insomnia" className="pl-10">• Aromatherapy for Insomnia</SelectItem>
-                          
-                          <SelectItem value="Physical Therapy and Rehabilitation" className="pl-6">• Physical Therapy and Rehabilitation</SelectItem>
-                          <SelectItem value="Injury Rehabilitation" className="pl-8">• Injury Rehabilitation</SelectItem>
-                          <SelectItem value="Post-Surgery Rehabilitation for Athletes" className="pl-10">• Post-Surgery Rehabilitation for Athletes</SelectItem>
-                          <SelectItem value="Rehabilitation for Workplace Injuries" className="pl-10">• Rehabilitation for Workplace Injuries</SelectItem>
-                          <SelectItem value="Chronic Pain Management" className="pl-8">• Chronic Pain Management</SelectItem>
-                          <SelectItem value="Pain Management for Arthritis Patients" className="pl-10">• Pain Management for Arthritis Patients</SelectItem>
-                          <SelectItem value="Pain Relief for Long-Distance Runners" className="pl-10">• Pain Relief for Long-Distance Runners</SelectItem>
-                          <SelectItem value="Mobility Recovery" className="pl-8">• Mobility Recovery</SelectItem>
-                          <SelectItem value="Mobility Recovery for Seniors" className="pl-10">• Mobility Recovery for Seniors</SelectItem>
-                          <SelectItem value="Mobility Training After Car Accidents" className="pl-10">• Mobility Training After Car Accidents</SelectItem>
-                          
-                          <SelectItem value="Specialized Health Services" className="pl-6">• Specialized Health Services</SelectItem>
-                          <SelectItem value="Women's Health" className="pl-8">• Women's Health</SelectItem>
-                          <SelectItem value="Fertility Counseling" className="pl-10">• Fertility Counseling</SelectItem>
-                          <SelectItem value="Fertility Counseling for Older Women" className="pl-12">• Fertility Counseling for Older Women</SelectItem>
-                          <SelectItem value="Fertility Counseling for Same-Sex Couples" className="pl-12">• Fertility Counseling for Same-Sex Couples</SelectItem>
-                          <SelectItem value="Menopause Support" className="pl-10">• Menopause Support</SelectItem>
-                          <SelectItem value="Menopause Coaching for Professional Women" className="pl-12">• Menopause Coaching for Professional Women</SelectItem>
-                          
-                          <SelectItem value="Men's Health" className="pl-8">• Men's Health</SelectItem>
-                          <SelectItem value="Prostate Health" className="pl-10">• Prostate Health</SelectItem>
-                          <SelectItem value="Prostate Care for Men Over 50" className="pl-12">• Prostate Care for Men Over 50</SelectItem>
-                          <SelectItem value="Prostate Health Awareness for Young Men" className="pl-12">• Prostate Health Awareness for Young Men</SelectItem>
-                          <SelectItem value="Testosterone Optimization" className="pl-10">• Testosterone Optimization</SelectItem>
-                          <SelectItem value="Testosterone Therapy for Athletes" className="pl-12">• Testosterone Therapy for Athletes</SelectItem>
-                          <SelectItem value="Natural Testosterone Boosting for Men in Their 40s" className="pl-12">• Natural Testosterone Boosting for Men in Their 40s</SelectItem>
-                          
-                          <SelectItem value="Pediatric Health" className="pl-8">• Pediatric Health</SelectItem>
-                          <SelectItem value="Child Nutrition" className="pl-10">• Child Nutrition</SelectItem>
-                          <SelectItem value="Nutrition for Kids with Allergies" className="pl-12">• Nutrition for Kids with Allergies</SelectItem>
-                          <SelectItem value="Nutrition Coaching for Picky Eaters" className="pl-12">• Nutrition Coaching for Picky Eaters</SelectItem>
-                          <SelectItem value="Childhood Obesity Prevention" className="pl-10">• Childhood Obesity Prevention</SelectItem>
-                          <SelectItem value="Obesity Prevention Programs for Schools" className="pl-12">• Obesity Prevention Programs for Schools</SelectItem>
-                          <SelectItem value="Coaching for Parents on Childhood Obesity" className="pl-12">• Coaching for Parents on Childhood Obesity</SelectItem>
-                          
-                          <SelectItem value="Senior Health" className="pl-6">• Senior Health</SelectItem>
-                          <SelectItem value="Aging in Place" className="pl-8">• Aging in Place</SelectItem>
-                          <SelectItem value="Home Modifications for Seniors" className="pl-10">• Home Modifications for Seniors</SelectItem>
-                          <SelectItem value="Senior Support Services for Aging in Place" className="pl-10">• Senior Support Services for Aging in Place</SelectItem>
-                          <SelectItem value="Assisted Living Alternatives" className="pl-8">• Assisted Living Alternatives</SelectItem>
-                          <SelectItem value="Alternative Housing Solutions for Seniors" className="pl-10">• Alternative Housing Solutions for Seniors</SelectItem>
-                          <SelectItem value="Co-Living for Active Seniors" className="pl-10">• Co-Living for Active Seniors</SelectItem>
-                          <SelectItem value="Senior Fitness" className="pl-8">• Senior Fitness</SelectItem>
-                          <SelectItem value="Fitness Programs for Seniors with Limited Mobility" className="pl-10">• Fitness Programs for Seniors with Limited Mobility</SelectItem>
-                          <SelectItem value="Water Aerobics for Seniors" className="pl-10">• Water Aerobics for Seniors</SelectItem>
+                          {healthMarketTopics.map((topic) => (
+                            <SelectItem 
+                              key={topic.value} 
+                              value={topic.value}
+                              className={`pl-${topic.level * 2 + 6}`}
+                            >
+                              {topic.name} ({formatVolume(topic.volume)})
+                            </SelectItem>
+                          ))}
                         </SelectGroup>
                       </SelectContent>
                     </Select>
@@ -1321,123 +1390,15 @@ const Index = () => {
                       <SelectContent className="max-h-[400px]">
                         <SelectGroup>
                           <SelectLabel>Wealth Market</SelectLabel>
-                          <SelectItem value="Wealth">Wealth</SelectItem>
-                          
-                          <SelectItem value="Investing" className="pl-6">• Investing</SelectItem>
-                          <SelectItem value="Real Estate Investing" className="pl-8">• Real Estate Investing</SelectItem>
-                          <SelectItem value="Residential Real Estate" className="pl-10">• Residential Real Estate</SelectItem>
-                          <SelectItem value="Real Estate for First-Time Homebuyers" className="pl-12">• Real Estate for First-Time Homebuyers</SelectItem>
-                          <SelectItem value="Real Estate Investing for Single Parents" className="pl-12">• Real Estate Investing for Single Parents</SelectItem>
-                          <SelectItem value="Commercial Real Estate" className="pl-10">• Commercial Real Estate</SelectItem>
-                          <SelectItem value="Commercial Real Estate for Small Business Owners" className="pl-12">• Commercial Real Estate for Small Business Owners</SelectItem>
-                          
-                          <SelectItem value="Stock Market Investing" className="pl-8">• Stock Market Investing</SelectItem>
-                          <SelectItem value="Dividend Investing" className="pl-10">• Dividend Investing</SelectItem>
-                          <SelectItem value="Dividend Investing for Retirees" className="pl-12">• Dividend Investing for Retirees</SelectItem>
-                          <SelectItem value="Growth Stock Investing" className="pl-10">• Growth Stock Investing</SelectItem>
-                          <SelectItem value="Stock Investing for Young Professionals" className="pl-12">• Stock Investing for Young Professionals</SelectItem>
-                          <SelectItem value="Stock Market Education for Beginners" className="pl-12">• Stock Market Education for Beginners</SelectItem>
-                          
-                          <SelectItem value="Cryptocurrency" className="pl-8">• Cryptocurrency</SelectItem>
-                          <SelectItem value="Bitcoin Trading" className="pl-10">• Bitcoin Trading</SelectItem>
-                          <SelectItem value="Bitcoin for Entrepreneurs" className="pl-12">• Bitcoin for Entrepreneurs</SelectItem>
-                          <SelectItem value="Bitcoin for Freelancers" className="pl-12">• Bitcoin for Freelancers</SelectItem>
-                          <SelectItem value="NFT Investments" className="pl-10">• NFT Investments</SelectItem>
-                          <SelectItem value="NFT Collecting for Art Enthusiasts" className="pl-12">• NFT Collecting for Art Enthusiasts</SelectItem>
-                          <SelectItem value="NFT Investing for Gamers" className="pl-12">• NFT Investing for Gamers</SelectItem>
-                          
-                          <SelectItem value="Personal Finance" className="pl-6">• Personal Finance</SelectItem>
-                          <SelectItem value="Budgeting" className="pl-8">• Budgeting</SelectItem>
-                          <SelectItem value="Budgeting for Families" className="pl-10">• Budgeting for Families</SelectItem>
-                          <SelectItem value="Budgeting for College Students" className="pl-10">• Budgeting for College Students</SelectItem>
-                          <SelectItem value="Debt Management" className="pl-8">• Debt Management</SelectItem>
-                          <SelectItem value="Debt Relief for High-Income Professionals" className="pl-10">• Debt Relief for High-Income Professionals</SelectItem>
-                          <SelectItem value="Debt Consolidation for Millennials" className="pl-10">• Debt Consolidation for Millennials</SelectItem>
-                          <SelectItem value="Saving and Emergency Funds" className="pl-8">• Saving and Emergency Funds</SelectItem>
-                          <SelectItem value="Saving Strategies for Freelancers" className="pl-10">• Saving Strategies for Freelancers</SelectItem>
-                          <SelectItem value="Emergency Fund Building for Single Parents" className="pl-10">• Emergency Fund Building for Single Parents</SelectItem>
-                          
-                          <SelectItem value="Business Development" className="pl-6">• Business Development</SelectItem>
-                          <SelectItem value="Online Businesses" className="pl-8">• Online Businesses</SelectItem>
-                          <SelectItem value="E-commerce" className="pl-10">• E-commerce</SelectItem>
-                          <SelectItem value="E-commerce for Craft Businesses" className="pl-12">• E-commerce for Craft Businesses</SelectItem>
-                          <SelectItem value="E-commerce for Fitness Trainers" className="pl-12">• E-commerce for Fitness Trainers</SelectItem>
-                          <SelectItem value="Dropshipping" className="pl-10">• Dropshipping</SelectItem>
-                          <SelectItem value="Dropshipping for Fashion Accessories" className="pl-12">• Dropshipping for Fashion Accessories</SelectItem>
-                          <SelectItem value="Dropshipping for Eco-Friendly Products" className="pl-12">• Dropshipping for Eco-Friendly Products</SelectItem>
-                          
-                          <SelectItem value="Freelancing" className="pl-8">• Freelancing</SelectItem>
-                          <SelectItem value="Freelancing for Writers" className="pl-10">• Freelancing for Writers</SelectItem>
-                          <SelectItem value="Freelancing for Graphic Designers" className="pl-10">• Freelancing for Graphic Designers</SelectItem>
-                          <SelectItem value="Consulting" className="pl-8">• Consulting</SelectItem>
-                          <SelectItem value="Financial Consulting for Startups" className="pl-10">• Financial Consulting for Startups</SelectItem>
-                          <SelectItem value="Leadership Consulting for Nonprofits" className="pl-10">• Leadership Consulting for Nonprofits</SelectItem>
-                          
-                          <SelectItem value="Entrepreneurship" className="pl-6">• Entrepreneurship</SelectItem>
-                          <SelectItem value="Social Entrepreneurship" className="pl-8">• Social Entrepreneurship</SelectItem>
-                          <SelectItem value="Social Enterprise for Sustainability" className="pl-10">• Social Enterprise for Sustainability</SelectItem>
-                          <SelectItem value="Social Enterprise for Education Access" className="pl-10">• Social Enterprise for Education Access</SelectItem>
-                          <SelectItem value="Tech Startups" className="pl-8">• Tech Startups</SelectItem>
-                          <SelectItem value="Tech Startups for Healthcare Solutions" className="pl-10">• Tech Startups for Healthcare Solutions</SelectItem>
-                          <SelectItem value="AI-Based Startups for E-commerce" className="pl-10">• AI-Based Startups for E-commerce</SelectItem>
-                          <SelectItem value="Franchise Ownership" className="pl-8">• Franchise Ownership</SelectItem>
-                          <SelectItem value="Franchises in the Fitness Industry" className="pl-10">• Franchises in the Fitness Industry</SelectItem>
-                          <SelectItem value="Franchises for Pet Care Services" className="pl-10">• Franchises for Pet Care Services</SelectItem>
-                          
-                          <SelectItem value="Career Development" className="pl-6">• Career Development</SelectItem>
-                          <SelectItem value="Career Coaching" className="pl-8">• Career Coaching</SelectItem>
-                          <SelectItem value="Career Transition Coaching for Mid-Level Professionals" className="pl-10">• Career Transition Coaching for Mid-Level Professionals</SelectItem>
-                          <SelectItem value="Career Coaching for Recent Graduates" className="pl-10">• Career Coaching for Recent Graduates</SelectItem>
-                          <SelectItem value="Skill Development" className="pl-8">• Skill Development</SelectItem>
-                          <SelectItem value="Public Speaking for Executives" className="pl-10">• Public Speaking for Executives</SelectItem>
-                          <SelectItem value="Negotiation Skills for Women" className="pl-10">• Negotiation Skills for Women</SelectItem>
-                          <SelectItem value="Leadership Development" className="pl-8">• Leadership Development</SelectItem>
-                          <SelectItem value="Leadership Coaching for Women in STEM" className="pl-10">• Leadership Coaching for Women in STEM</SelectItem>
-                          <SelectItem value="Leadership Development for Nonprofit Leaders" className="pl-10">• Leadership Development for Nonprofit Leaders</SelectItem>
-                          
-                          <SelectItem value="Passive Income" className="pl-6">• Passive Income</SelectItem>
-                          <SelectItem value="Rental Properties" className="pl-8">• Rental Properties</SelectItem>
-                          <SelectItem value="Vacation Rental Properties for Families" className="pl-10">• Vacation Rental Properties for Families</SelectItem>
-                          <SelectItem value="Long-Term Rentals in College Towns" className="pl-10">• Long-Term Rentals in College Towns</SelectItem>
-                          <SelectItem value="Digital Products" className="pl-8">• Digital Products</SelectItem>
-                          <SelectItem value="Creating Online Courses for Educators" className="pl-10">• Creating Online Courses for Educators</SelectItem>
-                          <SelectItem value="Selling E-books for Health Enthusiasts" className="pl-10">• Selling E-books for Health Enthusiasts</SelectItem>
-                          <SelectItem value="Affiliate Marketing" className="pl-8">• Affiliate Marketing</SelectItem>
-                          <SelectItem value="Affiliate Marketing for Beauty Bloggers" className="pl-10">• Affiliate Marketing for Beauty Bloggers</SelectItem>
-                          <SelectItem value="Affiliate Marketing for Travel Writers" className="pl-10">• Affiliate Marketing for Travel Writers</SelectItem>
-                          
-                          <SelectItem value="Retirement Planning" className="pl-6">• Retirement Planning</SelectItem>
-                          <SelectItem value="Early Retirement" className="pl-8">• Early Retirement</SelectItem>
-                          <SelectItem value="Retirement Planning for Tech Workers" className="pl-10">• Retirement Planning for Tech Workers</SelectItem>
-                          <SelectItem value="Early Retirement Strategies for Firefighters" className="pl-10">• Early Retirement Strategies for Firefighters</SelectItem>
-                          <SelectItem value="Pension Planning" className="pl-8">• Pension Planning</SelectItem>
-                          <SelectItem value="Pension Strategies for Government Employees" className="pl-10">• Pension Strategies for Government Employees</SelectItem>
-                          <SelectItem value="Pension Management for Military Veterans" className="pl-10">• Pension Management for Military Veterans</SelectItem>
-                          <SelectItem value="Financial Independence" className="pl-8">• Financial Independence</SelectItem>
-                          <SelectItem value="Financial Independence for Freelancers" className="pl-10">• Financial Independence for Freelancers</SelectItem>
-                          <SelectItem value="FIRE (Financial Independence Retire Early) Coaching for Digital Nomads" className="pl-10">• FIRE (Financial Independence Retire Early) Coaching for Digital Nomads</SelectItem>
-                          
-                          <SelectItem value="Tax Strategies" className="pl-6">• Tax Strategies</SelectItem>
-                          <SelectItem value="Small Business Taxation" className="pl-8">• Small Business Taxation</SelectItem>
-                          <SelectItem value="Tax Planning for Online Entrepreneurs" className="pl-10">• Tax Planning for Online Entrepreneurs</SelectItem>
-                          <SelectItem value="Tax Strategies for Small Business Owners with Multiple Income Streams" className="pl-10">• Tax Strategies for Small Business Owners with Multiple Income Streams</SelectItem>
-                          <SelectItem value="Personal Taxation" className="pl-8">• Personal Taxation</SelectItem>
-                          <SelectItem value="Tax Strategies for High-Income Earners" className="pl-10">• Tax Strategies for High-Income Earners</SelectItem>
-                          <SelectItem value="Tax Planning for Remote Workers" className="pl-10">• Tax Planning for Remote Workers</SelectItem>
-                          <SelectItem value="Tax Relief" className="pl-8">• Tax Relief</SelectItem>
-                          <SelectItem value="Tax Relief for Families with Special Needs Children" className="pl-10">• Tax Relief for Families with Special Needs Children</SelectItem>
-                          <SelectItem value="Tax Planning for Newlyweds" className="pl-10">• Tax Planning for Newlyweds</SelectItem>
-                          
-                          <SelectItem value="Wealth Preservation" className="pl-6">• Wealth Preservation</SelectItem>
-                          <SelectItem value="Estate Planning" className="pl-8">• Estate Planning</SelectItem>
-                          <SelectItem value="Estate Planning for Families with Special Needs Children" className="pl-10">• Estate Planning for Families with Special Needs Children</SelectItem>
-                          <SelectItem value="Estate Planning for High-Net-Worth Individuals" className="pl-10">• Estate Planning for High-Net-Worth Individuals</SelectItem>
-                          <SelectItem value="Asset Protection" className="pl-8">• Asset Protection</SelectItem>
-                          <SelectItem value="Asset Protection for Real Estate Investors" className="pl-10">• Asset Protection for Real Estate Investors</SelectItem>
-                          <SelectItem value="Asset Protection for Small Business Owners" className="pl-10">• Asset Protection for Small Business Owners</SelectItem>
-                          <SelectItem value="Insurance Planning" className="pl-8">• Insurance Planning</SelectItem>
-                          <SelectItem value="Life Insurance Strategies for Young Parents" className="pl-10">• Life Insurance Strategies for Young Parents</SelectItem>
-                          <SelectItem value="Insurance Solutions for Entrepreneurs" className="pl-10">• Insurance Solutions for Entrepreneurs</SelectItem>
+                          {wealthMarketTopics.map((topic) => (
+                            <SelectItem 
+                              key={topic.value} 
+                              value={topic.value}
+                              className={`pl-${topic.level * 2 + 6}`}
+                            >
+                              {topic.name} ({formatVolume(topic.volume)})
+                            </SelectItem>
+                          ))}
                         </SelectGroup>
                       </SelectContent>
                     </Select>
@@ -1450,104 +1411,15 @@ const Index = () => {
                       <SelectContent className="max-h-[400px]">
                         <SelectGroup>
                           <SelectLabel>Relationships Market</SelectLabel>
-                          <SelectItem value="Relationships">Relationships</SelectItem>
-                          
-                          <SelectItem value="Romantic Relationships" className="pl-6">• Romantic Relationships</SelectItem>
-                          <SelectItem value="Dating" className="pl-8">• Dating</SelectItem>
-                          <SelectItem value="Online Dating" className="pl-10">• Online Dating</SelectItem>
-                          <SelectItem value="Dating for Introverted Professionals" className="pl-12">• Dating for Introverted Professionals</SelectItem>
-                          <SelectItem value="Dating for LGBTQ+ Individuals" className="pl-12">• Dating for LGBTQ+ Individuals</SelectItem>
-                          <SelectItem value="Speed Dating" className="pl-10">• Speed Dating</SelectItem>
-                          <SelectItem value="Speed Dating for Busy Professionals" className="pl-12">• Speed Dating for Busy Professionals</SelectItem>
-                          <SelectItem value="Speed Dating for Divorcees" className="pl-12">• Speed Dating for Divorcees</SelectItem>
-                          
-                          <SelectItem value="Relationship Coaching" className="pl-8">• Relationship Coaching</SelectItem>
-                          <SelectItem value="Marriage Coaching" className="pl-10">• Marriage Coaching</SelectItem>
-                          <SelectItem value="Coaching for Newlyweds" className="pl-12">• Coaching for Newlyweds</SelectItem>
-                          <SelectItem value="Coaching for Couples with Kids" className="pl-12">• Coaching for Couples with Kids</SelectItem>
-                          <SelectItem value="Breakup Recovery" className="pl-10">• Breakup Recovery</SelectItem>
-                          <SelectItem value="Breakup Coaching for Men" className="pl-12">• Breakup Coaching for Men</SelectItem>
-                          <SelectItem value="Breakup Support for Middle-Aged Women" className="pl-12">• Breakup Support for Middle-Aged Women</SelectItem>
-                          
-                          <SelectItem value="Family Relationships" className="pl-6">• Family Relationships</SelectItem>
-                          <SelectItem value="Parenting" className="pl-8">• Parenting</SelectItem>
-                          <SelectItem value="Single Parenting" className="pl-10">• Single Parenting</SelectItem>
-                          <SelectItem value="Parenting Tips for Single Dads" className="pl-12">• Parenting Tips for Single Dads</SelectItem>
-                          <SelectItem value="Single Parent Support for Moms" className="pl-12">• Single Parent Support for Moms</SelectItem>
-                          <SelectItem value="Co-Parenting" className="pl-10">• Co-Parenting</SelectItem>
-                          <SelectItem value="Co-Parenting Strategies for Divorced Couples" className="pl-12">• Co-Parenting Strategies for Divorced Couples</SelectItem>
-                          <SelectItem value="Co-Parenting for International Families" className="pl-12">• Co-Parenting for International Families</SelectItem>
-                          
-                          <SelectItem value="Sibling Relationships" className="pl-8">• Sibling Relationships</SelectItem>
-                          <SelectItem value="Sibling Rivalry Management" className="pl-10">• Sibling Rivalry Management</SelectItem>
-                          <SelectItem value="Sibling Bond Strengthening for Adults" className="pl-10">• Sibling Bond Strengthening for Adults</SelectItem>
-                          
-                          <SelectItem value="Friendships and Social Connections" className="pl-6">• Friendships and Social Connections</SelectItem>
-                          <SelectItem value="Building Friendships" className="pl-8">• Building Friendships</SelectItem>
-                          <SelectItem value="Friendship Building for New Moms" className="pl-10">• Friendship Building for New Moms</SelectItem>
-                          <SelectItem value="Friendship Support for Digital Nomads" className="pl-10">• Friendship Support for Digital Nomads</SelectItem>
-                          <SelectItem value="Networking" className="pl-8">• Networking</SelectItem>
-                          <SelectItem value="Professional Networking for Women in Tech" className="pl-10">• Professional Networking for Women in Tech</SelectItem>
-                          <SelectItem value="Networking Strategies for Entrepreneurs" className="pl-10">• Networking Strategies for Entrepreneurs</SelectItem>
-                          <SelectItem value="Social Skills" className="pl-8">• Social Skills</SelectItem>
-                          <SelectItem value="Social Skills Training for Introverts" className="pl-10">• Social Skills Training for Introverts</SelectItem>
-                          <SelectItem value="Social Confidence Building for Teens" className="pl-10">• Social Confidence Building for Teens</SelectItem>
-                          
-                          <SelectItem value="Workplace Relationships" className="pl-6">• Workplace Relationships</SelectItem>
-                          <SelectItem value="Team Building" className="pl-8">• Team Building</SelectItem>
-                          <SelectItem value="Team Building Activities for Remote Teams" className="pl-10">• Team Building Activities for Remote Teams</SelectItem>
-                          <SelectItem value="Team Bonding for Corporate Employees" className="pl-10">• Team Bonding for Corporate Employees</SelectItem>
-                          <SelectItem value="Conflict Resolution" className="pl-8">• Conflict Resolution</SelectItem>
-                          <SelectItem value="Conflict Resolution for Small Businesses" className="pl-10">• Conflict Resolution for Small Businesses</SelectItem>
-                          <SelectItem value="Workplace Mediation for Corporate Teams" className="pl-10">• Workplace Mediation for Corporate Teams</SelectItem>
-                          <SelectItem value="Employee Engagement" className="pl-8">• Employee Engagement</SelectItem>
-                          <SelectItem value="Engagement Strategies for Tech Startups" className="pl-10">• Engagement Strategies for Tech Startups</SelectItem>
-                          <SelectItem value="Employee Recognition Programs for Large Corporations" className="pl-10">• Employee Recognition Programs for Large Corporations</SelectItem>
-                          
-                          <SelectItem value="Community and Group Relationships" className="pl-6">• Community and Group Relationships</SelectItem>
-                          <SelectItem value="Support Groups" className="pl-8">• Support Groups</SelectItem>
-                          <SelectItem value="Support Groups for Cancer Survivors" className="pl-10">• Support Groups for Cancer Survivors</SelectItem>
-                          <SelectItem value="Support Groups for Parents of Children with Special Needs" className="pl-10">• Support Groups for Parents of Children with Special Needs</SelectItem>
-                          <SelectItem value="Volunteering and Community Service" className="pl-8">• Volunteering and Community Service</SelectItem>
-                          <SelectItem value="Volunteering Opportunities for Retirees" className="pl-10">• Volunteering Opportunities for Retirees</SelectItem>
-                          <SelectItem value="Community Service Programs for High School Students" className="pl-10">• Community Service Programs for High School Students</SelectItem>
-                          <SelectItem value="Group Hobbies and Interests" className="pl-8">• Group Hobbies and Interests</SelectItem>
-                          <SelectItem value="Group Hiking for Adventure Enthusiasts" className="pl-10">• Group Hiking for Adventure Enthusiasts</SelectItem>
-                          <SelectItem value="Book Clubs for Personal Development Enthusiasts" className="pl-10">• Book Clubs for Personal Development Enthusiasts</SelectItem>
-                          
-                          <SelectItem value="Parenting Support" className="pl-6">• Parenting Support</SelectItem>
-                          <SelectItem value="Parenting Education" className="pl-8">• Parenting Education</SelectItem>
-                          <SelectItem value="Parenting Skills for New Fathers" className="pl-10">• Parenting Skills for New Fathers</SelectItem>
-                          <SelectItem value="Positive Parenting Strategies for Teenagers" className="pl-10">• Positive Parenting Strategies for Teenagers</SelectItem>
-                          <SelectItem value="Special Needs Parenting" className="pl-8">• Special Needs Parenting</SelectItem>
-                          <SelectItem value="Autism Parenting Support" className="pl-10">• Autism Parenting Support</SelectItem>
-                          <SelectItem value="Coaching for Parents of Children with Autism" className="pl-12">• Coaching for Parents of Children with Autism</SelectItem>
-                          <SelectItem value="Autism Support for Siblings" className="pl-12">• Autism Support for Siblings</SelectItem>
-                          <SelectItem value="ADHD Parenting" className="pl-10">• ADHD Parenting</SelectItem>
-                          <SelectItem value="ADHD Parenting Coaching for School-Age Children" className="pl-12">• ADHD Parenting Coaching for School-Age Children</SelectItem>
-                          <SelectItem value="ADHD Support for Teenagers" className="pl-12">• ADHD Support for Teenagers</SelectItem>
-                          
-                          <SelectItem value="Personal Development in Relationships" className="pl-6">• Personal Development in Relationships</SelectItem>
-                          <SelectItem value="Emotional Intelligence" className="pl-8">• Emotional Intelligence</SelectItem>
-                          <SelectItem value="Emotional Intelligence Training for Leaders" className="pl-10">• Emotional Intelligence Training for Leaders</SelectItem>
-                          <SelectItem value="Emotional Intelligence Coaching for Teenagers" className="pl-10">• Emotional Intelligence Coaching for Teenagers</SelectItem>
-                          <SelectItem value="Conflict Management" className="pl-8">• Conflict Management</SelectItem>
-                          <SelectItem value="Conflict Management for Couples" className="pl-10">• Conflict Management for Couples</SelectItem>
-                          <SelectItem value="Conflict Resolution Skills for College Students" className="pl-10">• Conflict Resolution Skills for College Students</SelectItem>
-                          <SelectItem value="Communication Skills" className="pl-8">• Communication Skills</SelectItem>
-                          <SelectItem value="Communication Coaching for Couples" className="pl-10">• Communication Coaching for Couples</SelectItem>
-                          <SelectItem value="Assertiveness Training for Women in Relationships" className="pl-10">• Assertiveness Training for Women in Relationships</SelectItem>
-                          
-                          <SelectItem value="Digital Relationships" className="pl-6">• Digital Relationships</SelectItem>
-                          <SelectItem value="Online Friendships" className="pl-8">• Online Friendships</SelectItem>
-                          <SelectItem value="Friendship Building for Remote Workers" className="pl-10">• Friendship Building for Remote Workers</SelectItem>
-                          <SelectItem value="Virtual Friendship Support for Isolated Seniors" className="pl-10">• Virtual Friendship Support for Isolated Seniors</SelectItem>
-                          <SelectItem value="Social Media Influence" className="pl-8">• Social Media Influence</SelectItem>
-                          <SelectItem value="Building Personal Brand Relationships on Social Media" className="pl-10">• Building Personal Brand Relationships on Social Media</SelectItem>
-                          <SelectItem value="Social Media Networking for Entrepreneurs" className="pl-10">• Social Media Networking for Entrepreneurs</SelectItem>
-                          <SelectItem value="Digital Etiquette" className="pl-8">• Digital Etiquette</SelectItem>
-                          <SelectItem value="Digital Communication Skills for Teens" className="pl-10">• Digital Communication Skills for Teens</SelectItem>
-                          <SelectItem value="Digital Etiquette Training for Corporate Employees" className="pl-10">• Digital Etiquette Training for Corporate Employees</SelectItem>
+                          {relationshipMarketTopics.map((topic) => (
+                            <SelectItem 
+                              key={topic.value} 
+                              value={topic.value}
+                              className={`pl-${topic.level * 2 + 6}`}
+                            >
+                              {topic.name} ({formatVolume(topic.volume)})
+                            </SelectItem>
+                          ))}
                         </SelectGroup>
                       </SelectContent>
                     </Select>
