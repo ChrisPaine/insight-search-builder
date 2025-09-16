@@ -1733,7 +1733,7 @@ const Index = () => {
             </Card>
 
             {/* Advanced Platform Options */}
-            {selectedPlatforms.length > 0 && (
+            {(selectedPlatforms.length > 0 || showTutorial) && (
               <Card id="advanced-options" className="shadow-card">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2 text-base border-b border-border pb-2">
