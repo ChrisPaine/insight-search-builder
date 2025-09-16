@@ -646,7 +646,16 @@ const Index = () => {
 
     const topicPart = `"${mainTopic.trim()}"`;
     const kw = additionalKeywords.trim();
-    const keywordsPart = kw ? (kw.includes('"') ? ` AND (${kw})` : ` AND intext:"${kw}"`) : '';
+    let keywordsPart = '';
+    if (kw) {
+      const quoted = Array.from(kw.matchAll(/"([^"]+)"/g)).map(m => m[1]);
+      if (quoted.length > 0) {
+        const orPhrases = quoted.map(p => `"${p}"`).join(' OR ');
+        keywordsPart = ` AND intext:(${orPhrases})`;
+      } else {
+        keywordsPart = ` AND intext:"${kw}"`;
+      }
+    }
 
     // Keep the combined query for preview, but build individual platform queries for search
     const platformTokens = selectedPlatforms
@@ -735,7 +744,16 @@ const Index = () => {
 
       const topicPart = `"${mainTopic.trim()}"`;
       const kw2 = additionalKeywords.trim();
-      const keywordsPart = kw2 ? (kw2.includes('"') ? ` AND (${kw2})` : ` AND intext:"${kw2}"`) : '';
+      let keywordsPart = '';
+      if (kw2) {
+        const quoted2 = Array.from(kw2.matchAll(/"([^"]+)"/g)).map(m => m[1]);
+        if (quoted2.length > 0) {
+          const orPhrases2 = quoted2.map(p => `"${p}"`).join(' OR ');
+          keywordsPart = ` AND intext:(${orPhrases2})`;
+        } else {
+          keywordsPart = ` AND intext:"${kw2}"`;
+        }
+      }
       
       // Build platform-specific query
       let platformToken = '';
