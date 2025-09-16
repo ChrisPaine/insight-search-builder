@@ -1,6 +1,16 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import { User, Session } from '@supabase/supabase-js'
-import { supabase, type Profile } from '@/lib/supabase'
+import { supabase } from '@/integrations/supabase/client'
+
+interface Profile {
+  id: string
+  email: string
+  full_name?: string
+  subscription_status: 'free' | 'pro' | 'premium'
+  stripe_customer_id?: string
+  created_at: string
+  updated_at: string
+}
 
 interface AuthContextType {
   user: User | null
@@ -42,15 +52,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     subscription_end: string | null
   }>({ subscribed: false, product_id: null, subscription_end: null })
   
-  const isSupabaseConnected = !!supabase
+  const isSupabaseConnected = true
 
   useEffect(() => {
-    // Only initialize auth if Supabase is connected
-    if (!supabase) {
-      setLoading(false)
-      return
-    }
-
     // Get initial session
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session)
@@ -80,14 +84,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     })
 
     return () => subscription.unsubscribe()
-  }, [isSupabaseConnected])
+  }, [])
 
   const fetchProfile = async (userId: string) => {
-    if (!supabase) {
-      setLoading(false)
-      return
-    }
-
     try {
       const { data, error } = await supabase
         .from('profiles')
@@ -98,7 +97,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       if (error) {
         console.error('Error fetching profile:', error)
       } else {
-        setProfile(data)
+        setProfile(data as Profile)
       }
     } catch (error) {
       console.error('Error fetching profile:', error)
@@ -108,7 +107,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }
 
   const checkSubscription = async () => {
-    if (!supabase || !session) return
+    if (!session) return
     
     try {
       const { data, error } = await supabase.functions.invoke('check-subscription', {
@@ -129,10 +128,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }
 
   const signIn = async (email: string, password: string) => {
-    if (!supabase) {
-      return { data: null, error: { message: 'Supabase not connected' } }
-    }
-
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
@@ -141,10 +136,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }
 
   const signUp = async (email: string, password: string, fullName?: string) => {
-    if (!supabase) {
-      return { data: null, error: { message: 'Supabase not connected' } }
-    }
-
     const redirectUrl = `${window.location.origin}/`;
     
     const { data, error } = await supabase.auth.signUp({
@@ -161,7 +152,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }
 
   const signOut = async () => {
-    if (!supabase) return
     await supabase.auth.signOut()
     setSubscriptionStatus({ subscribed: false, product_id: null, subscription_end: null })
   }
