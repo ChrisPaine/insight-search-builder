@@ -1368,7 +1368,7 @@ const Index = () => {
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           {/* Left Column - Topic, Phrases & Filters */}
           <div className="lg:col-span-3 space-y-4">
             {/* Main Topic and Keywords */}
