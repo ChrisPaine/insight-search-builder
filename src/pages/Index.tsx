@@ -16,7 +16,9 @@ import { useAuth } from '@/components/auth/AuthProvider';
 import { AuthDialog } from '@/components/auth/AuthDialog';
 import { PaywallDialog } from '@/components/paywall/PaywallDialog';
 import { SavedQueriesDialog } from '@/components/queries/SavedQueriesDialog';
+import { UpgradeDialog } from '@/components/upgrade/UpgradeDialog';
 import { useQueries } from '@/hooks/useQueries';
+import { useUsageLimit } from '@/hooks/useUsageLimit';
 import { useToast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
 import researchMascot from '@/assets/research-mascot.png';
@@ -397,6 +399,8 @@ const Index = () => {
   const [authDialogOpen, setAuthDialogOpen] = useState(false);
   const [paywallDialogOpen, setPaywallDialogOpen] = useState(false);
   const [paywallFeature, setPaywallFeature] = useState('');
+  const [upgradeDialogOpen, setUpgradeDialogOpen] = useState(false);
+  const [upgradeReason, setUpgradeReason] = useState('');
   const [savedQueriesDialogOpen, setSavedQueriesDialogOpen] = useState(false);
   const [saveQueryTitle, setSaveQueryTitle] = useState('');
   const [showSaveInput, setShowSaveInput] = useState(false);
@@ -706,6 +710,18 @@ const Index = () => {
     if (!mainTopic.trim() || selectedPlatforms.length === 0) {
       toast({ title: 'Missing info', description: 'Please enter a main topic and select at least one platform.' });
       return;
+    }
+
+    // Check usage limits for free users
+    if (!canSearch()) {
+      setUpgradeReason('continue searching')
+      setUpgradeDialogOpen(true)
+      return;
+    }
+
+    // Increment search count for free users
+    if (isLimited) {
+      incrementSearchCount()
     }
 
     const engineBase = {
@@ -2586,6 +2602,11 @@ const Index = () => {
         open={savedQueriesDialogOpen}
         onOpenChange={setSavedQueriesDialogOpen}
         onLoadQuery={handleLoadQuery}
+      />
+      <UpgradeDialog 
+        open={upgradeDialogOpen} 
+        onOpenChange={setUpgradeDialogOpen}
+        reason={upgradeReason}
       />
     </div>
   );

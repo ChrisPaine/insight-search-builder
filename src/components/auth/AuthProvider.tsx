@@ -13,6 +13,12 @@ interface AuthContextType {
   isPro: boolean
   isPremium: boolean
   isSupabaseConnected: boolean
+  subscriptionStatus: {
+    subscribed: boolean
+    product_id: string | null
+    subscription_end: string | null
+  }
+  checkSubscription: () => Promise<void>
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
@@ -30,6 +36,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [profile, setProfile] = useState<Profile | null>(null)
   const [session, setSession] = useState<Session | null>(null)
   const [loading, setLoading] = useState(true)
+  const [subscriptionStatus, setSubscriptionStatus] = useState<{
+    subscribed: boolean
+    product_id: string | null
+    subscription_end: string | null
+  }>({ subscribed: false, product_id: null, subscription_end: null })
   
   const isSupabaseConnected = !!supabase
 
@@ -46,6 +57,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setUser(session?.user ?? null)
       if (session?.user) {
         fetchProfile(session.user.id)
+        setTimeout(() => checkSubscription(), 0)
       } else {
         setLoading(false)
       }
@@ -59,8 +71,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setUser(session?.user ?? null)
       if (session?.user) {
         fetchProfile(session.user.id)
+        setTimeout(() => checkSubscription(), 0)
       } else {
         setProfile(null)
+        setSubscriptionStatus({ subscribed: false, product_id: null, subscription_end: null })
         setLoading(false)
       }
     })
@@ -90,6 +104,27 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       console.error('Error fetching profile:', error)
     } finally {
       setLoading(false)
+    }
+  }
+
+  const checkSubscription = async () => {
+    if (!supabase || !session) return
+    
+    try {
+      const { data, error } = await supabase.functions.invoke('check-subscription', {
+        headers: {
+          Authorization: `Bearer ${session.access_token}`,
+        },
+      })
+      
+      if (error) {
+        console.error('Error checking subscription:', error)
+        return
+      }
+      
+      setSubscriptionStatus(data)
+    } catch (error) {
+      console.error('Error checking subscription:', error)
     }
   }
 
@@ -128,10 +163,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const signOut = async () => {
     if (!supabase) return
     await supabase.auth.signOut()
+    setSubscriptionStatus({ subscribed: false, product_id: null, subscription_end: null })
   }
 
-  const isPro = profile?.subscription_status === 'pro' || profile?.subscription_status === 'premium'
-  const isPremium = profile?.subscription_status === 'premium'
+  // Calculate subscription status - Pro product ID from Stripe
+  const PRODUCT_IDS = {
+    pro: 'prod_T4C8hI2HUGYMga',
+    premium: null // Will add later
+  }
+  
+  const isPro = subscriptionStatus.subscribed && subscriptionStatus.product_id === PRODUCT_IDS.pro
+  const isPremium = subscriptionStatus.subscribed && subscriptionStatus.product_id === PRODUCT_IDS.premium
 
   const value = {
     user,
@@ -140,9 +182,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     loading,
     signIn,
     signUp,
-    signOut,
-    isPro,
-    isPremium,
+        signOut,
+        isPro,
+        isPremium,
+        subscriptionStatus,
+        checkSubscription,
     isSupabaseConnected,
   }
 
