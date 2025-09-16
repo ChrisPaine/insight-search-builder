@@ -1368,9 +1368,9 @@ const Index = () => {
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-6 gap-6">
           {/* Left Column - Topic, Phrases & Filters */}
-          <div className="lg:col-span-3 space-y-4">
+          <div className="lg:col-span-5 space-y-4">
             {/* Main Topic and Keywords */}
             <Card className="shadow-card">
               <CardHeader>
@@ -1616,7 +1616,7 @@ const Index = () => {
           </div>
 
           {/* Right Column - Platform Selection & Search Settings */}
-          <div className="lg:col-span-2 space-y-4">
+          <div className="lg:col-span-1 space-y-4">
             
             {/* Platform Selection - Now in right column for better mobile flow */}
             <Card id="platform-selector" className="shadow-card">
