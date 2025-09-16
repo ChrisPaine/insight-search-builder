@@ -420,14 +420,20 @@ const Index = () => {
       position: 'bottom'
     },
     {
+      target: '.profitable-market-templates',
+      title: 'Step 2: Explore Profitable Market Templates',
+      content: 'Save time with our pre-built market topic templates! Each template includes hundreds of profitable niches and sub-niches with real search volume data (like "1.2M" or "450K"). Perfect for discovering high-demand topics in Health, Wealth, and Relationships markets.',
+      position: 'bottom'
+    },
+    {
       target: '#additional-keywords',  
-      title: 'Step 2: Search Within Comments & Content',
+      title: 'Step 3: Search Within Comments & Content',
       content: 'Use this field to search within the actual text of posts and comments. This powerful feature helps you find specific discussions, pain points, and user feedback that contain your exact keywords.',
       position: 'bottom'
     },
     {
       target: '#platform-selector',
-      title: 'Step 3: Choose Platforms',
+      title: 'Step 4: Choose Platforms',
       content: 'Select which social media platforms to search. Each platform has unique advanced options for better targeting. Let me show you Reddit\'s advanced features!',
       position: 'right',
       action: () => {
@@ -437,7 +443,7 @@ const Index = () => {
     },
     {
       target: '#advanced-options',
-      title: 'Step 4: Platform Advanced Features',
+      title: 'Step 5: Platform Advanced Features',
       content: 'Each platform offers powerful advanced options! Reddit lets you target self-posts, high-engagement content, specific users, and more. These help find the most relevant pain points.',
       position: 'left',
       action: () => {
@@ -446,19 +452,19 @@ const Index = () => {
     },
     {
       target: '#phrase-builder',
-      title: 'Step 5: Select Pain Point Phrases',
+      title: 'Step 6: Select Pain Point Phrases',
       content: 'Choose from pre-built phrase categories that help identify customer pain points, or select a preset for quick setup.',
       position: 'right'
     },
     {
       target: '#search-settings',
-      title: 'Step 6: Configure Search Settings',
+      title: 'Step 7: Configure Search Settings',
       content: 'Choose your search engine, time filter, and access advanced options for each selected platform.',
       position: 'left'
     },
     {
       target: '#search-button',
-      title: 'Step 7: Start Your Research',
+      title: 'Step 8: Start Your Research',
       content: 'Click to open search tabs for each selected platform. Your query will be automatically optimized for each platform.',
       position: 'top'
     }
@@ -1353,7 +1359,7 @@ const Index = () => {
                   </div>
                   
                   <Collapsible className="mt-2">
-                    <CollapsibleTrigger className="w-full">
+                    <CollapsibleTrigger className="w-full profitable-market-templates">
                       <div className="flex items-center justify-between p-2 bg-research-gray rounded-lg hover:bg-research-blue-light transition-colors">
                         <h3 className="font-semibold text-left text-sm">Profitable Market Main Topic Templates</h3>
                         <ChevronDown className="w-4 h-4" />
