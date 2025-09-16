@@ -477,14 +477,8 @@ const Index = () => {
       }
     },
     {
-      target: '#search-settings',
-      title: 'Step 5: Configure Search Settings',
-      content: 'Choose your search engine and time filter. These core settings control how and where your research is conducted.',
-      position: 'left'
-    },
-    {
       target: '#advanced-modal-trigger',
-      title: 'Step 6: Platform Advanced Features',
+      title: 'Step 5: Platform Advanced Features',
       content: 'Each platform offers powerful advanced options! Click the settings icon next to any selected platform to access features like Reddit\'s self-posts, high-engagement filtering, and more.',
       position: 'left',
       action: () => {
@@ -494,9 +488,15 @@ const Index = () => {
     },
     {
       target: '#phrase-builder',
-      title: 'Step 7: Select Pain Point Phrases',
+      title: 'Step 6: Select Pain Point Phrases',
       content: 'Choose from pre-built phrase categories that help identify customer pain points, or select a preset for quick setup.',
       position: 'right'
+    },
+    {
+      target: '#search-settings',
+      title: 'Step 7: Configure Search Settings',
+      content: 'Choose your search engine and time filter. These core settings control how and where your research is conducted.',
+      position: 'left'
     },
     {
       target: '#search-button',
@@ -1644,50 +1644,6 @@ const Index = () => {
           {/* Right Column - Platform Selection & Search Settings */}
           <div className="lg:col-span-1 space-y-4">
             
-            {/* Search Settings - Moved to top for better visibility */}
-            <Card id="search-settings" className="shadow-card">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-base border-b border-border pb-2">
-                  <Search className="w-4 h-4 text-research-blue" />
-                  Search Settings
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <div className="grid grid-cols-1 gap-3">
-                  <div>
-                    <Label className="text-sm font-medium mb-2 block">Search Engine</Label>
-                    <Select value={searchEngine} onValueChange={(v) => setSearchEngine(v as 'google' | 'duckduckgo' | 'bing')}>
-                      <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Google" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="google">Google</SelectItem>
-                        <SelectItem value="duckduckgo">DuckDuckGo</SelectItem>
-                        <SelectItem value="bing">Bing</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <p className="text-xs text-muted-foreground mt-1">Primary search engine</p>
-                  </div>
-                  <div>
-                    <Label className="text-sm font-medium mb-2 block">Time Filter</Label>
-                    <Select value={timeFilter} onValueChange={(v) => setTimeFilter(v as 'any' | 'hour' | 'day' | 'week' | 'month' | 'year')}>
-                      <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Any time" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="any">Any time</SelectItem>
-                        <SelectItem value="day">Past 24 hours</SelectItem>
-                        <SelectItem value="week">Past week</SelectItem>
-                        <SelectItem value="month">Past month</SelectItem>
-                        <SelectItem value="year">Past year</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <p className="text-xs text-muted-foreground mt-1">Filter by recency (Google only)</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-            
             {/* Platform Selection */}
             <Card id="platform-selector" className="shadow-card">
               <CardHeader className="pb-2">
@@ -1770,55 +1726,53 @@ const Index = () => {
                       <span className="font-medium text-foreground">{selectedPlatforms.length}</span> platform{selectedPlatforms.length !== 1 ? 's' : ''} selected
                     </p>
                   </div>
-                )}
-              </CardContent>
-            </Card>
-            {/* Search Settings */}
-            <Card id="search-settings" className="shadow-card">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-base border-b border-border pb-2">
-                  <Search className="w-4 h-4 text-research-blue" />
-                  Search Settings
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <div className="grid grid-cols-1 gap-3">
-                  <div>
-                    <Label className="text-sm font-medium mb-2 block">Time Filter</Label>
-                    <Select value={timeFilter} onValueChange={(v) => setTimeFilter(v as typeof timeFilter)}>
-                      <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Any time" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="any">Any time</SelectItem>
-                        <SelectItem value="hour">Past hour</SelectItem>
-                        <SelectItem value="day">Past 24 hours</SelectItem>
-                        <SelectItem value="week">Past week</SelectItem>
-                        <SelectItem value="month">Past month</SelectItem>
-                        <SelectItem value="year">Past year</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <p className="text-xs text-muted-foreground mt-1">Filter results by time (Google only).</p>
-                  </div>
-                  <div>
-                    <Label className="text-sm font-medium mb-2 block">Search Engine</Label>
-                    <Select value={searchEngine} onValueChange={(v) => setSearchEngine(v as 'google' | 'duckduckgo' | 'bing')}>
-                      <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Google" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="google">Google</SelectItem>
-                        <SelectItem value="duckduckgo">DuckDuckGo</SelectItem>
-                        <SelectItem value="bing">Bing</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <p className="text-xs text-muted-foreground mt-1">If Google is blocked, choose another engine.</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+                 )}
+               </CardContent>
+             </Card>
+             
+             {/* Search Settings - Compact design */}
+             <Card id="search-settings" className="shadow-card">
+               <CardHeader className="pb-3">
+                 <CardTitle className="flex items-center gap-2 text-base">
+                   <Search className="w-4 h-4 text-research-blue" />
+                   Search Settings
+                 </CardTitle>
+               </CardHeader>
+               <CardContent className="pt-0 space-y-2">
+                 <div className="space-y-2">
+                   <div>
+                     <Label className="text-xs font-medium text-muted-foreground">Engine</Label>
+                     <Select value={searchEngine} onValueChange={(v) => setSearchEngine(v as 'google' | 'duckduckgo' | 'bing')}>
+                       <SelectTrigger className="w-full h-8">
+                         <SelectValue />
+                       </SelectTrigger>
+                       <SelectContent>
+                         <SelectItem value="google">Google</SelectItem>
+                         <SelectItem value="duckduckgo">DuckDuckGo</SelectItem>
+                         <SelectItem value="bing">Bing</SelectItem>
+                       </SelectContent>
+                     </Select>
+                   </div>
+                   <div>
+                     <Label className="text-xs font-medium text-muted-foreground">Time</Label>
+                     <Select value={timeFilter} onValueChange={(v) => setTimeFilter(v as 'any' | 'hour' | 'day' | 'week' | 'month' | 'year')}>
+                       <SelectTrigger className="w-full h-8">
+                         <SelectValue />
+                       </SelectTrigger>
+                       <SelectContent>
+                         <SelectItem value="any">Any time</SelectItem>
+                         <SelectItem value="day">Past 24 hours</SelectItem>
+                         <SelectItem value="week">Past week</SelectItem>
+                         <SelectItem value="month">Past month</SelectItem>
+                         <SelectItem value="year">Past year</SelectItem>
+                       </SelectContent>
+                     </Select>
+                   </div>
+                 </div>
+               </CardContent>
+             </Card>
 
-          </div>
+           </div>
         </div>
 
         {/* Advanced Options Modal */}
