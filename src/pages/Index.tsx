@@ -465,40 +465,35 @@ const Index = () => {
     {
       target: '#search-button',
       title: 'Step 8: Try It Now!',
-      content: 'Ready to see this in action? Click "Load Weight Loss Example" below to populate the form with a complete weight loss research setup, then hit the search button to start finding real customer pain points!',
+      content: 'Perfect! I\'ve automatically loaded a weight loss research example for you. Notice how the form is now populated with a main topic, keywords, platforms (Reddit & Facebook), and all pain point phrases selected. Click the search button to see it in action!',
       position: 'top',
-      buttons: [
-        {
-          text: 'Load Weight Loss Example',
-          action: () => {
-            setMainTopic('weight loss');
-            setAdditionalKeywords('struggling with diet motivation cravings plateau emotional eating');
-            setSelectedPlatforms(['reddit', 'facebook']);
-            setSelectedPhrases([
-              "I can't",
-              "I struggle with",
-              "I'm frustrated by",
-              "I hate",
-              "I need help with",
-              "I don't know how to",
-              "I'm tired of",
-              "I wish I could",
-              "I'm stuck",
-              "I'm overwhelmed by",
-              "I'm confused about",
-              "I'm worried about",
-              "I'm afraid of",
-              "I keep failing at",
-              "I give up on",
-              "I'm discouraged by",
-              "I'm stressed about",
-              "I can't afford",
-              "I don't have time for",
-              "I'm too busy for"
-            ]);
-          }
-        }
-      ]
+      action: () => {
+        setMainTopic('weight loss');
+        setAdditionalKeywords('struggling with diet motivation cravings plateau emotional eating');
+        setSelectedPlatforms(['reddit', 'facebook']);
+        setSelectedPhrases([
+          "I can't",
+          "I struggle with",
+          "I'm frustrated by",
+          "I hate",
+          "I need help with",
+          "I don't know how to",
+          "I'm tired of",
+          "I wish I could",
+          "I'm stuck",
+          "I'm overwhelmed by",
+          "I'm confused about",
+          "I'm worried about",
+          "I'm afraid of",
+          "I keep failing at",
+          "I give up on",
+          "I'm discouraged by",
+          "I'm stressed about",
+          "I can't afford",
+          "I don't have time for",
+          "I'm too busy for"
+        ]);
+      }
     }
   ];
   const nextStep = () => {
