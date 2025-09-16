@@ -47,6 +47,9 @@ jobs:
           # Use root path for custom domain deployment
           VITE_BASE_URL: /
       
+      - name: Add SPA fallback for client-side routing
+        run: cp dist/index.html dist/404.html
+      
       - name: Setup Pages
         uses: actions/configure-pages@v5
       
