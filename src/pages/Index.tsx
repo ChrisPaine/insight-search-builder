@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { Badge } from '@/components/ui/badge';
@@ -441,6 +442,10 @@ const Index = () => {
   const [tutorialStep, setTutorialStep] = useState(0);
   const [redditAdvancedOpen, setRedditAdvancedOpen] = useState(false);
   const [spotlightTick, setSpotlightTick] = useState(0);
+  
+  // Advanced options modal state
+  const [showAdvancedModal, setShowAdvancedModal] = useState(false);
+  const [selectedPlatformForAdvanced, setSelectedPlatformForAdvanced] = useState<string>('');
 
   const tutorialSteps = [
     {
@@ -472,12 +477,13 @@ const Index = () => {
       }
     },
     {
-      target: '#advanced-options',
+      target: '#advanced-modal-trigger',
       title: 'Step 5: Platform Advanced Features',
-      content: 'Each platform offers powerful advanced options! Reddit lets you target self-posts, high-engagement content, specific users, and more. These help find the most relevant pain points.',
+      content: 'Each platform offers powerful advanced options! Click the settings icon next to any selected platform to access features like Reddit\'s self-posts, high-engagement filtering, and more.',
       position: 'left',
       action: () => {
-        setRedditAdvancedOpen(true);
+        setShowAdvancedModal(true);
+        setSelectedPlatformForAdvanced('reddit');
       }
     },
     {
@@ -1671,13 +1677,29 @@ const Index = () => {
                         key={platform.id}
                         className="flex items-center space-x-3 p-3 hover:bg-muted/50 cursor-pointer rounded-lg border border-transparent hover:border-border transition-all"
                       >
-                        <Checkbox
-                          checked={selectedPlatforms.includes(platform.id)}
-                          onCheckedChange={() => togglePlatform(platform.id)}
-                          className="h-4 w-4 flex-shrink-0"
-                        />
-                        <span className={`${platform.color} flex-shrink-0`}>{platform.icon}</span>
-                        <span className="font-medium text-sm">{platform.name}</span>
+                         <Checkbox
+                           checked={selectedPlatforms.includes(platform.id)}
+                           onCheckedChange={() => togglePlatform(platform.id)}
+                           className="h-4 w-4 flex-shrink-0"
+                         />
+                         <span className={`${platform.color} flex-shrink-0`}>{platform.icon}</span>
+                         <span className="font-medium text-sm flex-1">{platform.name}</span>
+                         {selectedPlatforms.includes(platform.id) && (
+                           <Button
+                             id={platform.id === 'reddit' ? 'advanced-modal-trigger' : undefined}
+                             variant="ghost"
+                             size="sm"
+                             className="h-6 w-6 p-0 hover:bg-muted"
+                             onClick={(e) => {
+                               e.preventDefault();
+                               e.stopPropagation();
+                               setSelectedPlatformForAdvanced(platform.id);
+                               setShowAdvancedModal(true);
+                             }}
+                           >
+                             <Settings className="h-3 w-3" />
+                           </Button>
+                         )}
                       </label>
                     );
 
@@ -1752,745 +1774,204 @@ const Index = () => {
               </CardContent>
             </Card>
 
-            {/* Advanced Platform Options */}
-            {(selectedPlatforms.length > 0 || showTutorial) && (
-              <Card id="advanced-options" className="shadow-card">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2 text-base border-b border-border pb-2">
-                    <Settings className="w-4 h-4 text-research-blue" />
-                    Advanced Options
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  
-                  {/* Facebook Advanced Options */}
-                  {selectedPlatforms.includes('facebook') && (
-                    <Collapsible>
-                      <CollapsibleTrigger className="flex items-center justify-between w-full p-2 rounded-lg border border-border hover:bg-research-blue-light">
-                        <div className="flex items-center gap-2">
-                          <Globe className="w-4 h-4 text-research-blue" />
-                          <span className="font-medium">Facebook Options</span>
-                        </div>
-                        <ChevronDown className="w-4 h-4" />
-                      </CollapsibleTrigger>
-                      <CollapsibleContent className="mt-3 space-y-3 pl-4">
-                        <div>
-                          <Label className="text-sm font-medium">Group ID (optional)</Label>
-                          <Input
-                            placeholder="Enter Facebook group ID"
-                            value={advancedOptions.facebook.groupId}
-                            onChange={(e) => setAdvancedOptions(prev => ({
-                              ...prev,
-                              facebook: { ...prev.facebook, groupId: e.target.value }
-                            }))}
-                            className="mt-1"
-                          />
-                        </div>
-                        
-                        <div className="flex items-center space-x-2">
-                          <Checkbox
-                            id="fb-public"
-                            checked={advancedOptions.facebook.publicPostsOnly}
-                            onCheckedChange={(checked) => setAdvancedOptions(prev => ({
-                              ...prev,
-                              facebook: { ...prev.facebook, publicPostsOnly: !!checked }
-                            }))}
-                          />
-                          <Label htmlFor="fb-public" className="text-sm">Public posts only</Label>
-                        </div>
-                        
-                        <div>
-                          <Label className="text-sm font-medium mb-2 block">Community Focus</Label>
-                          <div className="grid grid-cols-2 gap-2">
-                            {['support', 'community help', 'beginners', 'newbies'].map(type => (
-                              <label key={type} className="flex items-center space-x-2 text-sm">
-                                <Checkbox
-                                  checked={advancedOptions.facebook.communityType.includes(type)}
-                                  onCheckedChange={(checked) => {
-                                    setAdvancedOptions(prev => ({
-                                      ...prev,
-                                      facebook: {
-                                        ...prev.facebook,
-                                        communityType: checked 
-                                          ? [...prev.facebook.communityType, type]
-                                          : prev.facebook.communityType.filter(t => t !== type)
-                                      }
-                                    }));
-                                  }}
-                                />
-                                <span>{type}</span>
-                              </label>
-                            ))}
-                          </div>
-                        </div>
-                      </CollapsibleContent>
-                    </Collapsible>
-                  )}
-
-                  {/* Reddit Advanced Options */}
-                  {selectedPlatforms.includes('reddit') && (
-                    <Collapsible className="reddit-advanced-options" open={redditAdvancedOpen} onOpenChange={setRedditAdvancedOpen}>
-                      <CollapsibleTrigger className="flex items-center justify-between w-full p-2 rounded-lg border border-border hover:bg-research-blue-light">
-                        <div className="flex items-center gap-2">
-                          <MessageSquare className="w-4 h-4 text-research-blue" />
-                          <span className="font-medium">Reddit Options</span>
-                        </div>
-                        <ChevronDown className="w-4 h-4" />
-                      </CollapsibleTrigger>
-                      <CollapsibleContent className="mt-3 space-y-3 pl-4">
-                        <div className="flex items-center space-x-2">
-                          <Checkbox
-                            id="reddit-self"
-                            checked={advancedOptions.reddit.selfPostsOnly}
-                            onCheckedChange={(checked) => setAdvancedOptions(prev => ({
-                              ...prev,
-                              reddit: { ...prev.reddit, selfPostsOnly: !!checked }
-                            }))}
-                          />
-                          <Label htmlFor="reddit-self" className="text-sm">Self posts only</Label>
-                        </div>
-                        
-                        <div className="flex items-center space-x-2">
-                          <Checkbox
-                            id="reddit-score"
-                            checked={advancedOptions.reddit.minScore}
-                            onCheckedChange={(checked) => setAdvancedOptions(prev => ({
-                              ...prev,
-                              reddit: { ...prev.reddit, minScore: !!checked }
-                            }))}
-                          />
-                          <Label htmlFor="reddit-score" className="text-sm">High engagement posts (score ≥ {advancedOptions.reddit.scoreThreshold})</Label>
-                        </div>
-                        
-                        {advancedOptions.reddit.minScore && (
-                          <div>
-                            <Label className="text-sm font-medium">Score Threshold</Label>
-                            <Input
-                              type="number"
-                              min="1"
-                              value={advancedOptions.reddit.scoreThreshold}
-                              onChange={(e) => setAdvancedOptions(prev => ({
-                                ...prev,
-                                reddit: { ...prev.reddit, scoreThreshold: parseInt(e.target.value) || 50 }
-                              }))}
-                              className="mt-1"
-                            />
-                          </div>
-                        )}
-                        
-                        <div>
-                          <Label className="text-sm font-medium">Author Search (optional)</Label>
-                          <Input
-                            placeholder="Enter Reddit username"
-                            value={advancedOptions.reddit.author}
-                            onChange={(e) => setAdvancedOptions(prev => ({
-                              ...prev,
-                              reddit: { ...prev.reddit, author: e.target.value }
-                            }))}
-                            className="mt-1"
-                          />
-                        </div>
-                      </CollapsibleContent>
-                    </Collapsible>
-                  )}
-
-                  {/* Twitter Advanced Options */}
-                  {selectedPlatforms.includes('twitter') && (
-                    <Collapsible>
-                      <CollapsibleTrigger className="flex items-center justify-between w-full p-2 rounded-lg border border-border hover:bg-research-blue-light">
-                        <div className="flex items-center gap-2">
-                          <Globe className="w-4 h-4 text-research-blue" />
-                          <span className="font-medium">Twitter Options</span>
-                        </div>
-                        <ChevronDown className="w-4 h-4" />
-                      </CollapsibleTrigger>
-                      <CollapsibleContent className="mt-3 space-y-3 pl-4">
-                        <div className="grid grid-cols-1 gap-3">
-                          <div className="flex items-center space-x-2">
-                            <Checkbox
-                              id="twitter-emotional"
-                              checked={advancedOptions.twitter.emotionalContent}
-                              onCheckedChange={(checked) => setAdvancedOptions(prev => ({
-                                ...prev,
-                                twitter: { ...prev.twitter, emotionalContent: !!checked }
-                              }))}
-                            />
-                            <Label htmlFor="twitter-emotional" className="text-sm">Emotional content (struggling, frustrated, wish I knew)</Label>
-                          </div>
-                          
-                          <div className="flex items-center space-x-2">
-                            <Checkbox
-                              id="twitter-community"
-                              checked={advancedOptions.twitter.communityValidation}
-                              onCheckedChange={(checked) => setAdvancedOptions(prev => ({
-                                ...prev,
-                                twitter: { ...prev.twitter, communityValidation: !!checked }
-                              }))}
-                            />
-                            <Label htmlFor="twitter-community" className="text-sm">Community validation (anyone else, am I the only one)</Label>
-                          </div>
-                          
-                          <div className="flex items-center space-x-2">
-                            <Checkbox
-                              id="twitter-opinions"
-                              checked={advancedOptions.twitter.opinions}
-                              onCheckedChange={(checked) => setAdvancedOptions(prev => ({
-                                ...prev,
-                                twitter: { ...prev.twitter, opinions: !!checked }
-                              }))}
-                            />
-                            <Label htmlFor="twitter-opinions" className="text-sm">Opinions & hot takes (unpopular opinion, hot take)</Label>
-                          </div>
-                          
-                          <div className="flex items-center space-x-2">
-                            <Checkbox
-                              id="twitter-rants"
-                              checked={advancedOptions.twitter.rants}
-                              onCheckedChange={(checked) => setAdvancedOptions(prev => ({
-                                ...prev,
-                                twitter: { ...prev.twitter, rants: !!checked }
-                              }))}
-                            />
-                            <Label htmlFor="twitter-rants" className="text-sm">Rants & venting (no links)</Label>
-                          </div>
-                          
-                          <div className="flex items-center space-x-2">
-                            <Checkbox
-                              id="twitter-experiences"
-                              checked={advancedOptions.twitter.experiences}
-                              onCheckedChange={(checked) => setAdvancedOptions(prev => ({
-                                ...prev,
-                                twitter: { ...prev.twitter, experiences: !!checked }
-                              }))}
-                            />
-                            <Label htmlFor="twitter-experiences" className="text-sm">Experience sharing (with native video)</Label>
-                          </div>
-                          
-                          <div className="flex items-center space-x-2">
-                            <Checkbox
-                              id="twitter-verified"
-                              checked={advancedOptions.twitter.verifiedOnly}
-                              onCheckedChange={(checked) => setAdvancedOptions(prev => ({
-                                ...prev,
-                                twitter: { ...prev.twitter, verifiedOnly: !!checked }
-                              }))}
-                            />
-                            <Label htmlFor="twitter-verified" className="text-sm">Verified accounts only</Label>
-                          </div>
-                          
-                          <div className="flex items-center space-x-2">
-                            <Checkbox
-                              id="twitter-media"
-                              checked={advancedOptions.twitter.hasMedia}
-                              onCheckedChange={(checked) => setAdvancedOptions(prev => ({
-                                ...prev,
-                                twitter: { ...prev.twitter, hasMedia: !!checked }
-                              }))}
-                            />
-                            <Label htmlFor="twitter-media" className="text-sm">Posts with media only</Label>
-                          </div>
-                        </div>
-                      </CollapsibleContent>
-                    </Collapsible>
-                  )}
-
-                  {/* Instagram Advanced Options */}
-                  {selectedPlatforms.includes('instagram') && (
-                    <Collapsible>
-                      <CollapsibleTrigger className="flex items-center justify-between w-full p-2 rounded-lg border border-border hover:bg-research-blue-light">
-                        <div className="flex items-center gap-2">
-                          <Camera className="w-4 h-4 text-research-blue" />
-                          <span className="font-medium">Instagram Options</span>
-                        </div>
-                        <ChevronDown className="w-4 h-4" />
-                      </CollapsibleTrigger>
-                      <CollapsibleContent className="mt-3 space-y-3 pl-4">
-                        <div className="flex items-center space-x-2">
-                          <Checkbox
-                            id="ig-link-bio"
-                            checked={advancedOptions.instagram.linkInBio}
-                            onCheckedChange={(checked) => setAdvancedOptions(prev => ({
-                              ...prev,
-                              instagram: { ...prev.instagram, linkInBio: !!checked }
-                            }))}
-                          />
-                          <Label htmlFor="ig-link-bio" className="text-sm">Link in bio posts with struggle keywords</Label>
-                        </div>
-                        
-                        <div className="flex items-center space-x-2">
-                          <Checkbox
-                            id="ig-swipe-up"
-                            checked={advancedOptions.instagram.swipeUp}
-                            onCheckedChange={(checked) => setAdvancedOptions(prev => ({
-                              ...prev,
-                              instagram: { ...prev.instagram, swipeUp: !!checked }
-                            }))}
-                          />
-                          <Label htmlFor="ig-swipe-up" className="text-sm">Swipe up posts with authenticity keywords</Label>
-                        </div>
-                        
-                        <div className="flex items-center space-x-2">
-                          <Checkbox
-                            id="ig-reels"
-                            checked={advancedOptions.instagram.reelsOnly}
-                            onCheckedChange={(checked) => setAdvancedOptions(prev => ({
-                              ...prev,
-                              instagram: { ...prev.instagram, reelsOnly: !!checked }
-                            }))}
-                          />
-                          <Label htmlFor="ig-reels" className="text-sm">Reels only with relatable phrases</Label>
-                        </div>
-                      </CollapsibleContent>
-                    </Collapsible>
-                  )}
-
-                  {/* LinkedIn Advanced Options */}
-                  {selectedPlatforms.includes('linkedin') && (
-                    <Collapsible>
-                      <CollapsibleTrigger className="flex items-center justify-between w-full p-2 rounded-lg border border-border hover:bg-research-blue-light">
-                        <div className="flex items-center gap-2">
-                          <Briefcase className="w-4 h-4 text-research-blue" />
-                          <span className="font-medium">LinkedIn Options</span>
-                        </div>
-                        <ChevronDown className="w-4 h-4" />
-                      </CollapsibleTrigger>
-                      <CollapsibleContent className="mt-3 space-y-3 pl-4">
-                        <div className="grid grid-cols-1 gap-3">
-                          <div className="flex items-center space-x-2">
-                            <Checkbox
-                              id="linkedin-posts"
-                              checked={advancedOptions.linkedin.publicPosts}
-                              onCheckedChange={(checked) => setAdvancedOptions(prev => ({
-                                ...prev,
-                                linkedin: { ...prev.linkedin, publicPosts: !!checked }
-                              }))}
-                            />
-                            <Label htmlFor="linkedin-posts" className="text-sm">Public posts with struggle language</Label>
-                          </div>
-                          
-                          <div className="flex items-center space-x-2">
-                            <Checkbox
-                              id="linkedin-pulse"
-                              checked={advancedOptions.linkedin.pulseArticles}
-                              onCheckedChange={(checked) => setAdvancedOptions(prev => ({
-                                ...prev,
-                                linkedin: { ...prev.linkedin, pulseArticles: !!checked }
-                              }))}
-                            />
-                            <Label htmlFor="linkedin-pulse" className="text-sm">Pulse articles with opinions</Label>
-                          </div>
-                          
-                          <div className="flex items-center space-x-2">
-                            <Checkbox
-                              id="linkedin-company"
-                              checked={advancedOptions.linkedin.companyPosts}
-                              onCheckedChange={(checked) => setAdvancedOptions(prev => ({
-                                ...prev,
-                                linkedin: { ...prev.linkedin, companyPosts: !!checked }
-                              }))}
-                            />
-                            <Label htmlFor="linkedin-company" className="text-sm">Company page feedback & reviews</Label>
-                          </div>
-                          
-                          <div className="flex items-center space-x-2">
-                            <Checkbox
-                              id="linkedin-industry"
-                              checked={advancedOptions.linkedin.industrySpecific}
-                              onCheckedChange={(checked) => setAdvancedOptions(prev => ({
-                                ...prev,
-                                linkedin: { ...prev.linkedin, industrySpecific: !!checked }
-                              }))}
-                            />
-                            <Label htmlFor="linkedin-industry" className="text-sm">Industry-specific pain points</Label>
-                          </div>
-                          
-                          <div className="flex items-center space-x-2">
-                            <Checkbox
-                              id="linkedin-role"
-                              checked={advancedOptions.linkedin.roleBased}
-                              onCheckedChange={(checked) => setAdvancedOptions(prev => ({
-                                ...prev,
-                                linkedin: { ...prev.linkedin, roleBased: !!checked }
-                              }))}
-                            />
-                            <Label htmlFor="linkedin-role" className="text-sm">Role-based research</Label>
-                          </div>
-                          
-                          {advancedOptions.linkedin.roleBased && (
-                            <div className="ml-6">
-                              <Label className="text-sm font-medium">Target Role</Label>
-                              <Select 
-                                value={advancedOptions.linkedin.targetRole} 
-                                onValueChange={(value) => setAdvancedOptions(prev => ({
-                                  ...prev,
-                                  linkedin: { ...prev.linkedin, targetRole: value }
-                                }))}
-                              >
-                                <SelectTrigger className="mt-1">
-                                  <SelectValue />
-                                </SelectTrigger>
-                                <SelectContent>
-                                  <SelectItem value="CEO">CEO</SelectItem>
-                                  <SelectItem value="founder">Founder</SelectItem>
-                                  <SelectItem value="marketing manager">Marketing Manager</SelectItem>
-                                  <SelectItem value="product manager">Product Manager</SelectItem>
-                                  <SelectItem value="sales manager">Sales Manager</SelectItem>
-                                  <SelectItem value="CTO">CTO</SelectItem>
-                                  <SelectItem value="CMO">CMO</SelectItem>
-                                </SelectContent>
-                              </Select>
-                            </div>
-                          )}
-                        </div>
-                      </CollapsibleContent>
-                    </Collapsible>
-                   )}
-
-                   {/* TikTok Advanced Options */}
-                   {selectedPlatforms.includes('tiktok') && (
-                     <Collapsible>
-                       <CollapsibleTrigger className="flex items-center justify-between w-full p-2 rounded-lg border border-border hover:bg-research-blue-light">
-                         <div className="flex items-center gap-2">
-                           <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-                             <path d="M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/>
-                           </svg>
-                           <span className="font-medium">TikTok Options</span>
-                         </div>
-                         <ChevronDown className="w-4 h-4" />
-                       </CollapsibleTrigger>
-                       <CollapsibleContent className="mt-3 space-y-4 pl-4">
-                         {/* Hashtag Trends */}
-                         <div>
-                           <Label className="text-sm font-medium mb-2 block">Hashtag Trends</Label>
-                           <div className="grid grid-cols-2 gap-2">
-                             {['fyp', 'viral', 'trending', 'foryou', 'foryoupage', 'trend', 'popular', 'explore'].map(tag => (
-                               <label key={tag} className="flex items-center space-x-2 text-sm">
-                                 <Checkbox
-                                   checked={advancedOptions.tiktok.hashtagTrends.includes(tag)}
-                                   onCheckedChange={(checked) => {
-                                     setAdvancedOptions(prev => ({
-                                       ...prev,
-                                       tiktok: {
-                                         ...prev.tiktok,
-                                         hashtagTrends: checked 
-                                           ? [...prev.tiktok.hashtagTrends, tag]
-                                           : prev.tiktok.hashtagTrends.filter(t => t !== tag)
-                                       }
-                                     }));
-                                   }}
-                                 />
-                                 <span>#{tag}</span>
-                               </label>
-                             ))}
-                           </div>
-                         </div>
-
-                         {/* Content Types */}
-                         <div>
-                           <Label className="text-sm font-medium mb-2 block">Content Types</Label>
-                           <div className="grid grid-cols-2 gap-2">
-                             {['dance', 'comedy', 'educational', 'cooking', 'beauty', 'fitness', 'life hacks', 'review'].map(type => (
-                               <label key={type} className="flex items-center space-x-2 text-sm">
-                                 <Checkbox
-                                   checked={advancedOptions.tiktok.contentTypes.includes(type)}
-                                   onCheckedChange={(checked) => {
-                                     setAdvancedOptions(prev => ({
-                                       ...prev,
-                                       tiktok: {
-                                         ...prev.tiktok,
-                                         contentTypes: checked 
-                                           ? [...prev.tiktok.contentTypes, type]
-                                           : prev.tiktok.contentTypes.filter(t => t !== type)
-                                       }
-                                     }));
-                                   }}
-                                 />
-                                 <span>{type}</span>
-                               </label>
-                             ))}
-                           </div>
-                         </div>
-
-                         {/* Creator Features */}
-                         <div>
-                           <Label className="text-sm font-medium mb-2 block">Creator Collaborations</Label>
-                           <div className="grid grid-cols-2 gap-2">
-                             {['duet', 'stitch', 'collaboration', 'collab'].map(collab => (
-                               <label key={collab} className="flex items-center space-x-2 text-sm">
-                                 <Checkbox
-                                   checked={advancedOptions.tiktok.creatorCollabs.includes(collab)}
-                                   onCheckedChange={(checked) => {
-                                     setAdvancedOptions(prev => ({
-                                       ...prev,
-                                       tiktok: {
-                                         ...prev.tiktok,
-                                         creatorCollabs: checked 
-                                           ? [...prev.tiktok.creatorCollabs, collab]
-                                           : prev.tiktok.creatorCollabs.filter(c => c !== collab)
-                                       }
-                                     }));
-                                   }}
-                                 />
-                                 <span>{collab}</span>
-                               </label>
-                             ))}
-                           </div>
-                         </div>
-
-                         {/* Creator Tiers */}
-                         <div>
-                           <Label className="text-sm font-medium mb-2 block">Creator Tiers</Label>
-                           <div className="grid grid-cols-2 gap-2">
-                             {['micro influencer', 'macro influencer', 'celebrity', 'brand ambassador'].map(tier => (
-                               <label key={tier} className="flex items-center space-x-2 text-sm">
-                                 <Checkbox
-                                   checked={advancedOptions.tiktok.creatorTier.includes(tier)}
-                                   onCheckedChange={(checked) => {
-                                     setAdvancedOptions(prev => ({
-                                       ...prev,
-                                       tiktok: {
-                                         ...prev.tiktok,
-                                         creatorTier: checked 
-                                           ? [...prev.tiktok.creatorTier, tier]
-                                           : prev.tiktok.creatorTier.filter(t => t !== tier)
-                                       }
-                                     }));
-                                   }}
-                                 />
-                                 <span>{tier}</span>
-                               </label>
-                             ))}
-                           </div>
-                         </div>
-
-                         {/* Specific Creator */}
-                         <div>
-                           <Label className="text-sm font-medium">Specific Creator (optional)</Label>
-                           <Input
-                             placeholder="Enter creator username (without @)"
-                             value={advancedOptions.tiktok.specificCreator}
-                             onChange={(e) => setAdvancedOptions(prev => ({
-                               ...prev,
-                               tiktok: { ...prev.tiktok, specificCreator: e.target.value }
-                             }))}
-                             className="mt-1"
-                           />
-                         </div>
-
-                         {/* Viral Patterns */}
-                         <div>
-                           <Label className="text-sm font-medium mb-2 block">Viral Patterns</Label>
-                           <div className="grid grid-cols-2 gap-2">
-                             {['went viral', 'blew up', 'viral moment', 'trending now'].map(pattern => (
-                               <label key={pattern} className="flex items-center space-x-2 text-sm">
-                                 <Checkbox
-                                   checked={advancedOptions.tiktok.viralPatterns.includes(pattern)}
-                                   onCheckedChange={(checked) => {
-                                     setAdvancedOptions(prev => ({
-                                       ...prev,
-                                       tiktok: {
-                                         ...prev.tiktok,
-                                         viralPatterns: checked 
-                                           ? [...prev.tiktok.viralPatterns, pattern]
-                                           : prev.tiktok.viralPatterns.filter(p => p !== pattern)
-                                       }
-                                     }));
-                                   }}
-                                 />
-                                 <span>{pattern}</span>
-                               </label>
-                             ))}
-                           </div>
-                         </div>
-
-                         {/* Additional Options */}
-                         <div className="space-y-3">
-                           <div className="flex items-center space-x-2">
-                             <Checkbox
-                               id="tiktok-sounds"
-                               checked={advancedOptions.tiktok.soundTrends}
-                               onCheckedChange={(checked) => setAdvancedOptions(prev => ({
-                                 ...prev,
-                                 tiktok: { ...prev.tiktok, soundTrends: !!checked }
-                               }))}
-                             />
-                             <Label htmlFor="tiktok-sounds" className="text-sm">Sound & Music Trends</Label>
-                           </div>
-                           
-                           <div className="flex items-center space-x-2">
-                             <Checkbox
-                               id="tiktok-challenges"
-                               checked={advancedOptions.tiktok.challengeId}
-                               onCheckedChange={(checked) => setAdvancedOptions(prev => ({
-                                 ...prev,
-                                 tiktok: { ...prev.tiktok, challengeId: !!checked }
-                               }))}
-                             />
-                             <Label htmlFor="tiktok-challenges" className="text-sm">Challenge Identification</Label>
-                           </div>
-                           
-                           <div className="flex items-center space-x-2">
-                             <Checkbox
-                               id="tiktok-brands"
-                               checked={advancedOptions.tiktok.brandMentions}
-                               onCheckedChange={(checked) => setAdvancedOptions(prev => ({
-                                 ...prev,
-                                 tiktok: { ...prev.tiktok, brandMentions: !!checked }
-                               }))}
-                             />
-                             <Label htmlFor="tiktok-brands" className="text-sm">Brand Mentions & Sponsorships</Label>
-                           </div>
-                           
-                           <div className="flex items-center space-x-2">
-                             <Checkbox
-                               id="tiktok-engagement"
-                               checked={advancedOptions.tiktok.minEngagement}
-                               onCheckedChange={(checked) => setAdvancedOptions(prev => ({
-                                 ...prev,
-                                 tiktok: { ...prev.tiktok, minEngagement: !!checked }
-                               }))}
-                             />
-                             <Label htmlFor="tiktok-engagement" className="text-sm">High engagement content (≥ {advancedOptions.tiktok.engagementThreshold.toLocaleString()} interactions)</Label>
-                           </div>
-                           
-                           <div className="flex items-center space-x-2">
-                             <Checkbox
-                               id="tiktok-recency"
-                               checked={advancedOptions.tiktok.strictRecency}
-                               onCheckedChange={(checked) => setAdvancedOptions(prev => ({
-                                 ...prev,
-                                 tiktok: { ...prev.tiktok, strictRecency: !!checked }
-                               }))}
-                             />
-                             <Label htmlFor="tiktok-recency" className="text-sm">Strict recency (uses Video search for fresher results with time filters)</Label>
-                           </div>
-                           
-                           {advancedOptions.tiktok.minEngagement && (
-                             <div>
-                               <Label className="text-sm font-medium">Engagement Threshold</Label>
-                               <Input
-                                 type="number"
-                                 min="1000"
-                                 step="1000"
-                                 value={advancedOptions.tiktok.engagementThreshold}
-                                 onChange={(e) => setAdvancedOptions(prev => ({
-                                   ...prev,
-                                   tiktok: { ...prev.tiktok, engagementThreshold: parseInt(e.target.value) || 10000 }
-                                 }))}
-                                 className="mt-1"
-                               />
-                             </div>
-                           )}
-                         </div>
-                       </CollapsibleContent>
-                     </Collapsible>
-                   )}
-
-                   {/* YouTube Advanced Options */}
-                  {selectedPlatforms.includes('youtube') && (
-                    <Collapsible>
-                      <CollapsibleTrigger className="flex items-center justify-between w-full p-2 rounded-lg border border-border hover:bg-research-blue-light">
-                        <div className="flex items-center gap-2">
-                          <Play className="w-4 h-4 text-research-blue" />
-                          <span className="font-medium">YouTube Options</span>
-                        </div>
-                        <ChevronDown className="w-4 h-4" />
-                      </CollapsibleTrigger>
-                      <CollapsibleContent className="mt-3 space-y-3 pl-4">
-                        <div className="grid grid-cols-1 gap-3">
-                          <div className="flex items-center space-x-2">
-                            <Checkbox
-                              id="youtube-comments"
-                              checked={advancedOptions.youtube.commentsSearch}
-                              onCheckedChange={(checked) => setAdvancedOptions(prev => ({
-                                ...prev,
-                                youtube: { ...prev.youtube, commentsSearch: !!checked }
-                              }))}
-                            />
-                            <Label htmlFor="youtube-comments" className="text-sm">Comments with experience language</Label>
-                          </div>
-                          
-                          <div className="flex items-center space-x-2">
-                            <Checkbox
-                              id="youtube-video"
-                              checked={advancedOptions.youtube.videoContent}
-                              onCheckedChange={(checked) => setAdvancedOptions(prev => ({
-                                ...prev,
-                                youtube: { ...prev.youtube, videoContent: !!checked }
-                              }))}
-                            />
-                            <Label htmlFor="youtube-video" className="text-sm">Video titles/descriptions with problems</Label>
-                          </div>
-                          
-                          <div className="flex items-center space-x-2">
-                            <Checkbox
-                              id="youtube-channel"
-                              checked={advancedOptions.youtube.channelSpecific}
-                              onCheckedChange={(checked) => setAdvancedOptions(prev => ({
-                                ...prev,
-                                youtube: { ...prev.youtube, channelSpecific: !!checked }
-                              }))}
-                            />
-                            <Label htmlFor="youtube-channel" className="text-sm">Channel-specific honest reviews</Label>
-                          </div>
-                          
-                          <div className="flex items-center space-x-2">
-                            <Checkbox
-                              id="youtube-reactions"
-                              checked={advancedOptions.youtube.videoReactions}
-                              onCheckedChange={(checked) => setAdvancedOptions(prev => ({
-                                ...prev,
-                                youtube: { ...prev.youtube, videoReactions: !!checked }
-                              }))}
-                            />
-                            <Label htmlFor="youtube-reactions" className="text-sm">Strong video reactions (game changer, scam, etc.)</Label>
-                          </div>
-                          
-                          <div className="flex items-center space-x-2">
-                            <Checkbox
-                              id="youtube-tutorial"
-                              checked={advancedOptions.youtube.tutorialFeedback}
-                              onCheckedChange={(checked) => setAdvancedOptions(prev => ({
-                                ...prev,
-                                youtube: { ...prev.youtube, tutorialFeedback: !!checked }
-                              }))}
-                            />
-                            <Label htmlFor="youtube-tutorial" className="text-sm">Tutorial feedback (worked/didn't work)</Label>
-                          </div>
-                          
-                          <div className="flex items-center space-x-2">
-                            <Checkbox
-                              id="youtube-reviews"
-                              checked={advancedOptions.youtube.productReviews}
-                              onCheckedChange={(checked) => setAdvancedOptions(prev => ({
-                                ...prev,
-                                youtube: { ...prev.youtube, productReviews: !!checked }
-                              }))}
-                            />
-                            <Label htmlFor="youtube-reviews" className="text-sm">Product reviews with time usage</Label>
-                          </div>
-                          
-                          <div className="flex items-center space-x-2">
-                            <Checkbox
-                              id="youtube-longterm"
-                              checked={advancedOptions.youtube.longTermReviews}
-                              onCheckedChange={(checked) => setAdvancedOptions(prev => ({
-                                ...prev,
-                                youtube: { ...prev.youtube, longTermReviews: !!checked }
-                              }))}
-                            />
-                            <Label htmlFor="youtube-longterm" className="text-sm">Long-term reviews (6 months, 1 year later)</Label>
-                          </div>
-                        </div>
-                      </CollapsibleContent>
-                    </Collapsible>
-                  )}
-                  
-                </CardContent>
-              </Card>
-            )}
           </div>
         </div>
+
+        {/* Advanced Options Modal */}
+        <Dialog open={showAdvancedModal} onOpenChange={setShowAdvancedModal}>
+          <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle className="flex items-center gap-2">
+                <Settings className="w-5 h-5 text-research-blue" />
+                Advanced Options: {platforms.find(p => p.id === selectedPlatformForAdvanced)?.name}
+              </DialogTitle>
+            </DialogHeader>
+            
+            <div className="space-y-4">
+              {/* Facebook Advanced Options */}
+              {selectedPlatformForAdvanced === 'facebook' && (
+                <div className="space-y-4">
+                  <div>
+                    <Label className="text-sm font-medium">Group ID (optional)</Label>
+                    <Input
+                      placeholder="Enter Facebook group ID"
+                      value={advancedOptions.facebook.groupId}
+                      onChange={(e) => setAdvancedOptions(prev => ({
+                        ...prev,
+                        facebook: { ...prev.facebook, groupId: e.target.value }
+                      }))}
+                      className="mt-1"
+                    />
+                  </div>
+                  
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="fb-public"
+                      checked={advancedOptions.facebook.publicPostsOnly}
+                      onCheckedChange={(checked) => setAdvancedOptions(prev => ({
+                        ...prev,
+                        facebook: { ...prev.facebook, publicPostsOnly: !!checked }
+                      }))}
+                    />
+                    <Label htmlFor="fb-public" className="text-sm">Public posts only</Label>
+                  </div>
+                  
+                  <div>
+                    <Label className="text-sm font-medium mb-2 block">Community Focus</Label>
+                    <div className="grid grid-cols-2 gap-2">
+                      {['support', 'community help', 'beginners', 'newbies'].map(type => (
+                        <label key={type} className="flex items-center space-x-2 text-sm">
+                          <Checkbox
+                            checked={advancedOptions.facebook.communityType.includes(type)}
+                            onCheckedChange={(checked) => {
+                              setAdvancedOptions(prev => ({
+                                ...prev,
+                                facebook: {
+                                  ...prev.facebook,
+                                  communityType: checked 
+                                    ? [...prev.facebook.communityType, type]
+                                    : prev.facebook.communityType.filter(t => t !== type)
+                                }
+                              }));
+                            }}
+                          />
+                          <span>{type}</span>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Reddit Advanced Options */}
+              {selectedPlatformForAdvanced === 'reddit' && (
+                <div className="space-y-4">
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="reddit-self"
+                      checked={advancedOptions.reddit.selfPostsOnly}
+                      onCheckedChange={(checked) => setAdvancedOptions(prev => ({
+                        ...prev,
+                        reddit: { ...prev.reddit, selfPostsOnly: !!checked }
+                      }))}
+                    />
+                    <Label htmlFor="reddit-self" className="text-sm">Self posts only</Label>
+                  </div>
+                  
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="reddit-score"
+                      checked={advancedOptions.reddit.minScore}
+                      onCheckedChange={(checked) => setAdvancedOptions(prev => ({
+                        ...prev,
+                        reddit: { ...prev.reddit, minScore: !!checked }
+                      }))}
+                    />
+                    <Label htmlFor="reddit-score" className="text-sm">High engagement posts (score ≥ {advancedOptions.reddit.scoreThreshold})</Label>
+                  </div>
+                  
+                  {advancedOptions.reddit.minScore && (
+                    <div>
+                      <Label className="text-sm font-medium">Score Threshold</Label>
+                      <Input
+                        type="number"
+                        min="1"
+                        value={advancedOptions.reddit.scoreThreshold}
+                        onChange={(e) => setAdvancedOptions(prev => ({
+                          ...prev,
+                          reddit: { ...prev.reddit, scoreThreshold: parseInt(e.target.value) || 50 }
+                        }))}
+                        className="mt-1"
+                      />
+                    </div>
+                  )}
+                  
+                  <div>
+                    <Label className="text-sm font-medium">Author Search (optional)</Label>
+                    <Input
+                      placeholder="Enter Reddit username"
+                      value={advancedOptions.reddit.author}
+                      onChange={(e) => setAdvancedOptions(prev => ({
+                        ...prev,
+                        reddit: { ...prev.reddit, author: e.target.value }
+                      }))}
+                      className="mt-1"
+                    />
+                  </div>
+                </div>
+              )}
+
+              {/* Twitter Advanced Options */}
+              {selectedPlatformForAdvanced === 'twitter' && (
+                <div className="space-y-4">
+                  <div className="grid grid-cols-1 gap-3">
+                    {[
+                      { key: 'emotionalContent', label: 'Emotional content (struggling, frustrated, wish I knew)' },
+                      { key: 'communityValidation', label: 'Community validation (anyone else, am I the only one)' },
+                      { key: 'opinions', label: 'Opinions & hot takes (unpopular opinion, hot take)' },
+                      { key: 'rants', label: 'Rants & venting (no links)' },
+                      { key: 'experiences', label: 'Experience sharing (with native video)' },
+                      { key: 'verifiedOnly', label: 'Verified accounts only' },
+                      { key: 'hasMedia', label: 'Posts with media only' }
+                    ].map(option => (
+                      <div key={option.key} className="flex items-center space-x-2">
+                        <Checkbox
+                          checked={advancedOptions.twitter[option.key]}
+                          onCheckedChange={(checked) => setAdvancedOptions(prev => ({
+                            ...prev,
+                            twitter: { ...prev.twitter, [option.key]: !!checked }
+                          }))}
+                        />
+                        <Label className="text-sm">{option.label}</Label>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Instagram Advanced Options */}
+              {selectedPlatformForAdvanced === 'instagram' && (
+                <div className="space-y-4">
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="ig-link-bio"
+                      checked={advancedOptions.instagram.linkInBio}
+                      onCheckedChange={(checked) => setAdvancedOptions(prev => ({
+                        ...prev,
+                        instagram: { ...prev.instagram, linkInBio: !!checked }
+                      }))}
+                    />
+                    <Label htmlFor="ig-link-bio" className="text-sm">Link in bio posts with struggle keywords</Label>
+                  </div>
+                  
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="ig-swipe-up"
+                      checked={advancedOptions.instagram.swipeUp}
+                      onCheckedChange={(checked) => setAdvancedOptions(prev => ({
+                        ...prev,
+                        instagram: { ...prev.instagram, swipeUp: !!checked }
+                      }))}
+                    />
+                    <Label htmlFor="ig-swipe-up" className="text-sm">Swipe up posts with authenticity keywords</Label>
+                  </div>
+                  
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="ig-reels"
+                      checked={advancedOptions.instagram.reelsOnly}
+                      onCheckedChange={(checked) => setAdvancedOptions(prev => ({
+                        ...prev,
+                        instagram: { ...prev.instagram, reelsOnly: !!checked }
+                      }))}
+                    />
+                    <Label htmlFor="ig-reels" className="text-sm">Reels only with relatable phrases</Label>
+                  </div>
+                </div>
+              )}
+            </div>
+          </DialogContent>
+        </Dialog>
       </main>
 
       {/* Tutorial Overlay */}
