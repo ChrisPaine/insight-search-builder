@@ -569,6 +569,26 @@ const Index = () => {
     setTutorialStep(0);
   };
 
+  // Auto-scroll tutorial to the current step target and refresh spotlight
+  useEffect(() => {
+    if (!showTutorial) return;
+    const step = tutorialSteps[tutorialStep];
+    if (!step?.target) return;
+
+    const tryScroll = () => {
+      const el = document.querySelector(step.target) as HTMLElement | null;
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' });
+        setTimeout(() => setSpotlightTick((t) => t + 1), 300);
+      }
+    };
+
+    // Try immediately and after a short delay to allow DOM/layout to settle
+    tryScroll();
+    const id = setTimeout(tryScroll, 150);
+    return () => clearTimeout(id);
+  }, [tutorialStep, showTutorial]);
+
   // Advanced platform options
   const [advancedOptions, setAdvancedOptions] = useState({
     facebook: {
