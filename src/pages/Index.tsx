@@ -473,7 +473,7 @@ const Index = () => {
           action: () => {
             setMainTopic('weight loss');
             setAdditionalKeywords('"struggling with diet motivation" "craving plateau" "emotional eating"');
-            setSelectedPlatforms(['reddit', 'facebook']);
+            setSelectedPlatforms(['reddit', 'facebook', 'google-trends']);
             setSelectedPhrases([
               "I can't",
               "I struggle with",
