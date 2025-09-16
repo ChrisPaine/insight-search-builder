@@ -388,10 +388,10 @@ const Index = () => {
 
   // Basic SEO for the tool
   useEffect(() => {
-    const title = 'Social media research tool | Social Research Query Builder';
+    const title = 'Pain Point Discovery Tool | Find Customer Problems & Pain Points';
     document.title = title;
 
-    const desc = 'Build advanced social research queries across Reddit, YouTube, Twitter, Instagram, Facebook, and LinkedIn.';
+    const desc = 'Discover customer pain points across social media platforms. Build advanced queries to find problems, struggles, and opportunities on Reddit, YouTube, Twitter, Instagram, Facebook, and LinkedIn.';
     let meta = document.querySelector('meta[name="description"]');
     if (!meta) {
       meta = document.createElement('meta');
@@ -1017,7 +1017,7 @@ const Index = () => {
                 </div>
                 
                 <h1 className="text-2xl font-bold text-foreground mx-4">
-                  Social Media Research Tool
+                  Pain Point Discovery Tool
                 </h1>
                 
                 {/* Right side icons */}
