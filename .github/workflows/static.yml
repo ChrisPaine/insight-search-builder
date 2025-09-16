@@ -44,8 +44,8 @@ jobs:
       - name: Build React app
         run: npm run build
         env:
-          # Set the base path for GitHub Pages (replace 'your-repo-name' with actual repo name)
-          VITE_BASE_URL: /${{ github.event.repository.name }}/
+          # Use root path for custom domain deployment
+          VITE_BASE_URL: /
       
       - name: Setup Pages
         uses: actions/configure-pages@v5
