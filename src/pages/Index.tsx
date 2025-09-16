@@ -428,12 +428,7 @@ const Index = () => {
   
   const { user, signOut, isPro, isPremium, isSupabaseConnected } = useAuth();
   const { saveQuery } = useQueries();
-  const { 
-    canSearch, 
-    incrementSearchCount, 
-    getRemainingSearches,
-    isLimited 
-  } = useUsageLimit();
+  const { canSearch, incrementSearchCount, getRemainingSearches, isLimited } = useUsageLimit();
   const { toast } = useToast();
   const navigate = useNavigate();
 
@@ -766,15 +761,20 @@ const Index = () => {
 
     // Check usage limits for free users
     if (!canSearch()) {
-      setUpgradeReason('continue searching')
-      setUpgradeDialogOpen(true)
-      return;
+      if (!user) {
+        // Anonymous user hit limit - show auth dialog
+        setAuthDialogOpen(true);
+        return;
+      } else {
+        // Logged-in free user hit limit - show upgrade dialog
+        setUpgradeReason('continue searching');
+        setUpgradeDialogOpen(true);
+        return;
+      }
     }
 
-    // Increment search count for free users
-    if (isLimited) {
-      incrementSearchCount()
-    }
+    // Increment search count for tracking
+    incrementSearchCount();
 
     const engineBase = {
       google: 'https://www.google.com/search?q=',
@@ -1479,6 +1479,41 @@ const Index = () => {
                       Search
                     </Button>
                   </div>
+                  
+                  {/* Usage indicator for free users */}
+                  {isLimited && (
+                    <div className="mt-2 text-center">
+                      <p className="text-sm text-muted-foreground">
+                        {getRemainingSearches() > 0 ? (
+                          <>
+                            {getRemainingSearches()} free search{getRemainingSearches() === 1 ? '' : 'es'} remaining today
+                            {getRemainingSearches() <= 2 && (
+                              <Button 
+                                variant="link" 
+                                size="sm" 
+                                className="ml-2 p-0 h-auto text-primary"
+                                onClick={() => setAuthDialogOpen(true)}
+                              >
+                                Sign up for unlimited
+                              </Button>
+                            )}
+                          </>
+                        ) : (
+                          <>
+                            Daily limit reached. 
+                            <Button 
+                              variant="link" 
+                              size="sm" 
+                              className="ml-1 p-0 h-auto text-primary"
+                              onClick={() => setAuthDialogOpen(true)}
+                            >
+                              Sign up for unlimited searches
+                            </Button>
+                          </>
+                        )}
+                      </p>
+                    </div>
+                  )}
                   
                   <Collapsible className="mt-2">
                     <CollapsibleTrigger className="w-full profitable-market-templates">

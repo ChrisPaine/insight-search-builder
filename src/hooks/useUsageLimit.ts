@@ -1,34 +1,30 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '@/components/auth/AuthProvider'
 
-const MONTHLY_SEARCH_LIMIT = 5
+const DAILY_SEARCH_LIMIT = 5
 
 export const useUsageLimit = () => {
   const [searchCount, setSearchCount] = useState(0)
   const [lastReset, setLastReset] = useState<string | null>(null)
   const { user, isPro, isPremium } = useAuth()
 
-  // Load usage data from localStorage
+  // Load usage data from localStorage (works for both anonymous and logged-in users)
   useEffect(() => {
-    if (!user) {
-      setSearchCount(0)
-      setLastReset(null)
-      return
-    }
-
-    const saved = localStorage.getItem(`usage_${user.id}`)
+    const storageKey = user ? `usage_${user.id}` : 'usage_anonymous'
+    const saved = localStorage.getItem(storageKey)
+    
     if (saved) {
       try {
         const data = JSON.parse(saved)
         const now = new Date()
         const resetDate = new Date(data.lastReset)
         
-        // Reset count if it's a new month
-        if (now.getMonth() !== resetDate.getMonth() || now.getFullYear() !== resetDate.getFullYear()) {
+        // Reset count if it's a new day
+        if (now.toDateString() !== resetDate.toDateString()) {
+          const newResetDate = new Date().toISOString()
           setSearchCount(0)
-          const newResetDate = new Date(now.getFullYear(), now.getMonth(), 1).toISOString()
           setLastReset(newResetDate)
-          localStorage.setItem(`usage_${user.id}`, JSON.stringify({
+          localStorage.setItem(storageKey, JSON.stringify({
             searchCount: 0,
             lastReset: newResetDate
           }))
@@ -46,29 +42,26 @@ export const useUsageLimit = () => {
   }, [user])
 
   const resetUsage = () => {
-    const now = new Date()
-    const resetDate = new Date(now.getFullYear(), now.getMonth(), 1).toISOString()
+    const now = new Date().toISOString()
     setSearchCount(0)
-    setLastReset(resetDate)
-    if (user) {
-      localStorage.setItem(`usage_${user.id}`, JSON.stringify({
-        searchCount: 0,
-        lastReset: resetDate
-      }))
-    }
+    setLastReset(now)
+    const storageKey = user ? `usage_${user.id}` : 'usage_anonymous'
+    localStorage.setItem(storageKey, JSON.stringify({
+      searchCount: 0,
+      lastReset: now
+    }))
   }
 
   const incrementSearchCount = () => {
-    if (!user) return false
-
     // Pro/Premium users have unlimited searches
-    if (isPro || isPremium) return true
+    if (user && (isPro || isPremium)) return true
 
     const newCount = searchCount + 1
     setSearchCount(newCount)
     
+    const storageKey = user ? `usage_${user.id}` : 'usage_anonymous'
     if (lastReset) {
-      localStorage.setItem(`usage_${user.id}`, JSON.stringify({
+      localStorage.setItem(storageKey, JSON.stringify({
         searchCount: newCount,
         lastReset
       }))
@@ -79,20 +72,20 @@ export const useUsageLimit = () => {
 
   const canSearch = () => {
     // Pro/Premium users can always search
-    if (isPro || isPremium) return true
+    if (user && (isPro || isPremium)) return true
     
-    // Free users are limited to MONTHLY_SEARCH_LIMIT per month
-    return searchCount < MONTHLY_SEARCH_LIMIT
+    // Free users (including anonymous) are limited to DAILY_SEARCH_LIMIT per day
+    return searchCount < DAILY_SEARCH_LIMIT
   }
 
   const getRemainingSearches = () => {
-    if (isPro || isPremium) return Infinity
-    return Math.max(0, MONTHLY_SEARCH_LIMIT - searchCount)
+    if (user && (isPro || isPremium)) return Infinity
+    return Math.max(0, DAILY_SEARCH_LIMIT - searchCount)
   }
 
   const getUsagePercentage = () => {
-    if (isPro || isPremium) return 0
-    return Math.min(100, (searchCount / MONTHLY_SEARCH_LIMIT) * 100)
+    if (user && (isPro || isPremium)) return 0
+    return Math.min(100, (searchCount / DAILY_SEARCH_LIMIT) * 100)
   }
 
   return {
@@ -101,7 +94,7 @@ export const useUsageLimit = () => {
     incrementSearchCount,
     getRemainingSearches,
     getUsagePercentage,
-    isLimited: !isPro && !isPremium,
-    limit: MONTHLY_SEARCH_LIMIT
+    isLimited: !(user && (isPro || isPremium)),
+    limit: DAILY_SEARCH_LIMIT
   }
 }
