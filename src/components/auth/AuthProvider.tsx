@@ -6,7 +6,7 @@ interface Profile {
   id: string
   email: string
   full_name?: string
-  subscription_status: 'free' | 'pro' | 'premium'
+  subscription_status: 'free' | 'pro' | 'premium' | 'enterprise' | 'admin'
   stripe_customer_id?: string
   created_at: string
   updated_at: string
@@ -22,6 +22,8 @@ interface AuthContextType {
   signOut: () => Promise<void>
   isPro: boolean
   isPremium: boolean
+  isEnterprise: boolean
+  isAdmin: boolean
   isSupabaseConnected: boolean
   subscriptionStatus: {
     subscribed: boolean
@@ -162,8 +164,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     premium: null // Will add later
   }
   
-  const isPro = subscriptionStatus.subscribed && subscriptionStatus.product_id === PRODUCT_IDS.pro
-  const isPremium = subscriptionStatus.subscribed && subscriptionStatus.product_id === PRODUCT_IDS.premium
+  // Check both Stripe-based subscriptions and database-based subscription statuses
+  const isPro = (subscriptionStatus.subscribed && subscriptionStatus.product_id === PRODUCT_IDS.pro) || 
+                profile?.subscription_status === 'pro'
+  const isPremium = (subscriptionStatus.subscribed && subscriptionStatus.product_id === PRODUCT_IDS.premium) || 
+                    profile?.subscription_status === 'premium'
+  const isEnterprise = profile?.subscription_status === 'enterprise'
+  const isAdmin = profile?.subscription_status === 'admin'
 
   const value = {
     user,
@@ -175,6 +182,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         signOut,
         isPro,
         isPremium,
+        isEnterprise,
+        isAdmin,
         subscriptionStatus,
         checkSubscription,
     isSupabaseConnected,
