@@ -583,17 +583,31 @@ const Index = () => {
     if (!step?.target) return;
 
     const tryScroll = () => {
-      const el = document.querySelector(step.target) as HTMLElement | null;
+      const selector = step.target;
+      let el = document.querySelector(selector) as HTMLElement | null;
+      // Fallback for step 5 when advanced trigger may not be in DOM yet
+      if (!el && selector === '#advanced-modal-trigger') {
+        el = document.querySelector('#platform-selector') as HTMLElement | null;
+      }
       if (el) {
         el.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' });
         setTimeout(() => setSpotlightTick((t) => t + 1), 300);
+        return true;
       }
+      return false;
     };
 
-    // Try immediately and after a short delay to allow DOM/layout to settle
-    tryScroll();
-    const id = setTimeout(tryScroll, 150);
-    return () => clearTimeout(id);
+    // Retry a few times to avoid "black screen" when target mounts slowly
+    let attempts = 0;
+    const maxAttempts = 10;
+    const run = () => {
+      if (tryScroll() || attempts++ >= maxAttempts) {
+        clearInterval(timer);
+      }
+    };
+    run();
+    const timer = setInterval(run, 200);
+    return () => clearInterval(timer);
   }, [tutorialStep, showTutorial]);
 
   // Advanced platform options
@@ -2351,7 +2365,10 @@ const Index = () => {
           <div className="fixed inset-0 z-50 pointer-events-none">
             {(() => {
               const currentStep = tutorialSteps[tutorialStep];
-              const targetElement = document.querySelector(currentStep.target);
+              let targetElement = document.querySelector(currentStep.target);
+              if (!targetElement && currentStep.target === '#advanced-modal-trigger') {
+                targetElement = document.querySelector('#platform-selector');
+              }
               
               if (!targetElement) return null;
               
