@@ -1751,6 +1751,7 @@ const Index = () => {
                               </Button>
                             ) : (
                               <Button
+                                id={platform.id === 'reddit' ? 'advanced-modal-trigger' : undefined}
                                 variant="ghost"
                                 size="sm"
                                 className="h-6 w-6 p-0 hover:bg-muted"
