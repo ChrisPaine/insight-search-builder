@@ -477,6 +477,16 @@ const Index = () => {
       content: 'Each platform offers powerful advanced options! Click the settings icon next to any selected platform to access features like Reddit\'s self-posts, high-engagement filtering, and more.',
       position: 'left',
       action: () => {
+        // Gate advanced modal when tutorial tries to open it
+        if (!user) {
+          setAuthDialogOpen(true);
+          return;
+        }
+        if (!isPro) {
+          setPaywallFeature('advanced-operators');
+          setPaywallDialogOpen(true);
+          return;
+        }
         setShowAdvancedModal(true);
         setSelectedPlatformForAdvanced('reddit');
       }
@@ -1719,7 +1729,7 @@ const Index = () => {
                          />
                          <span className={`${platform.color} flex-shrink-0`}>{platform.icon}</span>
                          <span className="font-medium text-sm flex-1">{platform.name}</span>
-                          {selectedPlatforms.includes(platform.id) && (
+                          {selectedPlatforms.includes(platform.id) && platform.id !== 'google-trends' && (
                             user && isPro ? (
                               <Button
                                 id={platform.id === 'reddit' ? 'advanced-modal-trigger' : undefined}
