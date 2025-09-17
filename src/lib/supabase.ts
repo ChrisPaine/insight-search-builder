@@ -12,7 +12,7 @@ export type Profile = {
   id: string
   email: string
   full_name?: string
-  subscription_status: 'free' | 'pro' | 'premium'
+  subscription_status: 'free' | 'pro' | 'premium' | 'enterprise' | 'admin'
   stripe_customer_id?: string
   created_at: string
   updated_at: string

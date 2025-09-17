@@ -482,7 +482,7 @@ const Index = () => {
           setAuthDialogOpen(true);
           return;
         }
-        if (!isPro) {
+        if (!(isPro || isPremium || isEnterprise || isAdmin)) {
           setPaywallFeature('advanced-operators');
           setPaywallDialogOpen(true);
           return;
@@ -1113,7 +1113,7 @@ const Index = () => {
       return;
     }
 
-    if (!isPro) {
+    if (!(isPro || isPremium || isEnterprise || isAdmin)) {
       setPaywallFeature('save queries');
       setPaywallDialogOpen(true);
       return;
@@ -1177,7 +1177,7 @@ const Index = () => {
       return false;
     }
     
-    if (!isPro && (feature === 'export' || feature === 'advanced-operators')) {
+    if (!(isPro || isPremium || isEnterprise || isAdmin) && (feature === 'export' || feature === 'advanced-operators')) {
       setPaywallFeature(feature);
       setPaywallDialogOpen(true);
       return false;
@@ -1388,10 +1388,10 @@ const Index = () => {
               <ThemeToggle />
               {user ? (
                 <div className="flex items-center gap-2">
-                  {(isPro || isPremium) && (
+                  {(isPro || isPremium || isEnterprise || isAdmin) && (
                     <Badge variant="secondary" className="bg-primary/10 text-primary">
                       <Crown className="w-3 h-3 mr-1" />
-                      {isPremium ? 'Enterprise' : 'Pro'}
+                      {(isEnterprise || isAdmin) ? 'Enterprise' : 'Pro'}
                     </Badge>
                   )}
                   <Button variant="ghost" size="sm" onClick={signOut}>
@@ -1738,7 +1738,7 @@ const Index = () => {
                          <span className={`${platform.color} flex-shrink-0`}>{platform.icon}</span>
                          <span className="font-medium text-sm flex-1">{platform.name}</span>
                           {selectedPlatforms.includes(platform.id) && platform.id !== 'google-trends' && (
-                            user && isPro ? (
+                            user && (isPro || isPremium || isEnterprise || isAdmin) ? (
                               <Button
                                 id={platform.id === 'reddit' ? 'advanced-modal-trigger' : undefined}
                                 variant="ghost"

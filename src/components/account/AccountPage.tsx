@@ -91,12 +91,14 @@ export const AccountPage: React.FC = () => {
   }
 
   const getPlanName = () => {
+    if (isEnterprise || isAdmin) return 'Enterprise'
     if (isPremium) return 'Premium'
     if (isPro) return 'Pro'
     return 'Free'
   }
 
   const getPlanColor = () => {
+    if (isEnterprise || isAdmin) return 'bg-amber-500'
     if (isPremium) return 'bg-purple-500'
     if (isPro) return 'bg-primary'
     return 'bg-gray-500'
