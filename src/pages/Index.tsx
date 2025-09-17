@@ -474,21 +474,17 @@ const Index = () => {
     {
       target: '#advanced-modal-trigger',
       title: 'Step 5: Platform Advanced Features',
-      content: 'Each platform offers powerful advanced options! Click the settings icon next to any selected platform to access features like Reddit\'s self-posts, high-engagement filtering, and more.',
+      content: user && (isPro || isPremium || isEnterprise || isAdmin) 
+        ? 'Each platform offers powerful advanced options! Click the settings icon next to any selected platform to access features like Reddit\'s self-posts, high-engagement filtering, and more.'
+        : 'Each platform offers powerful advanced options like Reddit\'s self-posts and high-engagement filtering. These features are available with a Pro subscription - for now, let\'s continue with the basic setup!',
       position: 'left',
       action: () => {
-        // Gate advanced modal when tutorial tries to open it
-        if (!user) {
-          setAuthDialogOpen(true);
-          return;
+        // Only try to open advanced modal if user has access
+        if (user && (isPro || isPremium || isEnterprise || isAdmin)) {
+          setShowAdvancedModal(true);
+          setSelectedPlatformForAdvanced('reddit');
         }
-        if (!(isPro || isPremium || isEnterprise || isAdmin)) {
-          setPaywallFeature('advanced-operators');
-          setPaywallDialogOpen(true);
-          return;
-        }
-        setShowAdvancedModal(true);
-        setSelectedPlatformForAdvanced('reddit');
+        // For free users, just continue the tutorial without opening the modal
       }
     },
     {
