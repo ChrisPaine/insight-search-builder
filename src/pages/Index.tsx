@@ -1377,13 +1377,21 @@ const Index = () => {
               >
                 Help Tour
               </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => navigate('/pricing')}
+                className="text-primary border-primary hover:bg-primary hover:text-primary-foreground"
+              >
+                Pricing
+              </Button>
               <ThemeToggle />
               {user ? (
                 <div className="flex items-center gap-2">
-                  {isPro && (
+                  {(isPro || isPremium) && (
                     <Badge variant="secondary" className="bg-primary/10 text-primary">
                       <Crown className="w-3 h-3 mr-1" />
-                      {isPremium ? 'Premium' : 'Pro'}
+                      {isPremium ? 'Enterprise' : 'Pro'}
                     </Badge>
                   )}
                   <Button variant="ghost" size="sm" onClick={signOut}>
