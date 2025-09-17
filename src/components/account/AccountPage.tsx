@@ -27,6 +27,8 @@ export const AccountPage: React.FC = () => {
     session,
     isPro, 
     isPremium, 
+    isEnterprise,
+    isAdmin,
     subscriptionStatus,
     checkSubscription 
   } = useAuth()

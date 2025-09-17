@@ -426,7 +426,7 @@ const Index = () => {
   const [saveQueryTitle, setSaveQueryTitle] = useState('');
   const [showSaveInput, setShowSaveInput] = useState(false);
   
-  const { user, signOut, isPro, isPremium, isSupabaseConnected } = useAuth();
+  const { user, signOut, isPro, isPremium, isEnterprise, isAdmin, isSupabaseConnected } = useAuth();
   const { saveQuery } = useQueries();
   const { canSearch, incrementSearchCount, getRemainingSearches, isLimited } = useUsageLimit();
   const { toast } = useToast();

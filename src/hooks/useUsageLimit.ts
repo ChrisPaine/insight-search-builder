@@ -6,7 +6,7 @@ const DAILY_SEARCH_LIMIT = 10
 export const useUsageLimit = () => {
   const [searchCount, setSearchCount] = useState(0)
   const [lastReset, setLastReset] = useState<string | null>(null)
-  const { user, isPro, isPremium } = useAuth()
+  const { user, isPro, isPremium, isEnterprise, isAdmin } = useAuth()
 
   // Load usage data from localStorage (works for both anonymous and logged-in users)
   useEffect(() => {
@@ -53,8 +53,8 @@ export const useUsageLimit = () => {
   }
 
   const incrementSearchCount = () => {
-    // Pro/Premium users have unlimited searches
-    if (user && (isPro || isPremium)) return true
+    // Pro/Premium/Enterprise/Admin users have unlimited searches
+    if (user && (isPro || isPremium || isEnterprise || isAdmin)) return true
 
     const newCount = searchCount + 1
     setSearchCount(newCount)
@@ -71,20 +71,20 @@ export const useUsageLimit = () => {
   }
 
   const canSearch = () => {
-    // Pro/Premium users can always search
-    if (user && (isPro || isPremium)) return true
+    // Pro/Premium/Enterprise/Admin users can always search
+    if (user && (isPro || isPremium || isEnterprise || isAdmin)) return true
     
     // Free users (including anonymous) are limited to DAILY_SEARCH_LIMIT per day
     return searchCount < DAILY_SEARCH_LIMIT
   }
 
   const getRemainingSearches = () => {
-    if (user && (isPro || isPremium)) return Infinity
+    if (user && (isPro || isPremium || isEnterprise || isAdmin)) return Infinity
     return Math.max(0, DAILY_SEARCH_LIMIT - searchCount)
   }
 
   const getUsagePercentage = () => {
-    if (user && (isPro || isPremium)) return 0
+    if (user && (isPro || isPremium || isEnterprise || isAdmin)) return 0
     return Math.min(100, (searchCount / DAILY_SEARCH_LIMIT) * 100)
   }
 
@@ -94,7 +94,7 @@ export const useUsageLimit = () => {
     incrementSearchCount,
     getRemainingSearches,
     getUsagePercentage,
-    isLimited: !(user && (isPro || isPremium)),
+    isLimited: !(user && (isPro || isPremium || isEnterprise || isAdmin)),
     limit: DAILY_SEARCH_LIMIT
   }
 }

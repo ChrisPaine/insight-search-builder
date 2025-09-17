@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom'
 
 export const PricingPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false)
-  const { user, session, isPro, isPremium, subscriptionStatus } = useAuth()
+  const { user, session, isPro, isPremium, isEnterprise, isAdmin, subscriptionStatus } = useAuth()
   const { toast } = useToast()
   const navigate = useNavigate()
 
@@ -36,7 +36,7 @@ export const PricingPage: React.FC = () => {
       ],
       priceId: null,
       popular: false,
-      current: !isPro && !isPremium && !subscriptionStatus.subscribed,
+      current: !isPro && !isPremium && !isEnterprise && !isAdmin && !subscriptionStatus.subscribed,
     },
     {
       name: 'Pro',
@@ -72,7 +72,7 @@ export const PricingPage: React.FC = () => {
       ],
       priceId: null, // Contact sales
       popular: false,
-      current: isPremium,
+      current: isEnterprise || isPremium,
     },
   ]
 
