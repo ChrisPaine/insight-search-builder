@@ -597,17 +597,18 @@ const Index = () => {
       return false;
     };
 
-    // Retry a few times to avoid "black screen" when target mounts slowly
+    // Retry a few times to avoid "black/white screen" when target mounts slowly
     let attempts = 0;
     const maxAttempts = 10;
+    let timer: number | undefined;
     const run = () => {
       if (tryScroll() || attempts++ >= maxAttempts) {
-        clearInterval(timer);
+        if (timer) clearInterval(timer);
       }
     };
+    timer = window.setInterval(run, 200);
     run();
-    const timer = setInterval(run, 200);
-    return () => clearInterval(timer);
+    return () => { if (timer) clearInterval(timer); };
   }, [tutorialStep, showTutorial]);
 
   // Advanced platform options
