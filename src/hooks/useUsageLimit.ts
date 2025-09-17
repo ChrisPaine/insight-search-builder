@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '@/components/auth/AuthProvider'
 
-const DAILY_SEARCH_LIMIT = 5
+const DAILY_SEARCH_LIMIT = 10
 
 export const useUsageLimit = () => {
   const [searchCount, setSearchCount] = useState(0)

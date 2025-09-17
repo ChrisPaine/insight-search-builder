@@ -26,7 +26,7 @@ export const PricingPage: React.FC = () => {
       period: 'forever',
       description: 'Perfect for getting started',
       features: [
-        '5 searches per day',
+        '10 searches per day',
         'Basic search queries',
         'Public templates',
         'Community support',
