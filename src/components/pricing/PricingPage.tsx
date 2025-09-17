@@ -27,9 +27,10 @@ export const PricingPage: React.FC = () => {
       description: 'Perfect for getting started',
       features: [
         '10 searches per day',
-        'Basic search queries',
-        'Public templates',
-        'Community support',
+        'Basic query builder',
+        'All platform selection',
+        'Pain point phrase presets',
+        'Tutorial & help guides',
       ],
       priceId: null,
       popular: false,
@@ -42,11 +43,10 @@ export const PricingPage: React.FC = () => {
       description: 'Perfect for researchers and professionals',
       features: [
         'Unlimited searches',
-        'Advanced search operators',
-        'Save & export queries',
-        'All platform integrations',
-        'Email support',
-        'Premium templates',
+        'Advanced platform operators',
+        'Save & organize queries',
+        'Search history access',
+        'Priority email support',
       ],
       priceId: PRICE_IDS.pro,
       popular: true,
@@ -54,19 +54,18 @@ export const PricingPage: React.FC = () => {
     },
     {
       name: 'Enterprise',
-      price: '$99',
-      period: 'month',
+      price: 'Contact us',
+      period: '',
       description: 'For teams and agencies',
       features: [
         'Everything in Pro',
-        'Team collaboration',
-        'API access',
-        'Custom integrations',
-        'Priority support',
-        'Advanced analytics',
-        'White-label options',
+        'Dedicated success manager',
+        'Custom onboarding',
+        'SLA & priority support',
+        'Volume discounts',
+        'Custom training sessions',
       ],
-      priceId: PRICE_IDS.premium,
+      priceId: null, // Contact sales
       popular: false,
       current: isPremium,
     },
@@ -183,16 +182,18 @@ export const PricingPage: React.FC = () => {
                   className="w-full h-12 font-semibold"
                   variant={plan.popular ? 'default' : 'outline'}
                   size="lg"
-                  onClick={() => handleSubscribe(plan.priceId)}
-                  disabled={isLoading || plan.current || !plan.priceId}
+                  onClick={() => plan.name === 'Enterprise' ? window.open('mailto:hello@painpointresearch.com?subject=Enterprise%20Plan%20Inquiry', '_blank') : handleSubscribe(plan.priceId)}
+                  disabled={isLoading || plan.current}
                 >
-                  {isLoading ? (
+                  {isLoading && plan.name !== 'Enterprise' ? (
                     <>
                       <Loader2 className="w-4 h-4 mr-2 animate-spin" />
                       Processing...
                     </>
                   ) : plan.current ? (
                     'Current Plan'
+                  ) : plan.name === 'Enterprise' ? (
+                    'Contact Sales'
                   ) : !plan.priceId ? (
                     'Get Started Free'
                   ) : (
