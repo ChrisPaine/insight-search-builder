@@ -1728,6 +1728,10 @@ const Index = () => {
                              onClick={(e) => {
                                e.preventDefault();
                                e.stopPropagation();
+                               // Gate advanced features for free users
+                               if (!checkFeatureAccess('advanced-operators')) {
+                                 return;
+                               }
                                setSelectedPlatformForAdvanced(platform.id);
                                setShowAdvancedModal(true);
                              }}
