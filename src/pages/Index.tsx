@@ -1719,26 +1719,42 @@ const Index = () => {
                          />
                          <span className={`${platform.color} flex-shrink-0`}>{platform.icon}</span>
                          <span className="font-medium text-sm flex-1">{platform.name}</span>
-                         {selectedPlatforms.includes(platform.id) && (
-                           <Button
-                             id={platform.id === 'reddit' ? 'advanced-modal-trigger' : undefined}
-                             variant="ghost"
-                             size="sm"
-                             className="h-6 w-6 p-0 hover:bg-muted"
-                             onClick={(e) => {
-                               e.preventDefault();
-                               e.stopPropagation();
-                               // Gate advanced features for free users
-                               if (!checkFeatureAccess('advanced-operators')) {
-                                 return;
-                               }
-                               setSelectedPlatformForAdvanced(platform.id);
-                               setShowAdvancedModal(true);
-                             }}
-                           >
-                             <Settings className="h-3 w-3" />
-                           </Button>
-                         )}
+                          {selectedPlatforms.includes(platform.id) && (
+                            user && isPro ? (
+                              <Button
+                                id={platform.id === 'reddit' ? 'advanced-modal-trigger' : undefined}
+                                variant="ghost"
+                                size="sm"
+                                className="h-6 w-6 p-0 hover:bg-muted"
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  e.stopPropagation();
+                                  setSelectedPlatformForAdvanced(platform.id);
+                                  setShowAdvancedModal(true);
+                                }}
+                              >
+                                <Settings className="h-3 w-3" />
+                              </Button>
+                            ) : (
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="h-6 w-6 p-0 hover:bg-muted"
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  e.stopPropagation();
+                                  if (!user) {
+                                    setAuthDialogOpen(true);
+                                  } else {
+                                    setPaywallFeature('advanced-operators');
+                                    setPaywallDialogOpen(true);
+                                  }
+                                }}
+                              >
+                                <Crown className="h-3 w-3" />
+                              </Button>
+                            )
+                          )}
                       </label>
                     );
 
