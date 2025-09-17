@@ -24,13 +24,15 @@ export const PricingPage: React.FC = () => {
       name: 'Free',
       price: '$0',
       period: 'forever',
-      description: 'Perfect for getting started',
+      description: 'Perfect for validating a single product idea',
+      useCase: 'Find real customer pain points',
       features: [
         '10 searches per day',
         'Basic query builder',
         'All platform selection',
         'Pain point phrase presets',
         'Tutorial & help guides',
+        'No credit card required',
       ],
       priceId: null,
       popular: false,
@@ -40,13 +42,15 @@ export const PricingPage: React.FC = () => {
       name: 'Pro',
       price: '$29',
       period: 'month',
-      description: 'Perfect for researchers and professionals',
+      description: 'For ongoing market research & product development',
+      useCase: 'Pro users save 10+ hours/month',
       features: [
         'Unlimited searches',
-        'Advanced platform operators',
-        'Save & organize queries',
+        'Save & organize queries (huge time-saver)',
         'Search history access',
+        'Advanced platform operators',
         'Priority email support',
+        'Cancel anytime, no questions asked',
       ],
       priceId: PRICE_IDS.pro,
       popular: true,
@@ -54,15 +58,16 @@ export const PricingPage: React.FC = () => {
     },
     {
       name: 'Enterprise',
-      price: 'Contact us',
+      price: 'Contact Sales',
       period: '',
       description: 'For teams and agencies',
+      useCase: 'Scale your research across teams',
       features: [
         'Everything in Pro',
         'Dedicated success manager',
-        'Custom onboarding',
+        'Custom onboarding & training',
         'SLA & priority support',
-        'Volume discounts',
+        'Volume discounts available',
         'Custom training sessions',
       ],
       priceId: null, // Contact sales
@@ -165,7 +170,8 @@ export const PricingPage: React.FC = () => {
                     <span className="text-muted-foreground">/{plan.period}</span>
                   )}
                 </div>
-                <CardDescription className="text-center">{plan.description}</CardDescription>
+                <CardDescription className="text-center mb-2">{plan.description}</CardDescription>
+                <p className="text-xs text-muted-foreground/80 italic">{plan.useCase}</p>
               </CardHeader>
               
               <CardContent>
@@ -182,7 +188,7 @@ export const PricingPage: React.FC = () => {
                   className="w-full h-12 font-semibold"
                   variant={plan.popular ? 'default' : 'outline'}
                   size="lg"
-                  onClick={() => plan.name === 'Enterprise' ? window.open('mailto:hello@painpointresearch.com?subject=Enterprise%20Plan%20Inquiry', '_blank') : handleSubscribe(plan.priceId)}
+                  onClick={() => plan.name === 'Enterprise' ? window.open('mailto:support@painpointresearch.com?subject=Enterprise%20Plan%20Inquiry', '_blank') : handleSubscribe(plan.priceId)}
                   disabled={isLoading || plan.current}
                 >
                   {isLoading && plan.name !== 'Enterprise' ? (
