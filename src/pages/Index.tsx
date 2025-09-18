@@ -425,7 +425,6 @@ const Index = () => {
   const [savedQueriesDialogOpen, setSavedQueriesDialogOpen] = useState(false);
   const [saveQueryTitle, setSaveQueryTitle] = useState('');
   const [showSaveInput, setShowSaveInput] = useState(false);
-  const [verbatimMode, setVerbatimMode] = useState(false);
   
   const { user, signOut, isPro, isPremium, isEnterprise, isAdmin, isSupabaseConnected } = useAuth();
   const { saveQuery } = useQueries();
@@ -1079,16 +1078,14 @@ const Index = () => {
         }
       }
       
-      // Add Verbatim mode parameter for Google (exact search without spell correction)
-      if (searchEngine === 'google' && verbatimMode) {
-        console.log('Adding Verbatim mode to URL, timeFilter:', timeFilter);
+      // Always add Verbatim mode for Google searches (exact search without spell correction)
+      if (searchEngine === 'google') {
         // If time filter is already applied, append verbatim; otherwise add new tbs parameter
         if (timeFilter !== 'any') {
           baseUrl += ',li:1';
         } else {
           baseUrl += '&tbs=li:1';
         }
-        console.log('Updated URL with Verbatim:', baseUrl);
       }
 
       const url = baseUrl;
@@ -1866,19 +1863,6 @@ const Index = () => {
                         </SelectContent>
                       </Select>
                     </div>
-                    {searchEngine === 'google' && (
-                      <div className="flex items-center space-x-2 pt-1">
-                        <Checkbox 
-                          id="verbatim-mode" 
-                          checked={verbatimMode} 
-                          onCheckedChange={(checked) => setVerbatimMode(checked === true)}
-                          className="h-3 w-3"
-                        />
-                        <Label htmlFor="verbatim-mode" className="text-xs text-muted-foreground cursor-pointer">
-                          Verbatim search (exact matches only)
-                        </Label>
-                      </div>
-                    )}
                  </div>
                </CardContent>
              </Card>
