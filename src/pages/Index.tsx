@@ -1081,12 +1081,14 @@ const Index = () => {
       
       // Add Verbatim mode parameter for Google (exact search without spell correction)
       if (searchEngine === 'google' && verbatimMode) {
+        console.log('Adding Verbatim mode to URL, timeFilter:', timeFilter);
         // If time filter is already applied, append verbatim; otherwise add new tbs parameter
         if (timeFilter !== 'any') {
           baseUrl += ',li:1';
         } else {
           baseUrl += '&tbs=li:1';
         }
+        console.log('Updated URL with Verbatim:', baseUrl);
       }
 
       const url = baseUrl;
