@@ -122,7 +122,7 @@ const initialPhraseCategories: PhraseCategory[] = [
     title: 'Problems & Struggles',
     isOpen: false,
     phrases: [
-      'struggles', 'problems', 'issues', 'challenge', 'difficulties',
+      'struggling with', 'problem', 'issues', 'challenge', 'difficulties',
       'hardships', 'pain point', 'barriers', 'obstacles'
     ]
   },
