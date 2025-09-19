@@ -1061,6 +1061,7 @@ const Index = () => {
         : `${engineBase}${encodeURIComponent(platformQuery)}`;
       
       // Add time filter parameter for Google
+      console.log('Debug - timeFilter:', timeFilter, 'searchEngine:', searchEngine);
       if (searchEngine === 'google' && timeFilter !== 'any') {
         const timeParams = {
           hour: 'qdr:h',
@@ -1070,12 +1071,16 @@ const Index = () => {
           year: 'qdr:y'
         };
         
+        console.log('Debug - timeParams[timeFilter]:', timeParams[timeFilter]);
+        
         // Use Google Video search for TikTok with strict recency
         if (platformId === 'tiktok' && advancedOptions.tiktok.strictRecency) {
           baseUrl += `&tbm=vid&sbd=1&tbs=${timeParams[timeFilter]}`;
         } else {
           baseUrl += `&tbs=${timeParams[timeFilter]}`;
         }
+        
+        console.log('Debug - URL after time filter:', baseUrl);
       }
       
       // Always add Verbatim mode for Google searches (exact search without spell correction)
@@ -1086,6 +1091,8 @@ const Index = () => {
         } else {
           baseUrl += '&tbs=li:1';
         }
+        
+        console.log('Debug - Final URL with verbatim:', baseUrl);
       }
 
       const url = baseUrl;
