@@ -1055,10 +1055,8 @@ const Index = () => {
         platformQuery = groupedContent ? `${topicPart}${keywordsPart} ${groupedContent}` : `${topicPart}${keywordsPart}`;
       }
 
-      // Build URL with time filter for Google
-      let baseUrl = searchEngine === 'google'
-        ? `${engineBase}${platformQuery.replace(/\s/g, '+')}`
-        : `${engineBase}${encodeURIComponent(platformQuery)}`;
+      // Build URL safely with full encoding to avoid breaking params (e.g., #, &)
+      let baseUrl = `${engineBase}${encodeURIComponent(platformQuery)}`;
       
       // Build tbs tokens for Google (time + verbatim)
       if (searchEngine === 'google') {
