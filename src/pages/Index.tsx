@@ -1060,39 +1060,29 @@ const Index = () => {
         ? `${engineBase}${platformQuery.replace(/\s/g, '+')}`
         : `${engineBase}${encodeURIComponent(platformQuery)}`;
       
-      // Add time filter parameter for Google
-      console.log('Debug - timeFilter:', timeFilter, 'searchEngine:', searchEngine);
-      if (searchEngine === 'google' && timeFilter !== 'any') {
+      // Build tbs tokens for Google (time + verbatim)
+      if (searchEngine === 'google') {
         const timeParams = {
           hour: 'qdr:h',
-          day: 'qdr:d', 
+          day: 'qdr:d',
           week: 'qdr:w',
           month: 'qdr:m',
-          year: 'qdr:y'
-        };
-        
-        console.log('Debug - timeParams[timeFilter]:', timeParams[timeFilter]);
-        
-        // Use Google Video search for TikTok with strict recency
+          year: 'qdr:y',
+        } as const;
+
+        const tbsTokens: string[] = [];
+        if (timeFilter !== 'any') tbsTokens.push(timeParams[timeFilter]);
+        // Always enforce Verbatim
+        tbsTokens.push('li:1');
+
         if (platformId === 'tiktok' && advancedOptions.tiktok.strictRecency) {
-          baseUrl += `&tbm=vid&sbd=1&tbs=${timeParams[timeFilter]}`;
+          // Use video tab for TikTok with strict recency
+          baseUrl += `&tbm=vid&sbd=1&tbs=${tbsTokens.join(',')}`;
         } else {
-          baseUrl += `&tbs=${timeParams[timeFilter]}`;
+          baseUrl += `&tbs=${tbsTokens.join(',')}`;
         }
-        
-        console.log('Debug - URL after time filter:', baseUrl);
-      }
-      
-      // Always add Verbatim mode for Google searches (exact search without spell correction)
-      if (searchEngine === 'google') {
-        // If time filter is already applied, append verbatim; otherwise add new tbs parameter
-        if (timeFilter !== 'any') {
-          baseUrl += ',li:1';
-        } else {
-          baseUrl += '&tbs=li:1';
-        }
-        
-        console.log('Debug - Final URL with verbatim:', baseUrl);
+
+        console.log('Debug - Final URL with tbs tokens:', baseUrl);
       }
 
       const url = baseUrl;
