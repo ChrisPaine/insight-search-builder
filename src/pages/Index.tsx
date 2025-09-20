@@ -23,6 +23,7 @@ import { useUsageLimit } from '@/hooks/useUsageLimit';
 import { useToast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
 import researchMascot from '@/assets/research-mascot.png';
+import { GoogleAutocomplete } from '@/components/ui/google-autocomplete';
 
 interface Platform {
   id: string;
@@ -1495,11 +1496,10 @@ const Index = () => {
                     Main Topic <span className="text-destructive">*</span>
                   </Label>
                   <div className="flex gap-2 items-center">
-                    <Input
-                      id="main-topic"
+                    <GoogleAutocomplete
                       value={mainTopic}
-                      onChange={(e) => setMainTopic(e.target.value)}
-                      placeholder="e.g., 3 evergreen core markets, where people always spend: Health, Wealth, Relationships!"
+                      onChange={setMainTopic}
+                      placeholder="e.g., fitness, investing, dating advice - get Google suggestions!"
                       className="flex-1"
                     />
                     <Button
